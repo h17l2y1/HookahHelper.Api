@@ -18,7 +18,7 @@ public class ApplicationContextFactory : IDesignTimeDbContextFactory<Application
 {
     public ApplicationContext CreateDbContext(string[] args)
     {
-        string connectionString = "Server=tcp:what-to-eat.database.windows.net,1433;Initial Catalog=WhatToEatDB;Persist Security Info=False;User ID=Ajax;Password=1Qtoaglxn/;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        string connectionString = "";
         
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
         optionsBuilder.UseSqlServer(connectionString);

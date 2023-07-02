@@ -7,7 +7,7 @@ public static class ConfigureDataBase
 {
     public static void InjectDataAccessDependency(this IServiceCollection services, ConfigurationManager configuration)
     {
-        DatabaseDependencies.Add(services);
+        RepositoryDependencies.Add(services);
         DbConnection.Add(services, configuration);
     }
 }
