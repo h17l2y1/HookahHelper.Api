@@ -10,7 +10,7 @@ public static class DbConnection
     public static void Add(IServiceCollection services, ConfigurationManager configuration)
     {
         string connectionString = configuration.GetSection("DefaultConnection").Value;
-        services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionString));
+        services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionString, options => options.EnableRetryOnFailure()));
     }
 }
 
@@ -25,4 +25,6 @@ public class ApplicationContextFactory : IDesignTimeDbContextFactory<Application
 
         return new ApplicationContext(optionsBuilder.Options);
     }
+    //dotnet ef migrations add init --project HookahHelper.Dal
+    //dotnet ef database update init --project HookahHelper.Dal
 }
