@@ -1,13 +1,11 @@
-using HookahHelper.DAL.Entities.Enums;
+﻿using HookahHelper.DAL.Entities.Enums;
 
-namespace HookahHelper.DAL.Entities;
+namespace HookahHelper.BLL.ViewModels.Line;
 
-public class Line: BaseEntity
+public class CreateLineRequest
 {
     public required string Name { get; set; }
     public string? Description { get; set; }
     public HeavinessType Heaviness { get; set; }
     public required string BrandId { get; set; }
-
-    public virtual Brand Brand { get; set; }
 }

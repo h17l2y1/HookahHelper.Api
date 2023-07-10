@@ -27,6 +27,10 @@ namespace HookahHelper.DAL.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("CountryId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
@@ -47,10 +51,6 @@ namespace HookahHelper.DAL.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("BrandId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
@@ -59,9 +59,6 @@ namespace HookahHelper.DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BrandId")
-                        .IsUnique();
 
                     b.ToTable("Countries");
                 });
@@ -170,21 +167,10 @@ namespace HookahHelper.DAL.Migrations
                     b.ToTable("Tobaccos");
                 });
 
-            modelBuilder.Entity("HookahHelper.DAL.Entities.Country", b =>
-                {
-                    b.HasOne("HookahHelper.DAL.Entities.Brand", "Brand")
-                        .WithOne("Country")
-                        .HasForeignKey("HookahHelper.DAL.Entities.Country", "BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Brand");
-                });
-
             modelBuilder.Entity("HookahHelper.DAL.Entities.Line", b =>
                 {
                     b.HasOne("HookahHelper.DAL.Entities.Brand", "Brand")
-                        .WithMany("Line")
+                        .WithMany("Lines")
                         .HasForeignKey("BrandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -209,10 +195,7 @@ namespace HookahHelper.DAL.Migrations
 
             modelBuilder.Entity("HookahHelper.DAL.Entities.Brand", b =>
                 {
-                    b.Navigation("Country")
-                        .IsRequired();
-
-                    b.Navigation("Line");
+                    b.Navigation("Lines");
                 });
 #pragma warning restore 612, 618
         }

@@ -2,8 +2,8 @@ namespace HookahHelper.DAL.Entities;
 
 public class Brand: BaseEntity
 {
-    public string Name { get; set; }
+    public required string Name { get; set; }
     public string? Description { get; set; }
-    public Country Country { get; set; }
-    public List<Line> Line { get; set; }
+    public required string CountryId { get; set; }
+    public IEnumerable<Line>? Lines { get; set; }
 }
