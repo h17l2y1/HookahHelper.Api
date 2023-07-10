@@ -6,4 +6,6 @@ public class Brand: BaseEntity
     public string? Description { get; set; }
     public required string CountryId { get; set; }
     public IEnumerable<Line>? Lines { get; set; }
+
+    public virtual Country Country { get; set; }
 }
