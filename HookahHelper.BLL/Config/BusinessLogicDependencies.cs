@@ -9,5 +9,7 @@ public static class BusinessLogicDependencies
     public static void Add(IServiceCollection services)
     {
         services.AddScoped<IBrandService, BrandService>();
+        services.AddScoped<IImageService, ImageService>();
+        services.AddScoped<ICountryService, CountryService>();
     }
 }
