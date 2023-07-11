@@ -37,7 +37,7 @@ public class CountryService:ICountryService
         var response = new GetAllResponse<Country>(total);
         if (total > 0)
         {
-            response.List = await _repository.GetAll2(request.Skip, request.Take);
+            response.List = await _repository.GetAll2(request.Page, request.Take);
         }
         
         return response;

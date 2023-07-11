@@ -37,7 +37,7 @@ public class ImageService:IImageService
         var response = new GetAllResponse<Image>(total);
         if (total > 0)
         {
-            response.List = await _repository.GetAll2(request.Skip, request.Take);
+            response.List = await _repository.GetAll2(request.Page, request.Take);
         }
         
         return response;
