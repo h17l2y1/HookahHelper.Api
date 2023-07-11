@@ -22,7 +22,7 @@ public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where T
         return await _dbSet.AsNoTracking().ToListAsync();
     }
 
-    public virtual async Task<TEntity> GetById(string id)
+    public virtual async Task<TEntity?> GetById(string id)
     {
         return await _dbSet.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
     }
@@ -41,15 +41,34 @@ public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where T
 
     public virtual async Task Update(TEntity entity)
     {
+        bool isExist = await _dbSet.AnyAsync(x => x.Id == entity.Id);
+        if (!isExist)
+        {
+            throw new Exception($"can't Update because id '{entity.Id}' is doesn't exist");
+        }
         _dbSet.Update(entity);
         await _context.SaveChangesAsync();
+        
     }
 
     public virtual async Task Remove(string id)
     {
-        var entity = await GetById(id);
-        _dbSet.Remove(entity);
-        await _context.SaveChangesAsync();
+        var entity = await _dbSet.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
+        if (entity != null)
+        {
+            _dbSet.Remove(entity);
+            await _context.SaveChangesAsync();
+        }
+    }
+    
+    public async Task<int> Count()
+    {
+        return await _dbSet.AsNoTracking().CountAsync();
+    }
+    
+    public async Task<bool> IsExist(string id)
+    {
+        return await _dbSet.AnyAsync(x => x.Id == id);
     }
     
 }

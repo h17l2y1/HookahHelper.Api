@@ -1,3 +1,5 @@
+using HookahHelper.BLL.Services;
+using HookahHelper.BLL.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HookahHelper.BLL.Config;
@@ -6,6 +8,6 @@ public static class BusinessLogicDependencies
 {
     public static void Add(IServiceCollection services)
     {
-        // services.AddScoped<IIngredientService, IngredientService>();
+        services.AddScoped<IBrandService, BrandService>();
     }
 }

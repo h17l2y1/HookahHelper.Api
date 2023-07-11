@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HookahHelper.DAL.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20230709201728_init")]
-    partial class init
+    [Migration("20230710204204_AddCountryRefToBrand")]
+    partial class AddCountryRefToBrand
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,6 +30,10 @@ namespace HookahHelper.DAL.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("CountryId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
@@ -42,16 +46,14 @@ namespace HookahHelper.DAL.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CountryId");
+
                     b.ToTable("Brands");
                 });
 
             modelBuilder.Entity("HookahHelper.DAL.Entities.Country", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("BrandId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreationDate")
@@ -62,9 +64,6 @@ namespace HookahHelper.DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BrandId")
-                        .IsUnique();
 
                     b.ToTable("Countries");
                 });
@@ -173,21 +172,21 @@ namespace HookahHelper.DAL.Migrations
                     b.ToTable("Tobaccos");
                 });
 
-            modelBuilder.Entity("HookahHelper.DAL.Entities.Country", b =>
+            modelBuilder.Entity("HookahHelper.DAL.Entities.Brand", b =>
                 {
-                    b.HasOne("HookahHelper.DAL.Entities.Brand", "Brand")
-                        .WithOne("Country")
-                        .HasForeignKey("HookahHelper.DAL.Entities.Country", "BrandId")
+                    b.HasOne("HookahHelper.DAL.Entities.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Brand");
+                    b.Navigation("Country");
                 });
 
             modelBuilder.Entity("HookahHelper.DAL.Entities.Line", b =>
                 {
                     b.HasOne("HookahHelper.DAL.Entities.Brand", "Brand")
-                        .WithMany("Line")
+                        .WithMany("Lines")
                         .HasForeignKey("BrandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -212,10 +211,7 @@ namespace HookahHelper.DAL.Migrations
 
             modelBuilder.Entity("HookahHelper.DAL.Entities.Brand", b =>
                 {
-                    b.Navigation("Country")
-                        .IsRequired();
-
-                    b.Navigation("Line");
+                    b.Navigation("Lines");
                 });
 #pragma warning restore 612, 618
         }

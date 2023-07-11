@@ -1,3 +1,6 @@
+using HookahHelper.BLL.Services.Interfaces;
+using HookahHelper.BLL.ViewModels.Brands;
+using HookahHelper.BLL.ViewModels.Default;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HookahHelper.Api.Controllers;
@@ -6,50 +9,45 @@ namespace HookahHelper.Api.Controllers;
 [Route("api/[controller]/[action]")]
 public class BrandController : ControllerBase
 {
-    // private readonly IIngredientService _service;
-    //
-    // public IngredientController(IIngredientService service)
-    // {
-    //     _service = service;
-    // }
+    private readonly IBrandService _service;
+    
+    public BrandController(IBrandService service)
+    {
+        _service = service;
+    }
 
-    [HttpGet]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetById(string id)
     {
-        // IngredientResponse response = await _service.GetById(id);
-        // return Ok(response);
-        return Ok();
+        var response = await _service.GetById(id);
+        return Ok(response);
     }
-    
+
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll([FromQuery] GetAllRequest request)
     {
-        // IEnumerable<IngredientResponse> response = await _service.GetAll();
-        // return Ok(response);
-        return Ok();
+        var response = await _service.GetAll(request);
+        return Ok(response);
     }
     
     [HttpPost]
-    public async Task<IActionResult> Create()
+    public async Task<IActionResult> Create(CreateBrandRequest request)
     {
-        // await _service.Create(request);
-        // return Ok();
+        await _service.Create(request);
         return Ok();
     }
     
     [HttpPut]
-    public async Task<IActionResult> Update()
+    public async Task<IActionResult> Update(UpdateBrandRequest request)
     {
-        // await _service.Update(request);
-        // return Ok();
+        await _service.Update(request);
         return Ok();
     }
-    
-    [HttpDelete]
+
+    [HttpDelete("{id}")]
     public async Task<IActionResult> Remove(string id)
     {
-        // await _service.Remove(id);
-        // return Ok();
+        await _service.Remove(id);
         return Ok();
     }
     
