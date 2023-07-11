@@ -1,7 +1,14 @@
-﻿namespace HookahHelper.BLL.ViewModels.Default;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+
+namespace HookahHelper.BLL.ViewModels.Default;
 
 public class GetAllRequest
 {
-    public int Skip { get; set; } = 0;
-    public int Take { get; set; } = 100;
+    [DefaultValue(1)]
+    [Required]
+    public int Page { get; set; }
+    [DefaultValue(100)]
+    [Required]
+    public int Take { get; set; }
 }

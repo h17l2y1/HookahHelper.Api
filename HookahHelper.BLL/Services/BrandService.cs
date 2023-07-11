@@ -37,21 +37,17 @@ public class BrandService : IBrandService
         var response = new GetAllResponse<Brand>(total);
         if (total > 0)
         {
-            response.List = await _repository.GetAll2(request.Skip, request.Take);
+            int skip = (request.Page - 1) * request.Take;
+            response.List = await _repository.GetAll2(skip, request.Take);
         }
         
         return response;
     }
-
-
+    
     public async Task Update(UpdateBrandRequest request)
     {
-        bool isExist = await _repository.IsExist(request.Id);
-        if (isExist)
-        {
-            var entity = _mapper.Map<Brand>(request);
-            await _repository.Update(entity);
-        }
+        var entity = _mapper.Map<Brand>(request);
+        await _repository.Update(entity);
     }
 
     public async Task Remove(string id)

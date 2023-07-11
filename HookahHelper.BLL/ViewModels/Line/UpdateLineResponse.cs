@@ -4,8 +4,10 @@ using HookahHelper.DAL.Entities.Enums;
 
 namespace HookahHelper.BLL.ViewModels.Line;
 
-public class CreateLineRequest
+public class UpdateLineResponse
 {
+    [Required]
+    public required string Id { get; set; }
     [Required]
     public required string Name { get; set; }
     [DefaultValue("")]
