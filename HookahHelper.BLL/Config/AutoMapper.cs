@@ -13,6 +13,7 @@ public static class AutoMapper
             c.AddProfile(new BrandProfile());
             c.AddProfile(new LineProfile());
             c.AddProfile(new ImageProfile());
+            c.AddProfile(new CountryProfile());
         });
 
         IMapper mapper = config.CreateMapper();
