@@ -38,7 +38,7 @@ public class BrandService : IBrandService
         if (total > 0)
         {
             int skip = (request.Page - 1) * request.Take;
-            response.List = await _repository.GetAll2(skip, request.Take);
+            response.List = await _repository.GetAll(skip, request.Take);
         }
         
         return response;

@@ -17,9 +17,13 @@ public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where T
         _dbSet = _context.Set<TEntity>();
     }
 
-    public virtual async Task<IEnumerable<TEntity>> GetAll()
+    public virtual async Task<IEnumerable<TEntity>> GetAll(int skip, int take)
     {
-        return await _dbSet.AsNoTracking().ToListAsync();
+        return await _dbSet
+            .AsNoTracking()
+            .Skip(skip)
+            .Take(take)
+            .ToListAsync();
     }
 
     public virtual async Task<TEntity?> GetById(string id)
@@ -46,9 +50,9 @@ public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where T
         {
             throw new Exception($"can't Update because id '{entity.Id}' is doesn't exist");
         }
+
         _dbSet.Update(entity);
         await _context.SaveChangesAsync();
-        
     }
 
     public virtual async Task Remove(string id)
@@ -60,15 +64,9 @@ public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where T
             await _context.SaveChangesAsync();
         }
     }
-    
+
     public async Task<int> Count()
     {
         return await _dbSet.AsNoTracking().CountAsync();
     }
-    
-    public async Task<bool> IsExist(string id)
-    {
-        return await _dbSet.AnyAsync(x => x.Id == id);
-    }
-    
 }
