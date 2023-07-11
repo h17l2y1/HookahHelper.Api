@@ -22,7 +22,7 @@ public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where T
         return await _dbSet.AsNoTracking().ToListAsync();
     }
 
-    public virtual async Task<TEntity> GetById(string id)
+    public virtual async Task<TEntity?> GetById(string id)
     {
         return await _dbSet.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
     }
@@ -50,6 +50,16 @@ public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where T
         var entity = await GetById(id);
         _dbSet.Remove(entity);
         await _context.SaveChangesAsync();
+    }
+    
+    public async Task<int> Count()
+    {
+        return await _dbSet.AsNoTracking().CountAsync();
+    }
+    
+    public async Task<bool> IsExist(string id)
+    {
+        return await _dbSet.AnyAsync(x => x.Id == id);
     }
     
 }

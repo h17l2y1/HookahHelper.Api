@@ -33,26 +33,29 @@ public class BrandService : IBrandService
 
     public async Task<GetAllResponse<Brand>>GetAll(GetAllRequest request)
     {
-        // User user = _mapper.Map<SignUpAccountView, User>(view);
-        // IdentityResult result = await _userManager.CreateAsync(user);
-        //
-        var entities = await _repository.GetAll();
-        // var response = _mapper.Map(entities);
-        return null;
+        int total = await _repository.Count();
+        var response = new GetAllResponse<Brand>(total);
+        if (total > 0)
+        {
+            response.List = await _repository.GetAll2(request.Skip, request.Take);
+        }
+        
+        return response;
     }
 
 
-    public Task Update(UpdateBrandRequest request)
+    public async Task Update(UpdateBrandRequest request)
     {
-        // bool isExist = _repository.GetById(request.Id)
-        //
-        // var entity = _mapper.Map<Brand>(request);
-        // await _repository.Update(entity);
-        throw new NotImplementedException();
+        bool isExist = await _repository.IsExist(request.Id);
+        if (isExist)
+        {
+            var entity = _mapper.Map<Brand>(request);
+            await _repository.Update(entity);
+        }
     }
 
-    public Task Remove(string id)
+    public async Task Remove(string id)
     {
-        throw new NotImplementedException();
+        await _repository.Remove(id);
     }
 }
