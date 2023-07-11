@@ -10,5 +10,7 @@ public class LineProfile: Profile
     {
         CreateMap<CreateLineRequest, Line>();
         CreateMap<GetLineResponse, Line>().ReverseMap();
+        CreateMap<UpdateLineResponse, Line>();
+        // CreateMap<UpdateLineResponse, Line>().ForMember(to => to.Id, from => from.Ignore());
     }
 }
