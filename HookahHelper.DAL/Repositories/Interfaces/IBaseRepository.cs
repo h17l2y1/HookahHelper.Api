@@ -2,7 +2,7 @@ namespace HookahHelper.DAL.Repositories.Interfaces;
 
 public interface IBaseRepository<TEntity>
 {
-    Task<IEnumerable<TEntity>> GetAll();
+    Task<IEnumerable<TEntity>> GetAll(int skip, int take);
     
     Task<TEntity?> GetById(string id);
 
@@ -14,6 +14,4 @@ public interface IBaseRepository<TEntity>
 
     Task Remove(string id);
     Task<int> Count();
-
-    Task<bool> IsExist(string id);
 }

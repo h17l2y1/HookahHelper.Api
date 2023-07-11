@@ -18,7 +18,7 @@ public class ImageController:ControllerBase
         _service = service;
     }
 
-    [HttpGet]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetById(string id)
     {
         var response = await _service.GetById(id);
@@ -26,7 +26,7 @@ public class ImageController:ControllerBase
     }
     
     [HttpGet]
-    public async Task<IActionResult> GetAll(GetAllRequest request)
+    public async Task<IActionResult> GetAll([FromQuery] GetAllRequest request)
     {
         var response = await _service.GetAll(request);
         return Ok(response);
@@ -46,7 +46,7 @@ public class ImageController:ControllerBase
         return Ok();
     }
     
-    [HttpDelete]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> Remove(string id)
     {
         await _service.Remove(id);

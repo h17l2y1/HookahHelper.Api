@@ -10,14 +10,4 @@ public class CountryRepository: BaseRepository<Country>, ICountryRepository
     public CountryRepository(ApplicationContext context): base(context)
     {
     }
-    public async Task<IEnumerable<Country>> GetAll2(int skip = 0, int take = 100)
-    {
-        var list = await _dbSet
-            .AsNoTracking()
-            .Skip(skip)
-            .Take(take)
-            .ToListAsync();
-
-        return list;
-    }
 }

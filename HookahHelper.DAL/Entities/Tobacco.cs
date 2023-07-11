@@ -2,7 +2,7 @@ namespace HookahHelper.DAL.Entities;
 
 public class Tobacco: BaseEntity
 {
-    public string Name { get; set; }
+    public required string Name { get; set; }
     public string? Description { get; set; }
     public int Sweetness { get; set; }
     public int Acidity { get; set; }

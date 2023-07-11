@@ -37,21 +37,17 @@ public class ImageService:IImageService
         var response = new GetAllResponse<Image>(total);
         if (total > 0)
         {
-            response.List = await _repository.GetAll2(request.Page, request.Take);
+            int skip = (request.Page - 1) * request.Take;
+            response.List = await _repository.GetAll(skip, request.Take);
         }
         
         return response;
     }
 
-
     public async Task Update(UpdateImageRequest request)
     {
-        bool isExist = await _repository.IsExist(request.Id);
-        if (isExist)
-        {
-            var entity = _mapper.Map<Image>(request);
-            await _repository.Update(entity);
-        }
+        var entity = _mapper.Map<Image>(request);
+        await _repository.Update(entity);
     }
 
     public async Task Remove(string id)
