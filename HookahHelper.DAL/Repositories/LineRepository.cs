@@ -18,4 +18,14 @@ public class LineRepository: BaseRepository<Line>, ILineRepository
             .Include(x => x.Tobaccos)
             .SingleOrDefaultAsync(x => x.Id == id);
     }
+    
+    public async Task<int> Count(string? filterBy)
+    {
+        if (filterBy != null)
+        {
+            return await _dbSet.Where(x => x.Name.Contains(filterBy)).CountAsync();
+        }
+        
+        return await _dbSet.CountAsync();
+    }
 }

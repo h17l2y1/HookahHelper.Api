@@ -33,7 +33,7 @@ public class LineService : ILineService
 
     public async Task<GetAllResponse<GetLineResponse>> GetAll(GetAllRequest request)
     {
-        int total = await _repository.Count();
+        int total = await _repository.Count(request.FilterBy);
         var response = new GetAllResponse<GetLineResponse>(total);
         if (total > 0)
         {
