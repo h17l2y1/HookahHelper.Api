@@ -13,5 +13,4 @@ public interface IBaseRepository<TEntity>
     Task Update(TEntity entity);
 
     Task Remove(string id);
-    Task<int> Count();
 }

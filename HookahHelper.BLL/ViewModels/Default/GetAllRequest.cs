@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HookahHelper.BLL.ViewModels.Default;
 
-public class GetAllRequest
+public record GetAllRequest
 {
     [DefaultValue(1)]
     [Required]
@@ -11,4 +11,11 @@ public class GetAllRequest
     [DefaultValue(100)]
     [Required]
     public int Take { get; set; }
+    [DefaultValue("asc")]
+    [Required]
+    public required string SortBy { get; set; }
+    [DefaultValue("name")]
+    [Required]
+    public required string Column { get; set; }
+    public string? FilterBy { get; set; }
 }

@@ -31,14 +31,16 @@ public class BrandService : IBrandService
         return response;
     }
 
-    public async Task<GetAllResponse<Brand>>GetAll(GetAllRequest request)
+    public async Task<GetAllResponse<GetBrandResponse>>GetAll(GetAllRequest request)
     {
-        int total = await _repository.Count();
-        var response = new GetAllResponse<Brand>(total);
+        int total = await _repository.Count(request.FilterBy);
+        var response = new GetAllResponse<GetBrandResponse>(total);
         if (total > 0)
         {
-            int skip = (request.Page - 1) * request.Take;
-            response.List = await _repository.GetAll(skip, request.Take);
+            int skip = request.Page * request.Take;
+            var entities = await _repository.GetAll(skip, request.Take, request.SortBy, request.Column, request.FilterBy);
+            var list = _mapper.Map<IEnumerable<GetBrandResponse>>(entities);
+            response.List = list;
         }
         
         return response;

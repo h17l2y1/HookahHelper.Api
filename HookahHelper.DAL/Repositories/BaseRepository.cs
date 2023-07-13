@@ -64,9 +64,4 @@ public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where T
             await _context.SaveChangesAsync();
         }
     }
-
-    public async Task<int> Count()
-    {
-        return await _dbSet.AsNoTracking().CountAsync();
-    }
 }

@@ -11,4 +11,14 @@ public class ImageRepository: BaseRepository<Image>, IImageRepository
     public ImageRepository(ApplicationContext context): base(context)
     {
     }
+    
+    public async Task<int> Count(string? filterBy)
+    {
+        if (filterBy != null)
+        {
+            return await _dbSet.Where(x => x.Name.Contains(filterBy)).CountAsync();
+        }
+        
+        return await _dbSet.CountAsync();
+    }
 }

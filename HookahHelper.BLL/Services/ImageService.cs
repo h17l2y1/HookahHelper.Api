@@ -33,7 +33,7 @@ public class ImageService:IImageService
 
     public async Task<GetAllResponse<Image>>GetAll(GetAllRequest request)
     {
-        int total = await _repository.Count();
+        int total = await _repository.Count(request.FilterBy);
         var response = new GetAllResponse<Image>(total);
         if (total > 0)
         {
