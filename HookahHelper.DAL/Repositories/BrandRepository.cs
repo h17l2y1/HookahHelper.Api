@@ -12,18 +12,33 @@ public class BrandRepository: BaseRepository<Brand>, IBrandRepository
     {
     }
 
-    public async Task<IEnumerable<Brand>> GetAll(int skip, int take, string? sortBy, string? column)
+    public async Task<IEnumerable<Brand>> GetAll(int skip, int take, string sortBy, string column, string? filterBy)
     {
         var query = _dbSet.AsNoTracking();
-
-        if (sortBy != null)
+        
+        query = query.OrderBy($"{column} {sortBy}");
+        
+        if (filterBy != null)
         {
-            query = query.OrderBy($"{column} {sortBy}");
+            query = query.Where(x => x.Name.Contains(filterBy));
         }
 
-        query = query.Skip(skip).Take(take);
+        query = query
+            .Include(x => x.Country)
+            .Skip(skip)
+            .Take(take);
         
         return await query.ToListAsync();
+    }
+    
+    public async Task<int> Count(string? filterBy)
+    {
+        if (filterBy != null)
+        {
+            return await _dbSet.Where(x => x.Name.Contains(filterBy)).CountAsync();
+        }
+        
+        return await _dbSet.CountAsync();
     }
 
     public override async Task<Brand?> GetById(string id)

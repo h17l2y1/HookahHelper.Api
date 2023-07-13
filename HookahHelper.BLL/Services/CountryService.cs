@@ -33,7 +33,7 @@ public class CountryService:ICountryService
 
     public async Task<GetAllResponse<Country>>GetAll(GetAllRequest request)
     {
-        int total = await _repository.Count();
+        int total = await _repository.Count(request.FilterBy);
         var response = new GetAllResponse<Country>(total);
         if (total > 0)
         {

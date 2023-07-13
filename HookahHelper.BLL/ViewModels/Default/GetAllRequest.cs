@@ -11,6 +11,11 @@ public record GetAllRequest
     [DefaultValue(100)]
     [Required]
     public int Take { get; set; }
-    public string? SortBy { get; set; }
-    public string? Column { get; set; }
+    [DefaultValue("asc")]
+    [Required]
+    public required string SortBy { get; set; }
+    [DefaultValue("name")]
+    [Required]
+    public required string Column { get; set; }
+    public string? FilterBy { get; set; }
 }
