@@ -14,5 +14,5 @@ public record UpdateBrandRequest
     public string? Description { get; set; }
     [Required]
     public required string CountryId { get; set; }
-    public IEnumerable<UpdateLineResponse>? Lines { get; set; }
+    public IEnumerable<UpdateLineRequest>? Lines { get; set; }
 }

@@ -4,7 +4,7 @@ using HookahHelper.DAL.Entities.Enums;
 
 namespace HookahHelper.BLL.ViewModels.Line;
 
-public class UpdateLineResponse
+public class UpdateLineRequest
 {
     [Required]
     public required string Id { get; set; }
