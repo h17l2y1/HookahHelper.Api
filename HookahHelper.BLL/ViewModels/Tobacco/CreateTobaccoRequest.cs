@@ -1,8 +1,13 @@
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+
 namespace HookahHelper.BLL.ViewModels.Tobacco;
 
-public record GetTobaccoResponse
+public class CreateTobaccoRequest
 {
+    [Required]
     public required string Name { get; set; }
+    [DefaultValue("")]
     public string? Description { get; set; }
     public int Sweetness { get; set; }
     public int Acidity { get; set; }

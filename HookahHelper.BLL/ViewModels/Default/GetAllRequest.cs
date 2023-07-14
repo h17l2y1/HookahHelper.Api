@@ -5,7 +5,7 @@ namespace HookahHelper.BLL.ViewModels.Default;
 
 public record GetAllRequest
 {
-    [DefaultValue(1)]
+    [DefaultValue(0)]
     [Required]
     public int Page { get; set; }
     [DefaultValue(100)]

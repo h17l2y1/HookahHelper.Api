@@ -14,6 +14,7 @@ public static class AutoMapper
             c.AddProfile(new LineProfile());
             c.AddProfile(new ImageProfile());
             c.AddProfile(new CountryProfile());
+            c.AddProfile(new TobaccoProfile());
         });
 
         IMapper mapper = config.CreateMapper();
