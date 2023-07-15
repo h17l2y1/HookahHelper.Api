@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HookahHelper.BLL.ViewModels.Brands;
 using HookahHelper.BLL.ViewModels.Line;
 using HookahHelper.DAL.Entities;
 
@@ -11,5 +12,6 @@ public class LineProfile: Profile
         CreateMap<CreateLineRequest, Line>();
         CreateMap<GetLineResponse, Line>().ReverseMap();
         CreateMap<UpdateLineRequest, Line>();
+        CreateMap<LinesInner, Line>();
     }
 }

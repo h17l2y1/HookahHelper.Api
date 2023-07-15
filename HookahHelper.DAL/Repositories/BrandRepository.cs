@@ -25,6 +25,7 @@ public class BrandRepository: BaseRepository<Brand>, IBrandRepository
 
         query = query
             .Include(x => x.Country)
+            .Include(x => x.Image)
             .Skip(skip)
             .Take(take);
         

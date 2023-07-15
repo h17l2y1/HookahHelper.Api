@@ -4,6 +4,7 @@ using HookahHelper.DAL.Config;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HookahHelper.DAL.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20230714201138_addedImageToBrand")]
+    partial class addedImageToBrand
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -125,8 +128,8 @@ namespace HookahHelper.DAL.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<float>("Acidity")
-                        .HasColumnType("real");
+                    b.Property<int>("Acidity")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
@@ -134,11 +137,11 @@ namespace HookahHelper.DAL.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("Fortress")
-                        .HasColumnType("real");
+                    b.Property<int>("Fortress")
+                        .HasColumnType("int");
 
-                    b.Property<float>("Freshness")
-                        .HasColumnType("real");
+                    b.Property<int>("Freshness")
+                        .HasColumnType("int");
 
                     b.Property<string>("ImageId")
                         .HasColumnType("nvarchar(450)");
@@ -150,20 +153,20 @@ namespace HookahHelper.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("Rating")
-                        .HasColumnType("real");
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
 
-                    b.Property<float>("Smokiness")
-                        .HasColumnType("real");
+                    b.Property<int>("Smokiness")
+                        .HasColumnType("int");
 
-                    b.Property<float>("Spice")
-                        .HasColumnType("real");
+                    b.Property<int>("Spice")
+                        .HasColumnType("int");
 
-                    b.Property<float>("Sweetness")
-                        .HasColumnType("real");
+                    b.Property<int>("Sweetness")
+                        .HasColumnType("int");
 
-                    b.Property<float>("Taste")
-                        .HasColumnType("real");
+                    b.Property<int>("Taste")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

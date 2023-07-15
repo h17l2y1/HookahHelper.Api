@@ -8,7 +8,7 @@ public class CreateLineRequest
 {
     [Required]
     public required string Name { get; set; }
-    [DefaultValue("")]
+    [DefaultValue(null)]
     public string? Description { get; set; }
     public HeavinessType Heaviness { get; set; }
     [Required]

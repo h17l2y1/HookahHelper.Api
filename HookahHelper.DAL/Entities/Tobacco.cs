@@ -1,18 +1,30 @@
+using System.ComponentModel.DataAnnotations; 
+
 namespace HookahHelper.DAL.Entities;
 
 public class Tobacco: BaseEntity
 {
     public required string Name { get; set; }
     public string? Description { get; set; }
-    public int Sweetness { get; set; }
-    public int Acidity { get; set; }
-    public int Spice { get; set; }
-    public int Freshness { get; set; }
-    public int Rating { get; set; }
-    public int Taste { get; set; }
-    public int Fortress { get; set; }
-    public int Smokiness { get; set; }
+    [Range(0, 5)]
+    public float Sweetness { get; set; }
+    [Range(0, 5)]
+    public float Acidity { get; set; }
+    [Range(0, 5)]
+    public float Spice { get; set; }
+    [Range(0, 5)]
+    public float Freshness { get; set; }
+    [Range(0, 5)]
+    public float Rating { get; set; }
+    [Range(0, 5)]
+    public float Taste { get; set; }
+    [Range(0, 5)]
+    public float Fortress { get; set; }
+    [Range(0, 5)]
+    public float Smokiness { get; set; }
+    [Range(0, 5)]
     public string? LineId { get; set; }
+    [Range(0, 5)]
     public string? ImageId { get; set; }
 
     public virtual Line Line { get; set; }
