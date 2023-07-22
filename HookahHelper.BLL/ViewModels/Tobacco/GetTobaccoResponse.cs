@@ -1,3 +1,5 @@
+using HookahHelper.BLL.ViewModels.Image;
+
 namespace HookahHelper.BLL.ViewModels.Tobacco;
 
 public record GetTobaccoResponse
@@ -13,5 +15,5 @@ public record GetTobaccoResponse
     public int Fortress { get; set; }
     public int Smokiness { get; set; }
     public string? LineId { get; set; }
-    public string? ImageId { get; set; }
+    public GetImageResponse Image { get; set; }
 }

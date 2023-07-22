@@ -46,6 +46,8 @@ public class BrandRepository: BaseRepository<Brand>, IBrandRepository
     {
         return await _dbSet
             .AsNoTracking()
+            .Include(x => x.Country)
+            .Include(x => x.Image)
             .Include(x => x.Lines)
             .SingleOrDefaultAsync(x => x.Id == id);
     }

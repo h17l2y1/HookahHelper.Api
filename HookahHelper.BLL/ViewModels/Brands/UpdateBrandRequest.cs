@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using HookahHelper.BLL.ViewModels.Line;
+using HookahHelper.BLL.ViewModels.Image;
 
 namespace HookahHelper.BLL.ViewModels.Brands;
 
@@ -14,5 +14,15 @@ public record UpdateBrandRequest
     public string? Description { get; set; }
     [Required]
     public required string CountryId { get; set; }
-    public IEnumerable<UpdateLineRequest>? Lines { get; set; }
+    [Required]
+    public required UpdateImageRequest Image { get; set; }
+    public IEnumerable<LinesInnerUpdate>? Lines { get; set; }
+}
+
+public record LinesInnerUpdate
+{
+    [Required]
+    public required string Id { get; set; }
+    [Required]
+    public required string Name { get; set; }
 }

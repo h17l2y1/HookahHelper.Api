@@ -4,6 +4,8 @@ public interface IBaseRepository<TEntity>
 {
     Task<IEnumerable<TEntity>> GetAll(int skip, int take);
     
+    Task<IEnumerable<TEntity>> GetAll();
+    
     Task<TEntity?> GetById(string id);
 
     Task Create(TEntity entity);

@@ -35,6 +35,7 @@ public class TobaccoRepository: BaseRepository<Tobacco>, ITobaccoRepository
         }
 
         query = query
+            .Include(x => x.Image)
             .Skip(skip)
             .Take(take);
         

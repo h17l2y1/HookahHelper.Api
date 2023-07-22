@@ -7,7 +7,7 @@ using HookahHelper.DAL.Repositories.Interfaces;
 
 namespace HookahHelper.BLL.Services;
 
-public class CountryService:ICountryService
+public class CountryService : ICountryService
 {
     private readonly IMapper _mapper;
     private readonly ICountryRepository _repository;
@@ -26,21 +26,31 @@ public class CountryService:ICountryService
 
     public async Task<GetCountryResponse> GetById(string id)
     {
-        var entity = await _repository.GetById(id);
+        Country? entity = await _repository.GetById(id);
         var response = _mapper.Map<GetCountryResponse>(entity);
         return response;
     }
 
-    public async Task<GetAllResponse<Country>>GetAll(GetAllRequest request)
+    public async Task<GetAllResponse<GetCountryResponse>> GetAll(GetAllRequest request)
     {
         int total = await _repository.Count(request.FilterBy);
-        var response = new GetAllResponse<Country>(total);
+        var response = new GetAllResponse<GetCountryResponse>(total);
         if (total > 0)
         {
-            int skip = (request.Page - 1) * request.Take;
-            response.List = await _repository.GetAll(skip, request.Take);
+            int skip = request.Page * request.Take;
+            var entities = await _repository.GetAll(skip, request.Take);
+            var list = _mapper.Map<IEnumerable<GetCountryResponse>>(entities);
+            response.List = list;
         }
-        
+
+        return response;
+    }
+
+    public async Task<IEnumerable<GetCountryResponse>> GetOptions()
+    {
+        var entities = await _repository.GetAll();
+        var response = _mapper.Map<IEnumerable<GetCountryResponse>>(entities);
+
         return response;
     }
 

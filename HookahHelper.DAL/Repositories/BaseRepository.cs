@@ -25,6 +25,11 @@ public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where T
             .Take(take)
             .ToListAsync();
     }
+    
+    public virtual async Task<IEnumerable<TEntity>> GetAll()
+    {
+        return await _dbSet.AsNoTracking().ToListAsync();
+    }
 
     public virtual async Task<TEntity?> GetById(string id)
     {

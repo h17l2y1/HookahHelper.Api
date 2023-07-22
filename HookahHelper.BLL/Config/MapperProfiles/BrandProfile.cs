@@ -11,6 +11,7 @@ public class BrandProfile: Profile
         CreateMap<CreateBrandRequest, Brand>();
         CreateMap<UpdateBrandRequest, Brand>();
         CreateMap<Brand, GetBrandResponse>();
+        CreateMap<Brand, GetBrandOption>();
     }
 }
 

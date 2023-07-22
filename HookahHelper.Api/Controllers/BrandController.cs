@@ -30,6 +30,13 @@ public class BrandController : ControllerBase
         return Ok(response);
     }
     
+    [HttpGet]
+    public async Task<IActionResult> GetOptions()
+    {
+        var response = await _service.GetOptions();
+        return Ok(response);
+    }
+    
     [HttpPost]
     public async Task<IActionResult> Create(CreateBrandRequest request)
     {

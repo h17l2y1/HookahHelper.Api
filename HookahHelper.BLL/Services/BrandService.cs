@@ -46,6 +46,14 @@ public class BrandService : IBrandService
         return response;
     }
     
+    public async Task<IEnumerable<GetBrandOption>>GetOptions()
+    {
+        var entities = await _repository.GetAll();
+        var response = _mapper.Map<IEnumerable<GetBrandOption>>(entities);
+        
+        return response;
+    }
+    
     public async Task Update(UpdateBrandRequest request)
     {
         var entity = _mapper.Map<Brand>(request);

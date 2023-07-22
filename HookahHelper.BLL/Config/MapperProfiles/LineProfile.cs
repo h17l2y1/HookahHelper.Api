@@ -13,5 +13,6 @@ public class LineProfile: Profile
         CreateMap<GetLineResponse, Line>().ReverseMap();
         CreateMap<UpdateLineRequest, Line>();
         CreateMap<LinesInner, Line>();
+        CreateMap<LinesInnerUpdate, Line>();
     }
 }
