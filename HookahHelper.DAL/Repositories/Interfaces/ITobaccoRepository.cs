@@ -1,10 +1,11 @@
 using HookahHelper.DAL.Entities;
+using HookahHelper.DAL.Entities.Models;
 
 namespace HookahHelper.DAL.Repositories.Interfaces;
 
 public interface ITobaccoRepository: IBaseRepository<Tobacco>
 {
-    Task<IEnumerable<Tobacco>> GetAll(int skip, int take, string sortBy, string column, string? filterBy);
+    Task<IEnumerable<Tobacco>> GetAll(int skip, int take, string sortBy, string column, Filter filters);
 
-    Task<int> Count(string? filterBy);
+    Task<int> Count(Filter filters);
 }

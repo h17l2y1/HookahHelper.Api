@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using HookahHelper.DAL.Entities.Models;
 
 namespace HookahHelper.BLL.ViewModels.Default;
 
@@ -17,5 +18,7 @@ public record GetAllRequest
     [DefaultValue("name")]
     [Required]
     public required string Column { get; set; }
-    public string? FilterBy { get; set; }
+    public string? Name { get; set; }
+    public string? BrandId { get; set; }
+    public string? CountryId { get; set; }
 }

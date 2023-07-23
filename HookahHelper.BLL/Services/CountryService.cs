@@ -3,6 +3,7 @@ using HookahHelper.BLL.Services.Interfaces;
 using HookahHelper.BLL.ViewModels.Country;
 using HookahHelper.BLL.ViewModels.Default;
 using HookahHelper.DAL.Entities;
+using HookahHelper.DAL.Entities.Models;
 using HookahHelper.DAL.Repositories.Interfaces;
 
 namespace HookahHelper.BLL.Services;
@@ -33,7 +34,8 @@ public class CountryService : ICountryService
 
     public async Task<GetAllResponse<GetCountryResponse>> GetAll(GetAllRequest request)
     {
-        int total = await _repository.Count(request.FilterBy);
+        var filters = _mapper.Map<Filter>(request);
+        int total = await _repository.Count(filters);
         var response = new GetAllResponse<GetCountryResponse>(total);
         if (total > 0)
         {
@@ -42,7 +44,7 @@ public class CountryService : ICountryService
             var list = _mapper.Map<IEnumerable<GetCountryResponse>>(entities);
             response.List = list;
         }
-
+    
         return response;
     }
 

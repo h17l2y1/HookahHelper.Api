@@ -3,6 +3,7 @@ using HookahHelper.BLL.Services.Interfaces;
 using HookahHelper.BLL.ViewModels.Default;
 using HookahHelper.BLL.ViewModels.Tobacco;
 using HookahHelper.DAL.Entities;
+using HookahHelper.DAL.Entities.Models;
 using HookahHelper.DAL.Repositories.Interfaces;
 
 namespace HookahHelper.BLL.Services;
@@ -33,12 +34,13 @@ public class TobaccoService : ITobaccoService
 
     public async Task<GetAllResponse<GetTobaccoResponse>>GetAll(GetAllRequest request)
     {
-        int total = await _repository.Count(request.FilterBy);
+        var filters = _mapper.Map<Filter>(request);
+        int total = await _repository.Count(filters);
         var response = new GetAllResponse<GetTobaccoResponse>(total);
         if (total > 0)
         {
             int skip = request.Page * request.Take;
-            var entities = await _repository.GetAll(skip, request.Take, request.SortBy, request.Column, request.FilterBy);
+            var entities = await _repository.GetAll(skip, request.Take, request.SortBy, request.Column, filters);
             var list = _mapper.Map<IEnumerable<GetTobaccoResponse>>(entities);
             response.List = list;
         }

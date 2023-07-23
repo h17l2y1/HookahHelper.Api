@@ -1,5 +1,7 @@
 using HookahHelper.DAL.Config;
 using HookahHelper.DAL.Entities;
+using HookahHelper.DAL.Entities.Models;
+using HookahHelper.DAL.Repositories.Extensions;
 using HookahHelper.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,15 +19,5 @@ public class LineRepository: BaseRepository<Line>, ILineRepository
             .AsNoTracking()
             .Include(x => x.Tobaccos)
             .SingleOrDefaultAsync(x => x.Id == id);
-    }
-    
-    public async Task<int> Count(string? filterBy)
-    {
-        if (filterBy != null)
-        {
-            return await _dbSet.Where(x => x.Name.Contains(filterBy)).CountAsync();
-        }
-        
-        return await _dbSet.CountAsync();
     }
 }

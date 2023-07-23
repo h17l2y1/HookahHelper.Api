@@ -1,44 +1,40 @@
 using System.Linq.Dynamic.Core;
 using HookahHelper.DAL.Config;
 using HookahHelper.DAL.Entities;
+using HookahHelper.DAL.Entities.Models;
+using HookahHelper.DAL.Repositories.Extensions;
 using HookahHelper.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace HookahHelper.DAL.Repositories;
 
-public class TobaccoRepository: BaseRepository<Tobacco>, ITobaccoRepository
+public class TobaccoRepository : BaseRepository<Tobacco>, ITobaccoRepository
 {
-    public TobaccoRepository(ApplicationContext context): base(context)
+    public TobaccoRepository(ApplicationContext context) : base(context)
     {
-        
     }
 
-    public async Task<int> Count(string? filterBy)
+    public async Task<int> Count(Filter filters)
     {
-        if (filterBy != null)
-        {
-            return await _dbSet.Where(x => x.Name.Contains(filterBy)).CountAsync();
-        }
-        
-        return await _dbSet.CountAsync();
+        return await _dbSet
+            .Include(x => x.Brand)
+            .WhereIf(filters.Name is not null, x => x.Name.Contains(filters.Name))
+            .WhereIf(filters.BrandId is not null, x => x.BrandId == filters.BrandId)
+            .WhereIf(filters.CountryId is not null, x => x.Brand.CountryId == filters.CountryId)
+            .CountAsync();
     }
-    
-    public async Task<IEnumerable<Tobacco>> GetAll(int skip, int take, string sortBy, string column, string? filterBy)
-    {
-        var query = _dbSet.AsNoTracking();
-        
-        query = query.OrderBy($"{column} {sortBy}");
-        
-        if (filterBy != null)
-        {
-            query = query.Where(x => x.Name.Contains(filterBy));
-        }
 
-        query = query
+    public async Task<IEnumerable<Tobacco>> GetAll(int skip, int take, string sortBy, string column, Filter filters)
+    {
+        return await _dbSet
+            .AsNoTracking()
             .Include(x => x.Image)
+            .OrderBy($"{column} {sortBy}")
+            .WhereIf(filters.Name is not null, x => x.Name.Contains(filters.Name))
+            .WhereIf(filters.BrandId is not null, x => x.BrandId == filters.BrandId)
+            .WhereIf(filters.CountryId is not null, x => x.Brand.CountryId == filters.CountryId)
             .Skip(skip)
-            .Take(take);
-        
-        return await query.ToListAsync();
+            .Take(take)
+            .ToListAsync();
     }
 }

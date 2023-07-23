@@ -1,5 +1,7 @@
 using HookahHelper.DAL.Config;
 using HookahHelper.DAL.Entities;
+using HookahHelper.DAL.Entities.Models;
+using HookahHelper.DAL.Repositories.Extensions;
 using HookahHelper.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,13 +13,10 @@ public class CountryRepository: BaseRepository<Country>, ICountryRepository
     {
     }
     
-    public async Task<int> Count(string? filterBy)
+    public async Task<int> Count(Filter filters)
     {
-        if (filterBy != null)
-        {
-            return await _dbSet.Where(x => x.Name.Contains(filterBy)).CountAsync();
-        }
-        
-        return await _dbSet.CountAsync();
+        return await _dbSet
+                .WhereIf(filters.Name is not null, x => x.Name.Contains(filters.Name))
+                .CountAsync();
     }
 }

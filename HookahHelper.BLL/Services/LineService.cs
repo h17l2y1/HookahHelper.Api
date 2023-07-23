@@ -31,21 +31,6 @@ public class LineService : ILineService
         return response;
     }
 
-    public async Task<GetAllResponse<GetLineResponse>> GetAll(GetAllRequest request)
-    {
-        int total = await _repository.Count(request.FilterBy);
-        var response = new GetAllResponse<GetLineResponse>(total);
-        if (total > 0)
-        {
-            int skip = (request.Page - 1) * request.Take;
-            var entities = await _repository.GetAll(skip, request.Take);
-            var lines = _mapper.Map<IEnumerable<GetLineResponse>>(entities);
-            response.List = lines;
-        }
-
-        return response;
-    }
-
     public async Task Update(UpdateLineRequest request)
     {
         var entity = _mapper.Map<Line>(request);

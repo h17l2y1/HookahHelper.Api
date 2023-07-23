@@ -4,5 +4,4 @@ namespace HookahHelper.DAL.Repositories.Interfaces;
 
 public interface IImageRepository:IBaseRepository<Image>
 {
-    Task<int> Count(string? filterBy);
 }

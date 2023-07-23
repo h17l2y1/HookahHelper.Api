@@ -10,6 +10,7 @@ public static class AutoMapper
     {
         var config = new MapperConfiguration(c =>
         {
+            c.AddProfile(new OtherProfile());
             c.AddProfile(new BrandProfile());
             c.AddProfile(new LineProfile());
             c.AddProfile(new ImageProfile());

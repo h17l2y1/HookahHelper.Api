@@ -24,13 +24,6 @@ public class LineController : ControllerBase
         return Ok(response);
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetAll([FromQuery] GetAllRequest request)
-    {
-        var response = await _service.GetAll(request);
-        return Ok(response);
-    }
-    
     [HttpPost]
     public async Task<IActionResult> Create(CreateLineRequest request)
     {

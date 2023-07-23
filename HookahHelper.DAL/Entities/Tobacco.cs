@@ -22,11 +22,11 @@ public class Tobacco: BaseEntity
     public float Fortress { get; set; }
     [Range(0, 5)]
     public float Smokiness { get; set; }
-    [Range(0, 5)]
     public string? LineId { get; set; }
-    [Range(0, 5)]
     public string? ImageId { get; set; }
+    public required string BrandId { get; set; }
 
     public virtual Line Line { get; set; }
     public virtual Image Image { get; set; }
+    public virtual Brand Brand { get; set; }
 }

@@ -3,6 +3,8 @@ using HookahHelper.DAL.Entities;
 using HookahHelper.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
+using HookahHelper.DAL.Entities.Models;
+using HookahHelper.DAL.Repositories.Extensions;
 
 namespace HookahHelper.DAL.Repositories;
 
@@ -12,34 +14,24 @@ public class BrandRepository: BaseRepository<Brand>, IBrandRepository
     {
     }
 
-    public async Task<IEnumerable<Brand>> GetAll(int skip, int take, string sortBy, string column, string? filterBy)
+    public async Task<IEnumerable<Brand>> GetAll(int skip, int take, string sortBy, string column, Filter filters)
     {
-        var query = _dbSet.AsNoTracking();
-        
-        query = query.OrderBy($"{column} {sortBy}");
-        
-        if (filterBy != null)
-        {
-            query = query.Where(x => x.Name.Contains(filterBy));
-        }
-
-        query = query
+        return await _dbSet
+            .AsNoTracking()
             .Include(x => x.Country)
             .Include(x => x.Image)
+            .OrderBy($"{column} {sortBy}")
+            .WhereIf(filters.Name is not null, x => x.Name.Contains(filters.Name))
             .Skip(skip)
-            .Take(take);
-        
-        return await query.ToListAsync();
+            .Take(take)
+            .ToListAsync();
     }
     
-    public async Task<int> Count(string? filterBy)
+    public async Task<int> Count(Filter filters)
     {
-        if (filterBy != null)
-        {
-            return await _dbSet.Where(x => x.Name.Contains(filterBy)).CountAsync();
-        }
-        
-        return await _dbSet.CountAsync();
+        return await _dbSet
+            .WhereIf(filters.Name is not null, x => x.Name.Contains(filters.Name))
+            .CountAsync();
     }
 
     public override async Task<Brand?> GetById(string id)
