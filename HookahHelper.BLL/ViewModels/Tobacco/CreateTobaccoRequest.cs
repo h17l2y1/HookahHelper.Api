@@ -11,4 +11,5 @@ public class CreateTobaccoRequest
     public string? Description { get; set; }
     public string? LineId { get; set; }
     public required string ImageId { get; set; }
+    public required string BrandId { get; set; }
 }
