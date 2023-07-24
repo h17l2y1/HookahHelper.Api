@@ -8,7 +8,7 @@ public class UpdateTobaccoRequest
     public required string Id { get; set; }
     [Required]
     public required string Name { get; set; }
-    [DefaultValue("")]
+    [DefaultValue(null)]
     public string? Description { get; set; }
     public int Sweetness { get; set; }
     public int Acidity { get; set; }
