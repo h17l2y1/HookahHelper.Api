@@ -41,4 +41,11 @@ public class LineService : ILineService
     {
         await _repository.Remove(id);
     }
+
+    public async Task<IEnumerable<GetLineResponse>> GetLinesByBrandId(string brandId)
+    {
+        var entity = await _repository.GetLinesByBrandId(brandId);
+        var response = _mapper.Map<IEnumerable<GetLineResponse>>(entity);
+        return response;
+    }
 }
