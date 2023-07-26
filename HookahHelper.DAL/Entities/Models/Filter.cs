@@ -5,4 +5,5 @@ public record Filter
     public string? Name { get; set; }
     public string? BrandId { get; set; }
     public string? CountryId { get; set; }
+    public string? LineId { get; set; }
 }
