@@ -20,4 +20,12 @@ public class LineRepository: BaseRepository<Line>, ILineRepository
             .Include(x => x.Tobaccos)
             .SingleOrDefaultAsync(x => x.Id == id);
     }
+    
+    public async Task<IEnumerable<Line>>GetLinesByBrandId(string brandId)
+    {
+        return await _dbSet
+            .AsNoTracking()
+            .Where(x => x.BrandId == brandId)
+            .ToListAsync();
+    }
 }

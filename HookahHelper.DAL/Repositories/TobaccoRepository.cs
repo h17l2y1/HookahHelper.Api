@@ -21,6 +21,7 @@ public class TobaccoRepository : BaseRepository<Tobacco>, ITobaccoRepository
             .WhereIf(filters.Name is not null, x => x.Name.Contains(filters.Name))
             .WhereIf(filters.BrandId is not null, x => x.BrandId == filters.BrandId)
             .WhereIf(filters.CountryId is not null, x => x.Brand.CountryId == filters.CountryId)
+            .WhereIf(filters.LineId is not null, x => x.LineId == filters.LineId)
             .CountAsync();
     }
 
@@ -33,6 +34,7 @@ public class TobaccoRepository : BaseRepository<Tobacco>, ITobaccoRepository
             .WhereIf(filters.Name is not null, x => x.Name.Contains(filters.Name))
             .WhereIf(filters.BrandId is not null, x => x.BrandId == filters.BrandId)
             .WhereIf(filters.CountryId is not null, x => x.Brand.CountryId == filters.CountryId)
+            .WhereIf(filters.LineId is not null, x => x.LineId == filters.LineId)
             .Skip(skip)
             .Take(take)
             .ToListAsync();

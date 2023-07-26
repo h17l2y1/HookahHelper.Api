@@ -44,4 +44,11 @@ public class LineController : ControllerBase
         await _service.Remove(id);
         return Ok();
     }
+    
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetLinesByBrandId(string id)
+    {
+        var response = await _service.GetLinesByBrandId(id);
+        return Ok(response);
+    }
 }
