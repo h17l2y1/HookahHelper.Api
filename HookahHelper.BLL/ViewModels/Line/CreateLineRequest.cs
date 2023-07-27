@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using HookahHelper.DAL.Entities.Enums;
 
 namespace HookahHelper.BLL.ViewModels.Line;
 
@@ -10,7 +9,6 @@ public class CreateLineRequest
     public required string Name { get; set; }
     [DefaultValue(null)]
     public string? Description { get; set; }
-    public HeavinessType Heaviness { get; set; }
     [Required]
     public required string BrandId { get; set; }
 }

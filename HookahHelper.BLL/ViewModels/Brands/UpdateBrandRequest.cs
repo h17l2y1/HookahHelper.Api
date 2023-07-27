@@ -16,13 +16,14 @@ public record UpdateBrandRequest
     public required string CountryId { get; set; }
     [Required]
     public required UpdateImageRequest Image { get; set; }
-    public IEnumerable<LinesInnerUpdate>? Lines { get; set; }
+    public IEnumerable<LinesUpdateInner>? Lines { get; set; }
 }
 
-public record LinesInnerUpdate
+public record LinesUpdateInner
 {
-    [Required]
-    public required string Id { get; set; }
+    public string? Id { get; set; }
     [Required]
     public required string Name { get; set; }
+    public string? BrandId { get; set; }
+    public bool IsNew { get; set; }
 }

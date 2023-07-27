@@ -16,4 +16,15 @@ public class ApplicationContext: DbContext
     public DbSet<Image> Images { get; set; }
     public DbSet<Line> Lines { get; set; }
     public DbSet<Tobacco> Tobaccos { get; set; }
+    public DbSet<Heaviness> Heaviness { get; set; }
+    
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+        {
+            relationship.DeleteBehavior = DeleteBehavior.Restrict;
+        }
+
+        base.OnModelCreating(builder);
+    }
 }

@@ -13,6 +13,7 @@ public class LineProfile: Profile
         CreateMap<GetLineResponse, Line>().ReverseMap();
         CreateMap<UpdateLineRequest, Line>();
         CreateMap<LinesInner, Line>();
-        CreateMap<LinesInnerUpdate, Line>();
+        CreateMap<LinesUpdateInner, Line>()
+            .ForMember(to => to.Id, from => from.MapFrom(source => source.Id ?? Guid.NewGuid().ToString()));
     }
 }

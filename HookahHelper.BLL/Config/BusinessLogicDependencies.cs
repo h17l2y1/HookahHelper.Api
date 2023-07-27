@@ -13,5 +13,6 @@ public static class BusinessLogicDependencies
         services.AddScoped<ICountryService, CountryService>();
         services.AddScoped<ILineService, LineService>();
         services.AddScoped<ITobaccoService, TobaccoService>();
+        services.AddScoped<IHeavinessService, HeavinessService>();
     }
 }

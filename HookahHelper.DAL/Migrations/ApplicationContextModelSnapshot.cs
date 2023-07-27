@@ -38,6 +38,7 @@ namespace HookahHelper.DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
@@ -68,6 +69,26 @@ namespace HookahHelper.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Countries");
+                });
+
+            modelBuilder.Entity("HookahHelper.DAL.Entities.Heaviness", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Heaviness");
                 });
 
             modelBuilder.Entity("HookahHelper.DAL.Entities.Image", b =>
@@ -106,9 +127,6 @@ namespace HookahHelper.DAL.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Heaviness")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -135,11 +153,16 @@ namespace HookahHelper.DAL.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("HeavinessId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("ImageId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LineId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
@@ -149,6 +172,8 @@ namespace HookahHelper.DAL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
+
+                    b.HasIndex("HeavinessId");
 
                     b.HasIndex("ImageId");
 
@@ -162,12 +187,14 @@ namespace HookahHelper.DAL.Migrations
                     b.HasOne("HookahHelper.DAL.Entities.Country", "Country")
                         .WithMany()
                         .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("HookahHelper.DAL.Entities.Image", "Image")
                         .WithMany()
-                        .HasForeignKey("ImageId");
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Country");
 
@@ -179,7 +206,7 @@ namespace HookahHelper.DAL.Migrations
                     b.HasOne("HookahHelper.DAL.Entities.Brand", "Brand")
                         .WithMany("Lines")
                         .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Brand");
@@ -190,20 +217,30 @@ namespace HookahHelper.DAL.Migrations
                     b.HasOne("HookahHelper.DAL.Entities.Brand", "Brand")
                         .WithMany()
                         .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HookahHelper.DAL.Entities.Heaviness", "Heaviness")
+                        .WithMany()
+                        .HasForeignKey("HeavinessId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("HookahHelper.DAL.Entities.Image", "Image")
                         .WithMany()
                         .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("HookahHelper.DAL.Entities.Line", "Line")
                         .WithMany("Tobaccos")
-                        .HasForeignKey("LineId");
+                        .HasForeignKey("LineId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Brand");
+
+                    b.Navigation("Heaviness");
 
                     b.Navigation("Image");
 

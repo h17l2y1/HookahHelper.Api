@@ -25,6 +25,6 @@ public class ApplicationContextFactory : IDesignTimeDbContextFactory<Application
 
         return new ApplicationContext(optionsBuilder.Options);
     }
-    //dotnet ef migrations add init --project HookahHelper.Dal
+    //dotnet ef migrations add --project HookahHelper.Dal
     //dotnet ef database update --project HookahHelper.Dal
 }

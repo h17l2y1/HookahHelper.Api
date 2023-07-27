@@ -6,26 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HookahHelper.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Brands",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CountryId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Brands", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Countries",
                 columns: table => new
@@ -37,6 +22,20 @@ namespace HookahHelper.DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Countries", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Heaviness",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Value = table.Column<int>(type: "int", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Heaviness", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -54,13 +53,40 @@ namespace HookahHelper.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Brands",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CountryId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ImageId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Brands", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Brands_Countries_CountryId",
+                        column: x => x.CountryId,
+                        principalTable: "Countries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Brands_Images_ImageId",
+                        column: x => x.ImageId,
+                        principalTable: "Images",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Lines",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Heaviness = table.Column<int>(type: "int", nullable: false),
                     BrandId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -72,7 +98,7 @@ namespace HookahHelper.DAL.Migrations
                         column: x => x.BrandId,
                         principalTable: "Brands",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -82,37 +108,65 @@ namespace HookahHelper.DAL.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Sweetness = table.Column<int>(type: "int", nullable: false),
-                    Acidity = table.Column<int>(type: "int", nullable: false),
-                    Spice = table.Column<int>(type: "int", nullable: false),
-                    Freshness = table.Column<int>(type: "int", nullable: false),
-                    Rating = table.Column<int>(type: "int", nullable: false),
-                    Taste = table.Column<int>(type: "int", nullable: false),
-                    Fortress = table.Column<int>(type: "int", nullable: false),
-                    Smokiness = table.Column<int>(type: "int", nullable: false),
-                    LineId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ImageId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    LineId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ImageId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    HeavinessId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    BrandId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tobaccos", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Tobaccos_Brands_BrandId",
+                        column: x => x.BrandId,
+                        principalTable: "Brands",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Tobaccos_Heaviness_HeavinessId",
+                        column: x => x.HeavinessId,
+                        principalTable: "Heaviness",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Tobaccos_Images_ImageId",
                         column: x => x.ImageId,
                         principalTable: "Images",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Tobaccos_Lines_LineId",
                         column: x => x.LineId,
                         principalTable: "Lines",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Brands_CountryId",
+                table: "Brands",
+                column: "CountryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Brands_ImageId",
+                table: "Brands",
+                column: "ImageId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Lines_BrandId",
                 table: "Lines",
                 column: "BrandId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tobaccos_BrandId",
+                table: "Tobaccos",
+                column: "BrandId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tobaccos_HeavinessId",
+                table: "Tobaccos",
+                column: "HeavinessId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tobaccos_ImageId",
@@ -129,19 +183,22 @@ namespace HookahHelper.DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Countries");
-
-            migrationBuilder.DropTable(
                 name: "Tobaccos");
 
             migrationBuilder.DropTable(
-                name: "Images");
+                name: "Heaviness");
 
             migrationBuilder.DropTable(
                 name: "Lines");
 
             migrationBuilder.DropTable(
                 name: "Brands");
+
+            migrationBuilder.DropTable(
+                name: "Countries");
+
+            migrationBuilder.DropTable(
+                name: "Images");
         }
     }
 }

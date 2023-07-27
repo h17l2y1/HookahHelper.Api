@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using HookahHelper.DAL.Entities.Models;
 
 namespace HookahHelper.BLL.ViewModels.Default;
 
@@ -22,4 +21,5 @@ public record GetAllRequest
     public string? BrandId { get; set; }
     public string? CountryId { get; set; }
     public string? LineId { get; set; }
+    public string? HeavinessId { get; set; }
 }

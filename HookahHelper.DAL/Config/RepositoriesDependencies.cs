@@ -13,5 +13,6 @@ public static class RepositoryDependencies
         services.AddTransient<ILineRepository, LineRepository>();
         services.AddTransient<ITobaccoRepository, TobaccoRepository>();
         services.AddTransient<IImageRepository, ImageRepository>();
+        services.AddTransient<IHeavinessRepository, HeavinessRepository>();
     }
 }

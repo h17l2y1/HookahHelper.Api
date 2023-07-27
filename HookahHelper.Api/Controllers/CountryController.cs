@@ -1,14 +1,12 @@
 using HookahHelper.BLL.Services.Interfaces;
 using HookahHelper.BLL.ViewModels.Country;
 using HookahHelper.BLL.ViewModels.Default;
-
 using Microsoft.AspNetCore.Mvc;
 
 namespace HookahHelper.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-
 public class CountryController : ControllerBase
 {
     private readonly ICountryService _service;

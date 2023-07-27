@@ -8,4 +8,6 @@ public interface ITobaccoRepository: IBaseRepository<Tobacco>
     Task<IEnumerable<Tobacco>> GetAll(int skip, int take, string sortBy, string column, Filter filters);
 
     Task<int> Count(Filter filters);
+
+    Task<Tobacco?> GetById(string id);
 }
