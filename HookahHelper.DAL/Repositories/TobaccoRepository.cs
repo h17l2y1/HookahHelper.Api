@@ -35,8 +35,17 @@ public class TobaccoRepository : BaseRepository<Tobacco>, ITobaccoRepository
             .WhereIf(filters.BrandId is not null, x => x.BrandId == filters.BrandId)
             .WhereIf(filters.CountryId is not null, x => x.Brand.CountryId == filters.CountryId)
             .WhereIf(filters.LineId is not null, x => x.LineId == filters.LineId)
+            .WhereIf(filters.HeavinessId is not null,  x => x.HeavinessId == filters.HeavinessId)
             .Skip(skip)
             .Take(take)
             .ToListAsync();
+    }
+    
+    public override async Task<Tobacco?> GetById(string id)
+    {
+        return await _dbSet
+            .AsNoTracking()
+            .Include(x => x.Image)
+            .SingleOrDefaultAsync(x => x.Id == id);
     }
 }
