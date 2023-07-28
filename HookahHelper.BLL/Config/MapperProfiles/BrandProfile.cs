@@ -8,22 +8,11 @@ public class BrandProfile: Profile
 {
     public BrandProfile()
     {
-        CreateMap<CreateBrandRequest, Brand>()
-            .ForMember(to => to.Name, from => from.MapFrom(source => $"tobacco: {source.Name}"));
+        CreateMap<CreateBrandRequest, Brand>();
         CreateMap<UpdateBrandRequest, Brand>();
         CreateMap<Brand, GetBrandResponse>();
         CreateMap<Brand, GetBrandOption>();
     }
-
-    // private IEnumerable<LinesUpdateInner> aaa(IEnumerable<LinesUpdateInner>? lines, string brandId)
-    // {
-    //     foreach (var line in lines.Where(x => x.IsNew))
-    //     {
-    //         line.BrandId = brandId;
-    //     }
-    //
-    //     return lines;
-    // }
 }
 
 
