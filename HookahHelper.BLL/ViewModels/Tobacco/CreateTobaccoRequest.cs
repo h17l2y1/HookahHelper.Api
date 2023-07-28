@@ -10,7 +10,11 @@ public class CreateTobaccoRequest
     public required string Name { get; set; }
     [DefaultValue(null)]
     public string? Description { get; set; }
-    public string? LineId { get; set; }
-    public required CreateImageRequest Image { get; set; }
+    [Required]
+    public required string LineId { get; set; }
+    [Required]
     public required string BrandId { get; set; }
+    [Required]
+    public required string HeavinessId { get; set; }
+    public required CreateImageRequest Image { get; set; }
 }

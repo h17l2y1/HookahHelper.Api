@@ -21,6 +21,7 @@ public class TobaccoService : ITobaccoService
 
     public async Task Create(CreateTobaccoRequest request)
     {
+        request.Image.Name = $"tobacco: {request.Name}";
         var entity = _mapper.Map<Tobacco>(request);
         await _repository.Create(entity);
     }
