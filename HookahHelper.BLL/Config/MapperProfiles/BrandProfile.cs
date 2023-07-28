@@ -10,21 +10,9 @@ public class BrandProfile: Profile
     {
         CreateMap<CreateBrandRequest, Brand>();
         CreateMap<UpdateBrandRequest, Brand>();
-            // .ForMember(to => to.Lines, 
-            //     from => from.MapFrom(source => aaa(source.Lines, source.Id)));
         CreateMap<Brand, GetBrandResponse>();
         CreateMap<Brand, GetBrandOption>();
     }
-
-    // private IEnumerable<LinesUpdateInner> aaa(IEnumerable<LinesUpdateInner>? lines, string brandId)
-    // {
-    //     foreach (var line in lines.Where(x => x.IsNew))
-    //     {
-    //         line.BrandId = brandId;
-    //     }
-    //
-    //     return lines;
-    // }
 }
 
 
