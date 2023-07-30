@@ -101,9 +101,19 @@ public class DropBoxService : IDropBoxService
         }
     }
 
-    private async Task<bool> IsFileExist(DropboxClient dropboxClient, string name)
+    private async Task<bool> IsFileExist(DropboxClient dropboxClient, string fileName)
     {
-        return await dropboxClient.Files.GetMetadataAsync(name) == null;
+        var name = $"/{fileName}.png";
+        try
+        {
+            return await dropboxClient.Files.GetMetadataAsync(name) == null;
+        }
+        catch (Exception e)
+        {
+            
+        }
+
+        return false;
     }
 
     private async Task<string> CreateSharedLinkWithSettingsAsync(DropboxClient dropboxClient, string path)
