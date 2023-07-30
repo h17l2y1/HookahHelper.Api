@@ -29,26 +29,19 @@ public class DropBoxService : IDropBoxService
         _appSecret = _configuration.GetSection("DropBoxAccessToken").Value;
     }
 
-    public async Task<string?> GetCreateLink(string fileName, string base64)
+    public async Task<string?> GetLinkOnImage(string fileName, string base64)
     {
         using (var dropboxClient = new DropboxClient(_accessToken))
         {
             await CheckConnect(dropboxClient);
             byte[] bytes = EncodeFile(base64);
-            string pathInDropBox = await CreateFile(dropboxClient, fileName, bytes);
-            string redirectLink = await CreateSharedLinkWithSettingsAsync(dropboxClient, pathInDropBox);
-            string link = await GetFinalLink(redirectLink);
-            return link;
-        }
-    }
-    
-    public async Task<string?> GetUpdateLink(string fileName, string base64)
-    {
-        using (var dropboxClient = new DropboxClient(_accessToken))
-        {
-            await CheckConnect(dropboxClient);
-            byte[] bytes = EncodeFile(base64);
-            string pathInDropBox = await UpdateFile(dropboxClient, fileName, bytes);
+
+            bool isFileExist = await IsFileExist(dropboxClient, fileName);
+
+            string pathInDropBox = isFileExist ?
+                await UpdateFile(dropboxClient, fileName, bytes) :
+                await CreateFile(dropboxClient, fileName, bytes);
+
             string redirectLink = await CreateSharedLinkWithSettingsAsync(dropboxClient, pathInDropBox);
             string link = await GetFinalLink(redirectLink);
             return link;

@@ -23,7 +23,7 @@ public class TobaccoService : ITobaccoService
 
     public async Task Create(CreateTobaccoRequest request)
     {
-        var link = await _dropBox.GetCreateLink(request.Name, request.Image.Base64);
+        var link = await _dropBox.GetLinkOnImage(request.Name, request.Image.Base64);
         var entity = _mapper.Map<Tobacco>(request);
         entity.Image.Name = $"tobacco: {request.Name}";
         entity.Image.Link = link;
@@ -55,7 +55,7 @@ public class TobaccoService : ITobaccoService
     
     public async Task Update(UpdateTobaccoRequest request)
     {
-        var link = await _dropBox.GetUpdateLink(request.Name, request.Image.Base64);
+        var link = await _dropBox.GetLinkOnImage(request.Name, request.Image.Base64);
         var entity = _mapper.Map<Tobacco>(request);
         entity.Image.Name = $"tobacco: {request.Name}";
         entity.Image.Link = link;

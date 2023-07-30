@@ -25,7 +25,7 @@ public class BrandService : IBrandService
 
     public async Task Create(CreateBrandRequest request)
     {
-        var link = await _dropBox.GetCreateLink(request.Name, request.Image.Base64);
+        var link = await _dropBox.GetLinkOnImage(request.Name, request.Image.Base64);
         var entity = _mapper.Map<Brand>(request);
         entity.Image.Name = $"brand: {request.Name}";
         entity.Image.Link = link;
@@ -65,7 +65,7 @@ public class BrandService : IBrandService
 
     public async Task Update(UpdateBrandRequest request)
     {
-        var link = await _dropBox.GetUpdateLink(request.Name, request.Image.Base64);
+        var link = await _dropBox.GetLinkOnImage(request.Name, request.Image.Base64);
         var newLines = request.Lines?.Where(x => x.IsNew);
         var updatedLines = request.Lines?.Where(x => !x.IsNew);
 
