@@ -14,6 +14,6 @@ public static class BusinessLogicDependencies
         services.AddScoped<ILineService, LineService>();
         services.AddScoped<ITobaccoService, TobaccoService>();
         services.AddScoped<IHeavinessService, HeavinessService>();
-        services.AddScoped<IDropBoxFilesService, DropBoxFilesService>();
+        services.AddScoped<IDropBoxService, DropBoxService>();
     }
 }

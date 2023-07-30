@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace HookahHelper.BLL.ViewModels.Brands;
 
@@ -11,7 +12,7 @@ public record CreateBrandRequest
     public string? Description { get; set; }
     [Required]
     public required string CountryId { get; set; }
-    public ImageInner? Image { get; set; }
+    public required ImageInner Image { get; set; }
     public IEnumerable<LinesInner>? Lines { get; set; }
 }
 
