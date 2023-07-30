@@ -13,18 +13,22 @@ public class BrandService : IBrandService
     private readonly IMapper _mapper;
     private readonly IBrandRepository _brandRepository;
     private readonly ILineRepository _lineRepository;
+    private readonly IDropBoxService _dropBox;
 
-    public BrandService(IMapper mapper, IBrandRepository brandRepository, ILineRepository lineRepository)
+    public BrandService(IMapper mapper, IBrandRepository brandRepository, ILineRepository lineRepository, IDropBoxService dropBox)
     {
         _mapper = mapper;
         _brandRepository = brandRepository;
         _lineRepository = lineRepository;
+        _dropBox = dropBox;
     }
 
     public async Task Create(CreateBrandRequest request)
     {
+        var link = await _dropBox.GetLinkOnImage(request.Name, request.Image.Base64);
         var entity = _mapper.Map<Brand>(request);
         entity.Image.Name = $"brand: {request.Name}";
+        entity.Image.Link = link;
         await _brandRepository.Create(entity);
     }
 
@@ -35,7 +39,7 @@ public class BrandService : IBrandService
         return response;
     }
 
-    public async Task<GetAllResponse<GetBrandResponse>> GetAll(GetAllRequest request)
+    public async Task<GetAllResponse<GetBrandResponse>> GetAll(GetAllRequest request) 
     {
         var filters = _mapper.Map<Filter>(request);
         int total = await _brandRepository.Count(filters);
@@ -61,6 +65,7 @@ public class BrandService : IBrandService
 
     public async Task Update(UpdateBrandRequest request)
     {
+        var link = await _dropBox.GetLinkOnImage(request.Name, request.Image.Base64);
         var newLines = request.Lines?.Where(x => x.IsNew);
         var updatedLines = request.Lines?.Where(x => !x.IsNew);
 
@@ -77,6 +82,8 @@ public class BrandService : IBrandService
 
         request.Lines = updatedLines;
         var entity = _mapper.Map<Brand>(request);
+        entity.Image.Name = $"brand: {request.Name}";
+        entity.Image.Link = link;
         await _brandRepository.Update(entity);
     }
 

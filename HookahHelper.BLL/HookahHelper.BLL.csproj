@@ -8,6 +8,9 @@
 
     <ItemGroup>
       <PackageReference Include="AutoMapper" Version="12.0.1" />
+      <PackageReference Include="ChilkatDnCore31" Version="9.50.95" />
+      <PackageReference Include="Dropbox.Api" Version="6.37.0" />
+      <PackageReference Include="Google.Apis.Drive.v3" Version="1.61.0.3120" />
       <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
@@ -15,6 +18,12 @@
 
     <ItemGroup>
       <ProjectReference Include="..\HookahHelper.DAL\HookahHelper.DAL.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Microsoft.AspNetCore.Http.Features">
+        <HintPath>..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\7.0.7\Microsoft.AspNetCore.Http.Features.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

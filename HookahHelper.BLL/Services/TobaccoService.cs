@@ -12,17 +12,21 @@ public class TobaccoService : ITobaccoService
 {
     private readonly IMapper _mapper;
     private readonly ITobaccoRepository _repository;
+    private readonly IDropBoxService _dropBox;
 
-    public TobaccoService(IMapper mapper, ITobaccoRepository repository)
+    public TobaccoService(IMapper mapper, ITobaccoRepository repository, IDropBoxService dropBox)
     {
         _mapper = mapper;
         _repository = repository;
+        _dropBox = dropBox;
     }
 
     public async Task Create(CreateTobaccoRequest request)
     {
-        request.Image.Name = $"tobacco: {request.Name}";
+        var link = await _dropBox.GetLinkOnImage(request.Name, request.Image.Base64);
         var entity = _mapper.Map<Tobacco>(request);
+        entity.Image.Name = $"tobacco: {request.Name}";
+        entity.Image.Link = link;
         await _repository.Create(entity);
     }
 
@@ -51,7 +55,10 @@ public class TobaccoService : ITobaccoService
     
     public async Task Update(UpdateTobaccoRequest request)
     {
+        var link = await _dropBox.GetLinkOnImage(request.Name, request.Image.Base64);
         var entity = _mapper.Map<Tobacco>(request);
+        entity.Image.Name = $"tobacco: {request.Name}";
+        entity.Image.Link = link;
         await _repository.Update(entity);
     }
 
