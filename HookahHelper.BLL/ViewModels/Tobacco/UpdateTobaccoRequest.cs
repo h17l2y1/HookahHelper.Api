@@ -12,5 +12,7 @@ public class UpdateTobaccoRequest
     [DefaultValue(null)]
     public string? Description { get; set; }
     public required string LineId { get; set; }
+    public required string HeavinessId { get; set; }
+    public required string BrandId { get; set; }
     public required UpdateImageRequest Image { get; set; }
 }
