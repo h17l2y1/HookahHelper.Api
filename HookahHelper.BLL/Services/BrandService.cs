@@ -67,7 +67,11 @@ public class BrandService : IBrandService
 
     public async Task Update(UpdateBrandRequest request)
     {
-        var link = _imgurService.UploadImage(request.Name, request.Image.Base64);
+        if (request.Image.Base64 != null)
+        {
+            request.Image.Link = _imgurService.UploadImage(request.Name, request.Image.Base64);
+        }
+        
         var newLines = request.Lines?.Where(x => x.IsNew);
         var updatedLines = request.Lines?.Where(x => !x.IsNew);
 
@@ -85,7 +89,6 @@ public class BrandService : IBrandService
         request.Lines = updatedLines;
         var entity = _mapper.Map<Brand>(request);
         entity.Image.Name = $"brand: {request.Name}";
-        entity.Image.Link = link;
         await _brandRepository.Update(entity);
     }
 

@@ -55,10 +55,13 @@ public class TobaccoService : ITobaccoService
     
     public async Task Update(UpdateTobaccoRequest request)
     {
-        var link = _imgurService.UploadImage(request.Name, request.Image.Base64);
+        if (request.Image.Base64 != null)
+        {
+            request.Image.Link = _imgurService.UploadImage(request.Name, request.Image.Base64);
+        }
+        
         var entity = _mapper.Map<Tobacco>(request);
         entity.Image.Name = $"tobacco: {request.Name}";
-        entity.Image.Link = link;
         await _repository.Update(entity);
     }
 
