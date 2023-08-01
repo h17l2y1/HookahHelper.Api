@@ -15,5 +15,6 @@ public static class BusinessLogicDependencies
         services.AddScoped<ITobaccoService, TobaccoService>();
         services.AddScoped<IHeavinessService, HeavinessService>();
         services.AddScoped<IImgurService, ImgurService>();
+        services.AddScoped<ITagService, TagService>();
     }
 }

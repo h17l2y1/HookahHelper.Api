@@ -1,6 +1,6 @@
 namespace HookahHelper.DAL.Entities;
 
-public class Tobacco: BaseEntity
+public class Tobacco : BaseEntity
 {
     public required string Name { get; set; }
     public string? Description { get; set; }
@@ -13,5 +13,5 @@ public class Tobacco: BaseEntity
     public virtual Image Image { get; set; }
     public virtual Brand Brand { get; set; }
     public virtual Heaviness Heaviness { get; set; }
-    
+    public IEnumerable<Tag> Tags { get; set; }
 }
