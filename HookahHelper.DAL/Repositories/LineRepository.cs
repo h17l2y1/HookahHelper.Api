@@ -26,6 +26,7 @@ public class LineRepository: BaseRepository<Line>, ILineRepository
         return await _dbSet
             .AsNoTracking()
             .Where(x => x.BrandId == brandId)
+            .OrderBy(x => x.Name)
             .ToListAsync();
     }
 }

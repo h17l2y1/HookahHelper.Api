@@ -32,25 +32,9 @@ public class CountryService : ICountryService
         return response;
     }
 
-    public async Task<GetAllResponse<GetCountryResponse>> GetAll(GetAllRequest request)
-    {
-        var filters = _mapper.Map<Filter>(request);
-        int total = await _repository.Count(filters);
-        var response = new GetAllResponse<GetCountryResponse>(total);
-        if (total > 0)
-        {
-            int skip = request.Page * request.Take;
-            var entities = await _repository.GetAll(skip, request.Take);
-            var list = _mapper.Map<IEnumerable<GetCountryResponse>>(entities);
-            response.List = list;
-        }
-    
-        return response;
-    }
-
     public async Task<IEnumerable<GetCountryResponse>> GetOptions()
     {
-        var entities = await _repository.GetAll();
+        IEnumerable<Country> entities = await _repository.GetOptions();
         var response = _mapper.Map<IEnumerable<GetCountryResponse>>(entities);
 
         return response;

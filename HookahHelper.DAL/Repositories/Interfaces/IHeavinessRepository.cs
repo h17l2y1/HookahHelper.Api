@@ -4,4 +4,5 @@ namespace HookahHelper.DAL.Repositories.Interfaces;
 
 public interface IHeavinessRepository: IBaseRepository<Heaviness>
 {
+    Task<IEnumerable<Heaviness>> GetOptions();
 }

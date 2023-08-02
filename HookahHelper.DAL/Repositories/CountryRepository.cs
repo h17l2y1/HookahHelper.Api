@@ -19,4 +19,12 @@ public class CountryRepository: BaseRepository<Country>, ICountryRepository
                 .WhereIf(filters.Name is not null, x => x.Name.Contains(filters.Name))
                 .CountAsync();
     }
+    
+    public async Task<IEnumerable<Country>> GetOptions()
+    {
+        return await _dbSet
+            .AsNoTracking()
+            .OrderBy(x => x.Name)
+            .ToListAsync();
+    }
 }

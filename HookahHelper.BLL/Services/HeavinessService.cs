@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HookahHelper.BLL.Services.Interfaces;
 using HookahHelper.BLL.ViewModels.Heaviness;
+using HookahHelper.DAL.Entities;
 using HookahHelper.DAL.Repositories.Interfaces;
 
 namespace HookahHelper.BLL.Services;
@@ -18,7 +19,7 @@ public class HeavinessService: IHeavinessService
     
     public async Task<IEnumerable<GetHeavinessResponse>> GetOptions()
     {
-        var entities = await _repository.GetAll();
+        IEnumerable<Heaviness> entities = await _repository.GetOptions();
         var response = _mapper.Map<IEnumerable<GetHeavinessResponse>>(entities);
 
         return response;

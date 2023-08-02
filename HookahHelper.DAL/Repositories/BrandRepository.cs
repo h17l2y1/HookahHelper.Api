@@ -23,6 +23,7 @@ public class BrandRepository: BaseRepository<Brand>, IBrandRepository
             .OrderBy($"{column} {sortBy}")
             .WhereIf(filters.Name is not null, x => x.Name.Contains(filters.Name))
             .WhereIf(filters.CountryId is not null,  x => x.CountryId == filters.CountryId)
+            .OrderBy(x => x.Name)
             .Skip(skip)
             .Take(take)
             .ToListAsync();
@@ -43,5 +44,13 @@ public class BrandRepository: BaseRepository<Brand>, IBrandRepository
             .Include(x => x.Image)
             .Include(x => x.Lines)
             .SingleOrDefaultAsync(x => x.Id == id);
+    }
+    
+    public async Task<IEnumerable<Brand>> GetOptions()
+    {
+        return await _dbSet
+            .AsNoTracking()
+            .OrderBy(x => x.Name)
+            .ToListAsync();
     }
 }

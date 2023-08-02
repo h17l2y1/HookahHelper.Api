@@ -59,7 +59,7 @@ public class BrandService : IBrandService
 
     public async Task<IEnumerable<GetBrandOption>> GetOptions()
     {
-        var entities = await _brandRepository.GetAll();
+        IEnumerable<Brand> entities = await _brandRepository.GetOptions();
         var response = _mapper.Map<IEnumerable<GetBrandOption>>(entities);
 
         return response;

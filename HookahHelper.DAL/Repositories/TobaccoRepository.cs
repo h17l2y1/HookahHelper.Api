@@ -36,6 +36,7 @@ public class TobaccoRepository : BaseRepository<Tobacco>, ITobaccoRepository
             .WhereIf(filters.CountryId is not null, x => x.Brand.CountryId == filters.CountryId)
             .WhereIf(filters.LineId is not null, x => x.LineId == filters.LineId)
             .WhereIf(filters.HeavinessId is not null,  x => x.HeavinessId == filters.HeavinessId)
+            .OrderBy(x => x.Name)
             .Skip(skip)
             .Take(take)
             .ToListAsync();
