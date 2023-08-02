@@ -8,10 +8,10 @@ public class Tobacco : BaseEntity
     public required string ImageId { get; set; }
     public required string HeavinessId { get; set; }
     public required string BrandId { get; set; }
+    public IEnumerable<Tag> Tags { get; set; }
 
     public virtual Line Line { get; set; }
     public virtual Image Image { get; set; }
     public virtual Brand Brand { get; set; }
     public virtual Heaviness Heaviness { get; set; }
-    public IEnumerable<Tag> Tags { get; set; }
 }
