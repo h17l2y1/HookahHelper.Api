@@ -6,4 +6,5 @@ public record CreateCountryRequest
 {
     [Required]
     public required string Name { get; set; }
+    public string? City { get; set; }
 }
