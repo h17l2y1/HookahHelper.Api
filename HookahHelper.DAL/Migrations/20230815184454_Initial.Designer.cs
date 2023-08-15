@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HookahHelper.DAL.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20230802155003_AddTagsTobaccoManyToMany")]
-    partial class AddTagsTobaccoManyToMany
+    [Migration("20230815184454_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -154,7 +154,7 @@ namespace HookahHelper.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tag");
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("HookahHelper.DAL.Entities.Tobacco", b =>
@@ -201,19 +201,19 @@ namespace HookahHelper.DAL.Migrations
                     b.ToTable("Tobaccos");
                 });
 
-            modelBuilder.Entity("TagTobacco", b =>
+            modelBuilder.Entity("HookahHelper.DAL.Entities.TobaccoTag", b =>
                 {
-                    b.Property<string>("TagsId")
+                    b.Property<string>("TagId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("TobaccosId")
+                    b.Property<string>("TobaccoId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("TagsId", "TobaccosId");
+                    b.HasKey("TagId", "TobaccoId");
 
-                    b.HasIndex("TobaccosId");
+                    b.HasIndex("TobaccoId");
 
-                    b.ToTable("TagTobacco");
+                    b.ToTable("TobaccoTags");
                 });
 
             modelBuilder.Entity("HookahHelper.DAL.Entities.Brand", b =>
@@ -281,19 +281,23 @@ namespace HookahHelper.DAL.Migrations
                     b.Navigation("Line");
                 });
 
-            modelBuilder.Entity("TagTobacco", b =>
+            modelBuilder.Entity("HookahHelper.DAL.Entities.TobaccoTag", b =>
                 {
-                    b.HasOne("HookahHelper.DAL.Entities.Tag", null)
+                    b.HasOne("HookahHelper.DAL.Entities.Tag", "Type")
                         .WithMany()
-                        .HasForeignKey("TagsId")
+                        .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("HookahHelper.DAL.Entities.Tobacco", null)
+                    b.HasOne("HookahHelper.DAL.Entities.Tobacco", "Tobacco")
                         .WithMany()
-                        .HasForeignKey("TobaccosId")
+                        .HasForeignKey("TobaccoId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Tobacco");
+
+                    b.Navigation("Type");
                 });
 
             modelBuilder.Entity("HookahHelper.DAL.Entities.Brand", b =>

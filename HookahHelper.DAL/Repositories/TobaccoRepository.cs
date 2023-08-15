@@ -46,6 +46,7 @@ public class TobaccoRepository : BaseRepository<Tobacco>, ITobaccoRepository
         return await _dbSet
             .AsNoTracking()
             .Include(x => x.Image)
+            .Include(x => x.Tags)
             .SingleOrDefaultAsync(x => x.Id == id);
     }
 }

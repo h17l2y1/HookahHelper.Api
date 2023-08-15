@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HookahHelper.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -44,12 +44,25 @@ namespace HookahHelper.DAL.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Base64 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Link = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Images", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tags",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tags", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -143,6 +156,30 @@ namespace HookahHelper.DAL.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "TobaccoTags",
+                columns: table => new
+                {
+                    TagId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TobaccoId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TobaccoTags", x => new { x.TagId, x.TobaccoId });
+                    table.ForeignKey(
+                        name: "FK_TobaccoTags_Tags_TagId",
+                        column: x => x.TagId,
+                        principalTable: "Tags",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_TobaccoTags_Tobaccos_TobaccoId",
+                        column: x => x.TobaccoId,
+                        principalTable: "Tobaccos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Brands_CountryId",
                 table: "Brands",
@@ -177,11 +214,22 @@ namespace HookahHelper.DAL.Migrations
                 name: "IX_Tobaccos_LineId",
                 table: "Tobaccos",
                 column: "LineId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TobaccoTags_TobaccoId",
+                table: "TobaccoTags",
+                column: "TobaccoId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "TobaccoTags");
+
+            migrationBuilder.DropTable(
+                name: "Tags");
+
             migrationBuilder.DropTable(
                 name: "Tobaccos");
 
