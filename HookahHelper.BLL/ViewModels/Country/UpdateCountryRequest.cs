@@ -8,5 +8,4 @@ public record UpdateCountryRequest
     public required string Id { get; set; }
     [Required]
     public required string Name { get; set; }
-    public string? City { get; set; }
 }

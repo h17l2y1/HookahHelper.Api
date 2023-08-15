@@ -27,7 +27,7 @@ public class BrandService : IBrandService
 
     public async Task Create(CreateBrandRequest request)
     {
-        var link = _imgurService.UploadImage(request.Name, request.Image.Base64);
+        string link = _imgurService.UploadImage(request.Name, request.Image.Base64);
         var entity = _mapper.Map<Brand>(request);
         entity.Image.Name = $"brand: {request.Name}";
         entity.Image.Link = link;
@@ -36,7 +36,7 @@ public class BrandService : IBrandService
 
     public async Task<GetBrandResponse> GetById(string id)
     {
-        var entity = await _brandRepository.GetById(id);
+        Brand? entity = await _brandRepository.GetById(id);
         var response = _mapper.Map<GetBrandResponse>(entity);
         return response;
     }
@@ -72,21 +72,14 @@ public class BrandService : IBrandService
             request.Image.Link = _imgurService.UploadImage(request.Name, request.Image.Base64);
         }
         
-        var newLines = request.Lines?.Where(x => x.IsNew);
-        var updatedLines = request.Lines?.Where(x => !x.IsNew);
-
+        IEnumerable<LinesUpdateInner>? newLines = request.Lines?.Where(x => x.IsNew);
         if (newLines != null)
         {
-            foreach (var newLine in newLines)
-            {
-                newLine.BrandId = request.Id;
-            }
-            
             var lines = _mapper.Map<IEnumerable<Line>>(newLines);
             await _lineRepository.Create(lines);
         }
 
-        request.Lines = updatedLines;
+        request.Lines = request.Lines?.Where(x => !x.IsNew);
         var entity = _mapper.Map<Brand>(request);
         entity.Image.Name = $"brand: {request.Name}";
         await _brandRepository.Update(entity);

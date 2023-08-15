@@ -24,6 +24,6 @@ public record LinesUpdateInner
     public string? Id { get; set; }
     [Required]
     public required string Name { get; set; }
-    public string? BrandId { get; set; }
+    public required string BrandId { get; set; }
     public bool IsNew { get; set; }
 }
