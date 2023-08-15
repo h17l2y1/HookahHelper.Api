@@ -17,13 +17,21 @@ public class ApplicationContext: DbContext
     public DbSet<Line> Lines { get; set; }
     public DbSet<Tobacco> Tobaccos { get; set; }
     public DbSet<Heaviness> Heaviness { get; set; }
+    public DbSet<Tag> Tags { get; set; }
+    public DbSet<TobaccoTag> TobaccoTags { get; set; }
     
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        // remove cascade deleting
         foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
         {
             relationship.DeleteBehavior = DeleteBehavior.Restrict;
         }
+        
+        builder.Entity<Tobacco>()
+            .HasMany(e => e.Tags)
+            .WithMany(e => e.Tobaccos)
+            .UsingEntity<TobaccoTag>();
 
         base.OnModelCreating(builder);
     }

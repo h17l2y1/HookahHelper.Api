@@ -23,7 +23,7 @@ public class TobaccoService : ITobaccoService
 
     public async Task Create(CreateTobaccoRequest request)
     {
-        var link = _imgurService.UploadImage(request.Name, request.Image.Base64);
+        string link = _imgurService.UploadImage(request.Name, request.Image.Base64);
         var entity = _mapper.Map<Tobacco>(request);
         entity.Image.Name = $"tobacco: {request.Name}";
         entity.Image.Link = link;
