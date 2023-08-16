@@ -50,4 +50,11 @@ public class TagController : ControllerBase
         await _service.Remove(id);
         return Ok();
     }
+    
+    [HttpGet]
+    public async Task<IActionResult> GetOptions()
+    {
+        var response = await _service.GetOptions();
+        return Ok(response);
+    }
 }

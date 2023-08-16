@@ -14,4 +14,6 @@ public interface ITagService
     Task Update(UpdateTagRequest request);
     
     Task Remove(string id);
+
+    Task <IEnumerable<GetTagResponse>>GetOptions();
 }
