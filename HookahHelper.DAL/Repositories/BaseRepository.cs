@@ -31,9 +31,15 @@ public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where T
         return await _dbSet.AsNoTracking().ToListAsync();
     }
 
-    public virtual async Task<TEntity?> GetById(string id)
+    public virtual async Task<TEntity> GetById(string id)
     {
-        return await _dbSet.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
+        var entity = await _dbSet.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
+        if (entity == null)
+        {
+            throw new Exception($"{id} doesn't exist");
+        }
+
+        return entity;
     }
 
     public virtual async Task Create(TEntity entity)
@@ -62,11 +68,14 @@ public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where T
 
     public virtual async Task Remove(string id)
     {
-        var entity = await _dbSet.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
-        if (entity != null)
-        {
-            _dbSet.Remove(entity);
-            await _context.SaveChangesAsync();
-        }
+        var entity = await GetById(id);
+        _dbSet.Remove(entity);
+        await _context.SaveChangesAsync();
+    }
+    
+    public virtual async Task RemoveRange(IEnumerable<TEntity> entities)
+    {
+        _dbSet.RemoveRange(entities);
+        await _context.SaveChangesAsync();
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HookahHelper.DAL.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20230815184454_Initial")]
+    [Migration("20230819133436_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -203,13 +203,23 @@ namespace HookahHelper.DAL.Migrations
 
             modelBuilder.Entity("HookahHelper.DAL.Entities.TobaccoTag", b =>
                 {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("TagId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("TobaccoId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("TagId", "TobaccoId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("TagId");
 
                     b.HasIndex("TobaccoId");
 
@@ -284,13 +294,13 @@ namespace HookahHelper.DAL.Migrations
             modelBuilder.Entity("HookahHelper.DAL.Entities.TobaccoTag", b =>
                 {
                     b.HasOne("HookahHelper.DAL.Entities.Tag", "Type")
-                        .WithMany()
+                        .WithMany("TobaccoTags")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("HookahHelper.DAL.Entities.Tobacco", "Tobacco")
-                        .WithMany()
+                        .WithMany("TobaccoTags")
                         .HasForeignKey("TobaccoId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -308,6 +318,16 @@ namespace HookahHelper.DAL.Migrations
             modelBuilder.Entity("HookahHelper.DAL.Entities.Line", b =>
                 {
                     b.Navigation("Tobaccos");
+                });
+
+            modelBuilder.Entity("HookahHelper.DAL.Entities.Tag", b =>
+                {
+                    b.Navigation("TobaccoTags");
+                });
+
+            modelBuilder.Entity("HookahHelper.DAL.Entities.Tobacco", b =>
+                {
+                    b.Navigation("TobaccoTags");
                 });
 #pragma warning restore 612, 618
         }

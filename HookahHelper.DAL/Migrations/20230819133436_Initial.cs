@@ -160,12 +160,14 @@ namespace HookahHelper.DAL.Migrations
                 name: "TobaccoTags",
                 columns: table => new
                 {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     TagId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TobaccoId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    TobaccoId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TobaccoTags", x => new { x.TagId, x.TobaccoId });
+                    table.PrimaryKey("PK_TobaccoTags", x => x.Id);
                     table.ForeignKey(
                         name: "FK_TobaccoTags_Tags_TagId",
                         column: x => x.TagId,
@@ -214,6 +216,11 @@ namespace HookahHelper.DAL.Migrations
                 name: "IX_Tobaccos_LineId",
                 table: "Tobaccos",
                 column: "LineId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TobaccoTags_TagId",
+                table: "TobaccoTags",
+                column: "TagId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TobaccoTags_TobaccoId",

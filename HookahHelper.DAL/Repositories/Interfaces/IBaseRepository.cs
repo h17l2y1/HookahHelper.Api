@@ -6,7 +6,7 @@ public interface IBaseRepository<TEntity>
     
     Task<IEnumerable<TEntity>> GetAll();
     
-    Task<TEntity?> GetById(string id);
+    Task<TEntity> GetById(string id);
 
     Task Create(TEntity entity);
 
@@ -15,4 +15,6 @@ public interface IBaseRepository<TEntity>
     Task Update(TEntity entity);
 
     Task Remove(string id);
+
+    Task RemoveRange(IEnumerable<TEntity> entities);
 }

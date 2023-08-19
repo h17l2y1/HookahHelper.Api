@@ -48,6 +48,8 @@ public class TobaccoRepository : BaseRepository<Tobacco>, ITobaccoRepository
             .AsNoTracking()
             .Include(x => x.Image)
             .Include(x => x.Tags)
+            .Include(x => x.TobaccoTags)
+            .Include(x => x.Brand)
             .SingleOrDefaultAsync(x => x.Id == id);
     }
 }

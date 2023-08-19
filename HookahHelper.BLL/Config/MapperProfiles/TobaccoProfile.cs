@@ -9,7 +9,8 @@ public class TobaccoProfile:Profile
     public TobaccoProfile()
     {
         CreateMap<CreateTobaccoRequest, Tobacco>();
-        CreateMap<UpdateTobaccoRequest, Tobacco>();
+        CreateMap<UpdateTobaccoRequest, Tobacco>()
+            .ForMember(to => to.TobaccoTags, from => from.Ignore());
         CreateMap<Tobacco, GetTobaccoResponse>();
     }
 }

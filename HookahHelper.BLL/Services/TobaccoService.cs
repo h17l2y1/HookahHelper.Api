@@ -13,12 +13,14 @@ public class TobaccoService : ITobaccoService
     private readonly IMapper _mapper;
     private readonly ITobaccoRepository _repository;
     private readonly IImgurService _imgurService;
+    private readonly ITobaccoTagRepository _tobaccoTagRepository;
 
-    public TobaccoService(IMapper mapper, ITobaccoRepository repository, IImgurService imgurService)
+    public TobaccoService(IMapper mapper, ITobaccoRepository repository, IImgurService imgurService, ITobaccoTagRepository tobaccoTagRepository)
     {
         _mapper = mapper;
         _repository = repository;
         _imgurService = imgurService;
+        _tobaccoTagRepository = tobaccoTagRepository;
     }
 
     public async Task Create(CreateTobaccoRequest request)
@@ -61,6 +63,20 @@ public class TobaccoService : ITobaccoService
         }
         
         var entity = _mapper.Map<Tobacco>(request);
+        
+        var removedTagsViews = request.TobaccoTags!.Where(x => x.IsRemoved == true);
+        var newTagsViews = request.TobaccoTags!.Where(x => x.IsNew == true);
+        if (removedTagsViews.Any())
+        {
+            var removedTags = _mapper.Map<IEnumerable<TobaccoTag>>(removedTagsViews);
+            await _tobaccoTagRepository.RemoveRange(removedTags);
+        }
+        if (newTagsViews.Any())
+        {
+            var newTags = _mapper.Map<IEnumerable<TobaccoTag>>(newTagsViews);
+            await _tobaccoTagRepository.Create(newTags);
+        }
+
         entity.Image.Name = $"tobacco: {request.Name}";
         await _repository.Update(entity);
     }

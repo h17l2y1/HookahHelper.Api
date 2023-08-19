@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HookahHelper.BLL.ViewModels.Brands;
+using HookahHelper.BLL.ViewModels.Tobacco;
 using HookahHelper.DAL.Entities;
 
 namespace HookahHelper.BLL.Config.MapperProfiles;
@@ -12,6 +13,7 @@ public class BrandProfile: Profile
         CreateMap<UpdateBrandRequest, Brand>();
         CreateMap<Brand, GetBrandResponse>();
         CreateMap<Brand, GetBrandOption>();
+        CreateMap<Brand, GetBrandInner>();
     }
 }
 

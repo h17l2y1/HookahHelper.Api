@@ -1,6 +1,6 @@
 ﻿namespace HookahHelper.DAL.Entities;
 
-public class TobaccoTag
+public class TobaccoTag: BaseEntity
 {
     public required string TagId { get; set; }
     public required string TobaccoId { get; set; }
