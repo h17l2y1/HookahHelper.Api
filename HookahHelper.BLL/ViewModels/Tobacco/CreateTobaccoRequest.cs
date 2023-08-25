@@ -19,6 +19,6 @@ public class CreateTobaccoRequest
     [Required]
     public required string HeavinessId { get; set; }
     public required CreateImageRequest Image { get; set; }
-    public required IEnumerable<GetTagResponse> Tags { get; set; }
+    public IEnumerable<GetTagResponse>? Tags { get; set; }
     public required IEnumerable<TobaccoTagCreate> TobaccoTags { get; set; }
 }

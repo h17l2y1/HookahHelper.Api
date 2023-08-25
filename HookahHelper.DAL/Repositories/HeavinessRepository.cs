@@ -15,7 +15,7 @@ public class HeavinessRepository : BaseRepository<Heaviness>, IHeavinessReposito
     {
         return await _dbSet
             .AsNoTracking()
-            .OrderBy(x => x.Name)
+            .OrderBy(x => x.Value)
             .ToListAsync();
     }
 }
