@@ -25,16 +25,16 @@ public class TobaccoService : ITobaccoService
 
     public async Task Create(CreateTobaccoRequest request)
     {
-        string link = _imgurService.UploadImage(request.Name, request.Image.Base64);
         var entity = _mapper.Map<Tobacco>(request);
-        entity.Image.Name = $"tobacco: {request.Name}";
+        string link = _imgurService.UploadImage(request.Name, request.Image.Base64);
         entity.Image.Link = link;
+        entity.TobaccoTags.ToList().ForEach(x => x.TobaccoId = entity.Id);
         await _repository.Create(entity);
     }
 
     public async Task<GetTobaccoResponse> GetById(string id)
     {
-        var entity = await _repository.GetById(id);
+        Tobacco? entity = await _repository.GetById(id);
         var response = _mapper.Map<GetTobaccoResponse>(entity);
         return response;
     }
@@ -47,7 +47,7 @@ public class TobaccoService : ITobaccoService
         if (total > 0)
         {
             int skip = request.Page * request.Take;
-            var entities = await _repository.GetAll(skip, request.Take, request.SortBy, request.Column, filters);
+            IEnumerable<Tobacco> entities = await _repository.GetAll(skip, request.Take, request.SortBy, request.Column, filters);
             var list = _mapper.Map<IEnumerable<GetTobaccoResponse>>(entities);
             response.List = list;
         }
@@ -77,12 +77,12 @@ public class TobaccoService : ITobaccoService
             await _tobaccoTagRepository.Create(newTags);
         }
 
-        entity.Image.Name = $"tobacco: {request.Name}";
         await _repository.Update(entity);
     }
 
     public async Task Remove(string id)
     {
+        await _tobaccoTagRepository.RemoveTagsByTobaccoId(id);
         await _repository.Remove(id);
     }
 }

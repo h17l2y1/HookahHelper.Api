@@ -10,6 +10,6 @@ public class TagProfile: Profile
     {
         CreateMap<CreateTagRequest, Tag>();
         CreateMap<UpdateTagRequest, Tag>();
-        CreateMap<Tag, GetTagResponse>();
+        CreateMap<Tag, GetTagResponse>().ReverseMap();
     }
 }

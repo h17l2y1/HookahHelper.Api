@@ -29,7 +29,6 @@ public class BrandService : IBrandService
     {
         string link = _imgurService.UploadImage(request.Name, request.Image.Base64);
         var entity = _mapper.Map<Brand>(request);
-        entity.Image.Name = $"brand: {request.Name}";
         entity.Image.Link = link;
         await _brandRepository.Create(entity);
     }
@@ -81,7 +80,6 @@ public class BrandService : IBrandService
 
         request.Lines = request.Lines?.Where(x => !x.IsNew);
         var entity = _mapper.Map<Brand>(request);
-        entity.Image.Name = $"brand: {request.Name}";
         await _brandRepository.Update(entity);
     }
 

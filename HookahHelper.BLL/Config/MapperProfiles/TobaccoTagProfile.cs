@@ -9,13 +9,10 @@ public class TobaccoTagProfile: Profile
     public TobaccoTagProfile()
     {
         CreateMap<TobaccoTag, TobaccoTagRequest>();
+        CreateMap<TobaccoTagCreate, TobaccoTag>()
+            .ForMember(to => to.Id, from => from.MapFrom(source => source.Id ?? Guid.NewGuid().ToString()));
         CreateMap<TobaccoTagRequest, TobaccoTag>()
-            .ForMember(to => to.Id, from => from.MapFrom(source => GenerateIdIfNull(source.Id)));
+            .ForMember(to => to.Id, from => from.MapFrom(source => source.Id ?? Guid.NewGuid().ToString()));
 
-    }
-
-    private string GenerateIdIfNull(string? id)
-    {
-        return id ?? Guid.NewGuid().ToString();
     }
 }
