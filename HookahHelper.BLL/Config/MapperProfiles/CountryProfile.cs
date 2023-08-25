@@ -8,8 +8,10 @@ public class CountryProfile:Profile
 {
     public CountryProfile()
     {
-        CreateMap<CreateCountryRequest, Country>();
-        CreateMap<UpdateCountryRequest, Country>();
+        CreateMap<CreateCountryRequest, Country>()
+            .ForMember(to => to.Name, from => from.MapFrom(source => source.Name.Trim()));
+        CreateMap<UpdateCountryRequest, Country>()
+            .ForMember(to => to.Name, from => from.MapFrom(source => source.Name.Trim()));
         CreateMap<Country, GetCountryResponse>();
     }
 }

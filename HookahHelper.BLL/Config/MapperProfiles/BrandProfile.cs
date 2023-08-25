@@ -9,8 +9,10 @@ public class BrandProfile: Profile
 {
     public BrandProfile()
     {
-        CreateMap<CreateBrandRequest, Brand>();
-        CreateMap<UpdateBrandRequest, Brand>();
+        CreateMap<CreateBrandRequest, Brand>()
+            .ForMember(to => to.Name, from => from.MapFrom(source => source.Name.Trim()));
+        CreateMap<UpdateBrandRequest, Brand>()
+            .ForMember(to => to.Name, from => from.MapFrom(source => source.Name.Trim()));
         CreateMap<Brand, GetBrandResponse>();
         CreateMap<Brand, GetBrandOption>();
         CreateMap<Brand, GetBrandInner>();

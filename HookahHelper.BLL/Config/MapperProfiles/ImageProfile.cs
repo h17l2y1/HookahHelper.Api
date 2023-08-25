@@ -9,8 +9,10 @@ public class ImageProfile:Profile
 {
     public ImageProfile()
     {
-        CreateMap<CreateImageRequest, Image>();
-        CreateMap<UpdateImageRequest, Image>();
+        CreateMap<CreateImageRequest, Image>()
+            .ForMember(to => to.Name, from => from.MapFrom(source => source.Name.Trim()));
+        CreateMap<UpdateImageRequest, Image>()
+            .ForMember(to => to.Name, from => from.MapFrom(source => source.Name.Trim()));
         CreateMap<ImageInner, Image>();
         CreateMap<Image, GetImageResponse>();
     }

@@ -9,11 +9,14 @@ public class LineProfile: Profile
 {
     public LineProfile()
     {
-        CreateMap<CreateLineRequest, Line>();
+        CreateMap<CreateLineRequest, Line>()
+            .ForMember(to => to.Name, from => from.MapFrom(source => source.Name.Trim()));
         CreateMap<GetLineResponse, Line>().ReverseMap();
-        CreateMap<UpdateLineRequest, Line>();
+        CreateMap<UpdateLineRequest, Line>()
+            .ForMember(to => to.Name, from => from.MapFrom(source => source.Name.Trim()));
         CreateMap<LinesInner, Line>();
         CreateMap<LinesUpdateInner, Line>()
-            .ForMember(to => to.Id, from => from.MapFrom(source => source.Id ?? Guid.NewGuid().ToString()));
+            .ForMember(to => to.Id, from => from.MapFrom(source => source.Id ?? Guid.NewGuid().ToString()))
+            .ForMember(to => to.Name, from => from.MapFrom(source => source.Name.Trim()));
     }
 }
