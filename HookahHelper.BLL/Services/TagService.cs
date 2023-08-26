@@ -40,7 +40,7 @@ public class TagService : ITagService
         if (total > 0)
         {
             int skip = request.Page * request.Take;
-            var entities = await _repository.GetAll(skip, request.Take);
+            var entities = await _repository.GetAll(skip, request.Take, request.SortBy, request.Column, filters);
             var list = _mapper.Map<IEnumerable<GetTagResponse>>(entities);
             response.List = list;
         }
