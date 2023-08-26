@@ -30,4 +30,12 @@ public class TagRepository : BaseRepository<Tag>, ITagRepository
             .WhereIf(filters.Name is not null, x => x.Name.Contains(filters.Name))
             .CountAsync();
     }
+    
+    public async Task<IEnumerable<Tag>> GetGlobals()
+    {
+        return await _dbSet.AsNoTracking()
+            .Where(x => x.IsGlobal == true)
+            .OrderBy(x => x.Name)
+            .ToListAsync();
+    }
 }

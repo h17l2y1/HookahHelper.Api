@@ -56,6 +56,14 @@ public class TagService : ITagService
         return response;
     }
 
+    public async Task<IEnumerable<GetTagResponse>> GetGlobalOptions()
+    {
+        var entities = await _repository.GetGlobals();
+        var response = _mapper.Map<IEnumerable<GetTagResponse>>(entities);
+
+        return response;
+    }
+    
     public async Task Update(UpdateTagRequest request)
     {
         var entity = _mapper.Map<Tag>(request);
