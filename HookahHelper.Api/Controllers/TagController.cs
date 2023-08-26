@@ -57,4 +57,11 @@ public class TagController : ControllerBase
         var response = await _service.GetOptions();
         return Ok(response);
     }
+    
+    [HttpGet]
+    public async Task<IActionResult> GetGlobalOptions()
+    {
+        var response = await _service.GetGlobalOptions();
+        return Ok(response);
+    }
 }
