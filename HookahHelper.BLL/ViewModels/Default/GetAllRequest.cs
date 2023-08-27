@@ -18,6 +18,7 @@ public record GetAllRequest
     [Required]
     public required string Column { get; set; }
     public string? Name { get; set; }
+    public string? TagId { get; set; }
     public string? BrandId { get; set; }
     public string? CountryId { get; set; }
     public string? LineId { get; set; }
