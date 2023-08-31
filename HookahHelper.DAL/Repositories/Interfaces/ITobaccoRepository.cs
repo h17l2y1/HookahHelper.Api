@@ -9,5 +9,7 @@ public interface ITobaccoRepository: IBaseRepository<Tobacco>
 
     Task<int> Count(Filter filters);
 
-    Task<Tobacco?> GetById(string id);
+    new Task<Tobacco?> GetById(string id);
+
+    Task<IEnumerable<Tobacco>> GetByBrandId(string brandId);
 }

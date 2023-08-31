@@ -85,7 +85,7 @@ public class TobaccoService : ITobaccoService
         await _tobaccoTagRepository.RemoveTagsByTobaccoId(id);
         await _repository.Remove(id);
     }
-    
+
     public async Task<IEnumerable<GetTobaccoResponse>> GetByBrandId(string brandId)
     {
         IEnumerable<Tobacco> entities = await _repository.GetByBrandId(brandId);
