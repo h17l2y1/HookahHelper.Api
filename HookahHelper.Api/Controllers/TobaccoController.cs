@@ -52,4 +52,11 @@ public class TobaccoController : ControllerBase
         await _service.Remove(id);
         return Ok();
     }
+    
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetByBrandId(string id)
+    {
+        var response = await _service.GetByBrandId(id);
+        return Ok(response);
+    }
 }

@@ -1,4 +1,3 @@
-using HookahHelper.BLL.ViewModels.Brands;
 using HookahHelper.BLL.ViewModels.Default;
 using HookahHelper.BLL.ViewModels.Tobacco;
 
@@ -11,4 +10,5 @@ public interface ITobaccoService
     Task Create(CreateTobaccoRequest request);
     Task Update(UpdateTobaccoRequest request);
     Task Remove(string id);
+    Task<IEnumerable<GetTobaccoResponse>> GetByBrandId(string brandId);
 }
