@@ -1,33 +1,35 @@
+using HookahHelper.BLL.Services.Interfaces;
 using HookahHelper.BLL.ViewModels.Account;
-using HookahHelper.DAL.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HookahHelper.Api.Controllers;
 
+[ApiController]
+[Route("api/[controller]/[action]")]
+
 public class AccountController : Controller
 {
-    private readonly UserManager<User> _userManager;
-    private readonly SignInManager<User> _signInManager;
-
-    public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+    private readonly IAccountService _service;
+    
+    public AccountController(IAccountService service)
     {
-        _userManager = userManager;
-        _signInManager = signInManager;
+        _service = service;
     }
+
+    // private readonly UserManager<User> _userManager;
+    // private readonly SignInManager<User> _signInManager;
+    //
+    // public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+    // {
+    //     _userManager = userManager;
+    //     _signInManager = signInManager;
+    // }
 
 
     [HttpPost]
-    public async Task<IActionResult> Register(SignUp model)
+    public async Task<IActionResult> SignUp(SignUp request)
     {
-        var user = new User
-            { FirstName = model.FirstName, LastName = model.LastName, Email = model.Email, Password = model.Password };
-        var result = await _userManager.CreateAsync(user, model.Password);
-
-        // if (result.Succeeded)
-        // {
-        //     await _signInManager.SignInAsync(user, isPersistent: false);
-        // }
+        await _service.SignUp(request);
         return Ok();
     }
 }

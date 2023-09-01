@@ -1,3 +1,4 @@
+using AutoMapper;
 using HookahHelper.BLL.Services.Interfaces;
 using HookahHelper.BLL.ViewModels.Account;
 using HookahHelper.DAL.Entities;
@@ -7,9 +8,23 @@ namespace HookahHelper.BLL.Services;
 
 public class AccountService : IAccountService
 {
+    private readonly IMapper _mapper;
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
+
+    public AccountService(IMapper mapper)
+    {
+        _mapper = mapper;
+    }
+
     public async Task SignUp(SignUp model)
+    {
+        var user = _mapper.Map<User>(model);
+        await _userManager.CreateAsync(user, model.Password);
+        // await _repository.Create(entity);
+    }
+
+    public async Task SignUp1(SignUp model)
     {
         var user = new User
             { FirstName = model.FirstName, LastName = model.LastName, Email = model.Email, Password = model.Password };
