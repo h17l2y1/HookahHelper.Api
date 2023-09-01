@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HookahHelper.DAL.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20230831183248_AddMixAndTobaccoMix")]
-    partial class AddMixAndTobaccoMix
+    [Migration("20230831190547_AddedMixIdToTobaccoMix")]
+    partial class AddedMixIdToTobaccoMix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -230,6 +230,7 @@ namespace HookahHelper.DAL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("MixId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Percent")
@@ -341,7 +342,8 @@ namespace HookahHelper.DAL.Migrations
                     b.HasOne("HookahHelper.DAL.Entities.Mix", null)
                         .WithMany("TobaccoMixes")
                         .HasForeignKey("MixId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("HookahHelper.DAL.Entities.TobaccoTag", b =>

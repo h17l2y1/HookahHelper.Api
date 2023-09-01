@@ -17,5 +17,7 @@ public static class RepositoryDependencies
         services.AddTransient<IHeavinessRepository, HeavinessRepository>();
         services.AddTransient<ITagRepository, TagRepository>();
         services.AddTransient<ITobaccoTagRepository, TobaccoTagRepository>();
+        services.AddTransient<IMixRepository, MixRepository>();
+        services.AddTransient<ITobaccoMixRepository, TobaccoMixRepository>();
     }
 }

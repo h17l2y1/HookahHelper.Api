@@ -33,6 +33,7 @@ public class BrandRepository: BaseRepository<Brand>, IBrandRepository
     {
         return await _dbSet
             .WhereIf(filters.Name is not null, x => x.Name.Contains(filters.Name))
+            .WhereIf(filters.CountryId is not null,  x => x.CountryId == filters.CountryId)
             .CountAsync();
     }
 
