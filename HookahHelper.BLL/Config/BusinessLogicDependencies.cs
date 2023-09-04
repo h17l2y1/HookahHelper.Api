@@ -1,5 +1,7 @@
 using HookahHelper.BLL.Services;
 using HookahHelper.BLL.Services.Interfaces;
+using HookahHelper.DAL.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HookahHelper.BLL.Config;
