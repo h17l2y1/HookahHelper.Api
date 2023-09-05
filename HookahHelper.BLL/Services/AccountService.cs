@@ -49,29 +49,18 @@ public class AccountService : IAccountService
         return null;
     }
     
-    private string GenerateJwtToken(IdentityUser user)
+    private string GenerateJwtToken(User user)
     {
-        var jwtKey = _configuration["JWT:Secret"];
-        var jwtIssuer = _configuration["JWT:ValidIssuer"];
+        var accessToken = CreateAccessToken(user);
+        var refreshToken = CreateRefreshToken(user);
+        
+        var encodedAccess = new JwtSecurityTokenHandler().WriteToken(accessToken);
+        var encodedRefresh = new JwtSecurityTokenHandler().WriteToken(refreshToken);
 
-        var claims = new[]
-        {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-            // new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        };
-
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-        var token = new JwtSecurityToken(
-            issuer: jwtIssuer,
-            audience: null,
-            claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(2),
-            // expires: DateTime.UtcNow.AddHours(1),
-            signingCredentials: creds);
-
-        return new JwtSecurityTokenHandler().WriteToken(token);
+        // var tokens = new JwtView { AccessToken = encodedAccess, RefreshToken = encodedRefresh };
+        
+        return encodedAccess;
+        
     }
 
     public async Task SignUp1(SignUp model)
@@ -79,12 +68,49 @@ public class AccountService : IAccountService
         var user = new User
             { FirstName = model.FirstName, LastName = model.LastName, Email = model.Email, Password = model.Password };
         var result = await _userManager.CreateAsync(user, model.Password);
-
+    
         // if (result.Succeeded)
         // {
         //     await _signInManager.SignInAsync(user, isPersistent: false);
         // }
     }
+    
+    private JwtSecurityToken CreateAccessToken(User user)
+    {
+        var claims = new List<Claim>
+        {
+            new(ClaimTypes.Email, user.Email),
+            // new(ClaimTypes.Role, user.Role),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        };
+        
+        return GetToken(claims);
+    }
+    
+    private JwtSecurityToken CreateRefreshToken(User user)
+    {
+        var claims = new List<Claim>
+        {
+            new(ClaimTypes.Email, user.Email),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        };
+    
+        return GetToken(claims);
+    }
+    
+    private JwtSecurityToken GetToken(IEnumerable<Claim> claims)
+    {
+        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+        var jwtIssuer = _configuration["JWT:ValidIssuer"];
+        var jwtValidAudience = _configuration["JWT:ValidAudience"];
+        
+        var token = new JwtSecurityToken(
+            issuer:  jwtIssuer,
+            audience: jwtValidAudience,
+            expires: DateTime.Now.AddHours(3),
+            claims: claims,
+            signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256));
+    
+        return token;
+    }
 }
-//     нужно ли передавать код в Program.cs для настройки identity
-// Где пихнуть Authorize?

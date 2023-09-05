@@ -1,5 +1,6 @@
 using System.Text;
 using HookahHelper.Api.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using ConfigurationManager = Microsoft.Extensions.Configuration.ConfigurationManager;
@@ -11,27 +12,32 @@ public static class JwtSetup
     public static void ConfigureServices(IServiceCollection services,ConfigurationManager configuration )
     {
         var configureSection = configuration.GetSection(JwtSettings.Key);
-        // GetSection(JwtSettings.Key)
-        var section = configuration.Get<JwtSettings>();
+        var section = configureSection.Get<JwtSettings>();
+        
         services.Configure<JwtSettings>(configureSection);
-
-        services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidIssuer = section?.ValidIssuer,
-                    ValidateAudience = false,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(section?.Secret)),
-                };
-            });
+        services
+            .AddAuthentication(AddAuthentication)
+            .AddJwtBearer(options => AddJwtBearer(section, options));
+    }
+    
+    private static void AddAuthentication(AuthenticationOptions options)
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    }
+    
+    private static void AddJwtBearer(JwtSettings? jwtSection ,JwtBearerOptions options)
+    {
+        options.SaveToken = true;
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidAudience = jwtSection?.ValidAudience,
+            ValidIssuer = jwtSection?.ValidIssuer,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSection?.Secret))
+        };
     }
 }

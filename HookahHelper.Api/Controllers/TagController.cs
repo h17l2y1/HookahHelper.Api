@@ -9,7 +9,6 @@ namespace HookahHelper.Api.Controllers;
 [ApiController]
 [Route("api/[controller]/[action]")]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-
 public class TagController : ControllerBase
 {
     private readonly ITagService _service;
