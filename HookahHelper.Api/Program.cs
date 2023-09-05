@@ -8,6 +8,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 CorsExtension.Add(builder.Services);
+JwtSetup.ConfigureServices(builder.Services, builder.Configuration);
 
 builder.Services.InjectBusinessLogicDependency(builder.Configuration);
 
@@ -22,6 +23,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("Angular");
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiddleware<ErrorHandlingMiddleware>();
 app.MapControllers();

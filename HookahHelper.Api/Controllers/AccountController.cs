@@ -32,4 +32,16 @@ public class AccountController : Controller
         await _service.SignUp(request);
         return Ok();
     }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] Login model)
+    {
+        var token = await _service.Authenticate(model);
+
+        if (token != null)
+        {
+            return Ok(new { Token = token });
+        }
+        return Unauthorized();
+    }
 }
