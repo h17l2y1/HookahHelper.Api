@@ -14,5 +14,4 @@ public class User : IdentityUser
     public required string FirstName { get; set; }
     public required string LastName { get; set; }
     public required string Password { get; set; }
-    // public required IdentityRole Role  { get; set; }
 }

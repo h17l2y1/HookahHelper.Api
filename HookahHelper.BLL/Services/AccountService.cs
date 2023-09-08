@@ -20,8 +20,6 @@ public class AccountService : IAccountService
     private readonly UserManager<User> _userManager;
     private readonly IJwtProvider _jwtProvider;
 
-    // private readonly SignInManager<User> _signInManager;
-
     public AccountService(IMapper mapper, IConfiguration configuration, UserManager<User> userManager, IJwtProvider JwtProvider)
     {
         _mapper = mapper;
@@ -34,14 +32,11 @@ public class AccountService : IAccountService
     {
         var user = _mapper.Map<User>(model);
         user.UserName = "TestUser";
-        // user.PasswordHash = "";
         var result = await _userManager.CreateAsync(user, model.Password);
-        // await _repository.Create(entity);
     }
 
     public async Task<string> Authenticate(Login model)
     {
-        // var test = await _userManager.
         var user = await _userManager.FindByEmailAsync(model.Email);
 
         if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
@@ -59,8 +54,6 @@ public class AccountService : IAccountService
         
         var encodedAccess = new JwtSecurityTokenHandler().WriteToken(accessToken);
         var encodedRefresh = new JwtSecurityTokenHandler().WriteToken(refreshToken);
-
-        // var tokens = new JwtView { AccessToken = encodedAccess, RefreshToken = encodedRefresh };
         
         return encodedAccess;
         
@@ -71,7 +64,6 @@ public class AccountService : IAccountService
         var claims = new List<Claim>
         {
             new(ClaimTypes.Email, user.Email),
-            // new(ClaimTypes.Role, user.Role),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
         

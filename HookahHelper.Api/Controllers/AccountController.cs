@@ -16,16 +16,6 @@ public class AccountController : Controller
         _service = service;
     }
 
-    // private readonly UserManager<User> _userManager;
-    // private readonly SignInManager<User> _signInManager;
-    //
-    // public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
-    // {
-    //     _userManager = userManager;
-    //     _signInManager = signInManager;
-    // }
-
-
     [HttpPost]
     public async Task<IActionResult> SignUp(SignUp request)
     {
