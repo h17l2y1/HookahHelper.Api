@@ -1,58 +1,25 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using AutoMapper;
-using HookahHelper.BLL.Services.Interfaces;
 using HookahHelper.BLL.Providers.Interfaces;
-using HookahHelper.BLL.ViewModels.Account;
 using HookahHelper.DAL.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
-namespace HookahHelper.BLL.Services;
 
-public class AccountService : IAccountService
+namespace HookahHelper.BLL.Providers;
+
+public class JwtProvider : IJwtProvider
 {
-    private readonly IMapper _mapper;
     private readonly IConfiguration _configuration;
-    private readonly UserManager<User> _userManager;
-    private readonly IJwtProvider _jwtProvider;
 
-    // private readonly SignInManager<User> _signInManager;
-
-    public AccountService(IMapper mapper, IConfiguration configuration, UserManager<User> userManager, IJwtProvider JwtProvider)
+    public JwtProvider(IConfiguration configuration)
     {
-        _mapper = mapper;
-        _userManager = userManager;
-        _jwtProvider = JwtProvider;
         _configuration = configuration;
     }
-
-    public async Task SignUp(SignUp model)
-    {
-        var user = _mapper.Map<User>(model);
-        user.UserName = "TestUser";
-        // user.PasswordHash = "";
-        var result = await _userManager.CreateAsync(user, model.Password);
-        // await _repository.Create(entity);
-    }
-
-    public async Task<string> Authenticate(Login model)
-    {
-        // var test = await _userManager.
-        var user = await _userManager.FindByEmailAsync(model.Email);
-
-        if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
-        {
-            var token = _jwtProvider.GenerateJwtToken(user);
-            return token;
-        }
-        return null;
-    }
     
-    private string GenerateJwtToken(User user)
+    public string GenerateJwtToken(User user)
     {
         var accessToken = CreateAccessToken(user);
         var refreshToken = CreateRefreshToken(user);
@@ -63,9 +30,8 @@ public class AccountService : IAccountService
         // var tokens = new JwtView { AccessToken = encodedAccess, RefreshToken = encodedRefresh };
         
         return encodedAccess;
-        
     }
-
+    
     private JwtSecurityToken CreateAccessToken(User user)
     {
         var claims = new List<Claim>

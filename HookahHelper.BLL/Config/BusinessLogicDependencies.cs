@@ -1,5 +1,7 @@
 using HookahHelper.BLL.Services;
 using HookahHelper.BLL.Services.Interfaces;
+using HookahHelper.BLL.Providers;
+using HookahHelper.BLL.Providers.Interfaces;
 using HookahHelper.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,5 +21,6 @@ public static class BusinessLogicDependencies
         services.AddScoped<IImgurService, ImgurService>();
         services.AddScoped<ITagService, TagService>();
         services.AddScoped<IAccountService, AccountService>();
+        services.AddScoped<IJwtProvider, JwtProvider>();
     }
 }

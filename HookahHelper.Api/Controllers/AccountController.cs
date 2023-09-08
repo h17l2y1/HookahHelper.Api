@@ -33,7 +33,7 @@ public class AccountController : Controller
         return Ok();
     }
 
-    [HttpPost("login")]
+    [HttpPost]
     public async Task<IActionResult> Login([FromBody] Login model)
     {
         var token = await _service.Authenticate(model);
