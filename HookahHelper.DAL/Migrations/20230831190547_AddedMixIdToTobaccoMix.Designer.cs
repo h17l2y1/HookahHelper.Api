@@ -4,6 +4,7 @@ using HookahHelper.DAL.Config;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HookahHelper.DAL.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20230831190547_AddedMixIdToTobaccoMix")]
+    partial class AddedMixIdToTobaccoMix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -227,6 +230,7 @@ namespace HookahHelper.DAL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("MixId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Percent")
@@ -338,7 +342,8 @@ namespace HookahHelper.DAL.Migrations
                     b.HasOne("HookahHelper.DAL.Entities.Mix", null)
                         .WithMany("TobaccoMixes")
                         .HasForeignKey("MixId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("HookahHelper.DAL.Entities.TobaccoTag", b =>

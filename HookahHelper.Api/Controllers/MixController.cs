@@ -1,0 +1,32 @@
+﻿using HookahHelper.BLL.Services.Interfaces;
+using HookahHelper.BLL.ViewModels.Default;
+using HookahHelper.BLL.ViewModels.Mix;
+using Microsoft.AspNetCore.Mvc;
+
+namespace HookahHelper.Api.Controllers;
+
+[ApiController]
+[Route("api/[controller]/[action]")]
+public class MixController: ControllerBase
+{
+    private readonly IMixService _service;
+
+    public MixController(IMixService service)
+    {
+        _service = service;
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> Create(MixRequest request)
+    {
+        await _service.Create(request);
+        return Ok();
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> GetAll([FromQuery] GetAllRequest request)
+    {
+        var response = await _service.GetAll(request);
+        return Ok(response);
+    }
+} 
