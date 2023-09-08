@@ -1,12 +1,14 @@
 using HookahHelper.BLL.Services.Interfaces;
 using HookahHelper.BLL.ViewModels.Default;
 using HookahHelper.BLL.ViewModels.Tag;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HookahHelper.Api.Controllers;
-
 [ApiController]
 [Route("api/[controller]/[action]")]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class TagController : ControllerBase
 {
     private readonly ITagService _service;

@@ -1,5 +1,9 @@
 using HookahHelper.BLL.Services;
 using HookahHelper.BLL.Services.Interfaces;
+using HookahHelper.BLL.Providers;
+using HookahHelper.BLL.Providers.Interfaces;
+using HookahHelper.DAL.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HookahHelper.BLL.Config;
@@ -18,5 +22,7 @@ public static class BusinessLogicDependencies
         services.AddScoped<ITagService, TagService>();
         services.AddScoped<ITobaccoMixService, TobaccoMixService>();
         services.AddScoped<IMixService, MixService>();
+        services.AddScoped<IAccountService, AccountService>();
+        services.AddScoped<IJwtProvider, JwtProvider>();
     }
 }

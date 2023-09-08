@@ -16,4 +16,5 @@ public class BaseEntity : IBaseEntity
     public string Id { get; set; }
 
     public DateTime CreationDate { get; set; }
+    
 }

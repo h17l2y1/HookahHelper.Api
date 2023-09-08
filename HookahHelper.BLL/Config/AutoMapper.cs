@@ -21,6 +21,7 @@ public static class AutoMapper
             c.AddProfile(new TobaccoTagProfile());
             c.AddProfile(new MixProfile());
             c.AddProfile(new TobaccoMixProfile());
+            c.AddProfile(new AccountProfile());
         });
 
         IMapper mapper = config.CreateMapper();

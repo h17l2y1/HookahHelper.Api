@@ -1,5 +1,7 @@
+using HookahHelper.DAL.Entities;
 using HookahHelper.DAL.Repositories;
 using HookahHelper.DAL.Repositories.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,5 +21,12 @@ public static class RepositoryDependencies
         services.AddTransient<ITobaccoTagRepository, TobaccoTagRepository>();
         services.AddTransient<IMixRepository, MixRepository>();
         services.AddTransient<ITobaccoMixRepository, TobaccoMixRepository>();
+        
+        services.AddIdentity<User, IdentityRole>(options =>
+            {
+                options.User.RequireUniqueEmail = false;
+            })
+            .AddEntityFrameworkStores<ApplicationContext>()
+            .AddDefaultTokenProviders();
     }
 }
