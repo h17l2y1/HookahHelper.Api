@@ -56,4 +56,15 @@ public class TobaccoRepository : BaseRepository<Tobacco>, ITobaccoRepository
             .Include(x => x.Brand)
             .SingleOrDefaultAsync(x => x.Id == id);
     }
+
+    public async Task<IEnumerable<Tobacco>> GetByBrandId(string brandId)
+    {
+        return await _dbSet
+            .AsNoTracking()
+            .Include(x => x.Image)
+            .Include(x => x.Brand)
+            .Where(x => x.BrandId == brandId)
+            .OrderBy(x => x.Name)
+            .ToListAsync();
+    }
 }

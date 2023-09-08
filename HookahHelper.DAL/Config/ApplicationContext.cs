@@ -20,6 +20,8 @@ public class ApplicationContext: DbContext
     public DbSet<Heaviness> Heaviness { get; set; }
     public DbSet<Tag> Tags { get; set; }
     public DbSet<TobaccoTag> TobaccoTags { get; set; }
+    public DbSet<TobaccoMix> TobaccoMixes { get; set; }
+    public DbSet<Mix> Mixes { get; set; }
     public DbSet<User> Users { get; set; }
     
     protected override void OnModelCreating(ModelBuilder builder)
