@@ -1,6 +1,6 @@
 namespace HookahHelper.BLL.ViewModels.TobaccoMix;
 
-public class TobaccoMixResponse
+public record TobaccoMixResponse
 {
     public required string Id { get; set; }
     public required string TobaccoId { get; set; }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HookahHelper.BLL.ViewModels.Line;
 
-public class UpdateLineRequest
+public record UpdateLineRequest
 {
     [Required]
     public required string Id { get; set; }

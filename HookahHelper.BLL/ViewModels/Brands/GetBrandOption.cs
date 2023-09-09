@@ -1,6 +1,6 @@
 ﻿namespace HookahHelper.BLL.ViewModels.Brands;
 
-public class GetBrandOption
+public record GetBrandOption
 {
     public required string Id { get; set; }
     public required string Name { get; set; }

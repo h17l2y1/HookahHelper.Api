@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HookahHelper.BLL.ViewModels.Tag;
 
-public class CreateTagRequest
+public record CreateTagRequest
 {
     [Required]
     public required string Name { get; set; }

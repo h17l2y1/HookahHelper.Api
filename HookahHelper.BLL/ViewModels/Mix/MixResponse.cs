@@ -2,7 +2,7 @@
 
 namespace HookahHelper.BLL.ViewModels.Mix;
 
-public class MixResponse
+public record MixResponse
 {
     public required string Id { get; set; }
     public required string Name { get; set; }

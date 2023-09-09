@@ -6,7 +6,7 @@ using HookahHelper.BLL.ViewModels.TobaccoTag;
 
 namespace HookahHelper.BLL.ViewModels.Tobacco;
 
-public class CreateTobaccoRequest
+public record CreateTobaccoRequest
 {
     [Required]
     public required string Name { get; set; }

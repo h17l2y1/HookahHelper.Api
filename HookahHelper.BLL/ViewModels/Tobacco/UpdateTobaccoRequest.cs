@@ -6,7 +6,7 @@ using HookahHelper.BLL.ViewModels.TobaccoTag;
 
 namespace HookahHelper.BLL.ViewModels.Tobacco;
 
-public class UpdateTobaccoRequest
+public record UpdateTobaccoRequest
 {
     [Required]
     public required string Id { get; set; }
@@ -20,6 +20,7 @@ public class UpdateTobaccoRequest
     public required string HeavinessId { get; set; }
     [Required]
     public required string BrandId { get; set; }
+    public required float? Rating { get; set; }
     public required UpdateImageRequest Image { get; set; }
     public required IEnumerable<TobaccoTagRequest> TobaccoTags { get; set; }
     public required IEnumerable<GetTagResponse> Tags { get; set; }

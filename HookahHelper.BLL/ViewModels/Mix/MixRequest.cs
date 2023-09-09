@@ -2,7 +2,7 @@
 
 namespace HookahHelper.BLL.ViewModels.Mix;
 
-public class MixRequest
+public record MixRequest
 {
     public required string Name { get; set; }
     public required IEnumerable<CreateTobaccoMixRequest> TobaccoMixes { get; set; }
