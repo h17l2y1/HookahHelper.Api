@@ -31,8 +31,7 @@ public class TobaccoRepository : BaseRepository<Tobacco>, ITobaccoRepository
             .AsNoTracking()
             .Include(x => x.Image)
             .Include(x => x.Tags.OrderBy(c => c.Name))
-            // .OrderBy($"{column} {sortBy}")
-            // .WhereIf(filters.Name is not null, x => x.Name.Contains(filters.Name) || x.Tags.Any(tag => tag.Name.Contains(filters.Name)))
+            .Include(x => x.Rating)
             .WhereIf(filters.Name is not null, x => x.Name.Contains(filters.Name) || x.Tags.Any(tag => tag.Name == filters.Name))
             .WhereIf(filters.TagId is not null, x => x.Tags.Any(tag => tag.Id == filters.TagId))
             .WhereIf(filters.BrandId is not null, x => x.BrandId == filters.BrandId)
@@ -40,7 +39,7 @@ public class TobaccoRepository : BaseRepository<Tobacco>, ITobaccoRepository
             .WhereIf(filters.LineId is not null, x => x.LineId == filters.LineId)
             .WhereIf(filters.HeavinessId is not null,  x => x.HeavinessId == filters.HeavinessId)
             .OrderBy(x => x.Tags.Count())
-            .ThenBy(x => x.Name)
+            .ThenBy($"{column} {sortBy}")
             .Skip(skip)
             .Take(take)
             .ToListAsync();
