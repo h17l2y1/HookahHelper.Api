@@ -34,8 +34,10 @@ public class JwtProvider : IJwtProvider
     {
         var claims = new List<Claim>
         {
-            new(ClaimTypes.Email, user.Email),
+            new(JwtRegisteredClaimNames.Email, user.Email),
+            new("role", user.Role),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            
         };
         
         return GetToken(claims);
@@ -45,8 +47,8 @@ public class JwtProvider : IJwtProvider
     {
         var claims = new List<Claim>
         {
-            new(ClaimTypes.Email, user.Email),
-            new(ClaimTypes.Role, user.Role),
+            new(JwtRegisteredClaimNames.Email, user.Email),
+            new("role", user.Role),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
     
