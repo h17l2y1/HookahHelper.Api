@@ -1,3 +1,4 @@
+using HookahHelper.BLL.ViewModels.Comments;
 using HookahHelper.BLL.ViewModels.Image;
 using HookahHelper.BLL.ViewModels.Tag;
 using HookahHelper.BLL.ViewModels.TobaccoTag;
@@ -12,10 +13,12 @@ public record GetTobaccoResponse
     public required string LineId { get; set; }
     public required string BrandId { get; set; }
     public required string HeavinessId { get; set; }
+    public required float Rating { get; set; }
     public GetImageResponse Image { get; set; }
     public GetBrandInner Brand { get; set; }
     public IEnumerable<GetTagResponse>? Tags { get; set; }
     public IEnumerable<TobaccoTagRequest>? TobaccoTags { get; set; }
+    public IEnumerable<GetCommentResponse>? Comments { get; set; }
 }
 
 public record GetBrandInner

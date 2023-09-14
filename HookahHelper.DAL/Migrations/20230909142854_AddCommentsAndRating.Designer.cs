@@ -4,6 +4,7 @@ using HookahHelper.DAL.Config;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HookahHelper.DAL.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20230909142854_AddCommentsAndRating")]
+    partial class AddCommentsAndRating
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -181,36 +184,9 @@ namespace HookahHelper.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RatingId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("RatingId");
 
                     b.ToTable("Mixes");
-                });
-
-            modelBuilder.Entity("HookahHelper.DAL.Entities.Rating", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<float>("Value")
-                        .HasColumnType("real");
-
-                    b.Property<int>("VotedCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("VotedValue")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Ratings");
                 });
 
             modelBuilder.Entity("HookahHelper.DAL.Entities.Tag", b =>
@@ -264,8 +240,8 @@ namespace HookahHelper.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RatingId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<float?>("Rating")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
@@ -276,8 +252,6 @@ namespace HookahHelper.DAL.Migrations
                     b.HasIndex("ImageId");
 
                     b.HasIndex("LineId");
-
-                    b.HasIndex("RatingId");
 
                     b.ToTable("Tobaccos");
                 });
@@ -427,7 +401,7 @@ namespace HookahHelper.DAL.Migrations
                         .IsRequired();
 
                     b.HasOne("HookahHelper.DAL.Entities.User", "User")
-                        .WithMany("Comments")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -446,16 +420,6 @@ namespace HookahHelper.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("Brand");
-                });
-
-            modelBuilder.Entity("HookahHelper.DAL.Entities.Mix", b =>
-                {
-                    b.HasOne("HookahHelper.DAL.Entities.Rating", "Rating")
-                        .WithMany()
-                        .HasForeignKey("RatingId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Rating");
                 });
 
             modelBuilder.Entity("HookahHelper.DAL.Entities.Tobacco", b =>
@@ -484,11 +448,6 @@ namespace HookahHelper.DAL.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("HookahHelper.DAL.Entities.Rating", "Rating")
-                        .WithMany()
-                        .HasForeignKey("RatingId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.Navigation("Brand");
 
                     b.Navigation("Heaviness");
@@ -496,8 +455,6 @@ namespace HookahHelper.DAL.Migrations
                     b.Navigation("Image");
 
                     b.Navigation("Line");
-
-                    b.Navigation("Rating");
                 });
 
             modelBuilder.Entity("HookahHelper.DAL.Entities.TobaccoMix", b =>
@@ -552,11 +509,6 @@ namespace HookahHelper.DAL.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("TobaccoTags");
-                });
-
-            modelBuilder.Entity("HookahHelper.DAL.Entities.User", b =>
-                {
-                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

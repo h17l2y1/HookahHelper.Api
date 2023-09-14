@@ -17,6 +17,7 @@ public class TobaccoProfile:Profile
             .ForMember(to => to.TobaccoTags, from => from.Ignore())
             .ForMember(to => to.Tags, from => from.Ignore())
             .ForMember(to => to.Name, from => from.MapFrom(source => source.Name.Trim()));
-        CreateMap<Tobacco, GetTobaccoResponse>();
+        CreateMap<Tobacco, GetTobaccoResponse>()
+            .ForMember(to => to.Rating, from => from.MapFrom(source => source.Rating.Value));
     }
 }
