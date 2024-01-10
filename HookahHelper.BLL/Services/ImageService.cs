@@ -1,6 +1,5 @@
 using AutoMapper;
 using HookahHelper.BLL.Services.Interfaces;
-using HookahHelper.BLL.ViewModels.Default;
 using HookahHelper.BLL.ViewModels.Image;
 using HookahHelper.DAL.Entities;
 using HookahHelper.DAL.Repositories.Interfaces;
