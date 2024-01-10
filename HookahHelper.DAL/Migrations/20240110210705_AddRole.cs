@@ -13,7 +13,7 @@ namespace HookahHelper.DAL.Migrations
             migrationBuilder.AddColumn<string>(
                 name: "Role",
                 table: "Users",
-                type: "nvarchar(max)",
+                type: "text",
                 nullable: false,
                 defaultValue: "");
         }
