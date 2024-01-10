@@ -7,7 +7,7 @@ public class CorsExtension
         services.AddCors(options =>
         {
             options.AddPolicy("Angular",
-                b => b.WithOrigins("http://localhost:4200")
+                b => b.AllowAnyOrigin()
                     .AllowAnyHeader()
                     .AllowAnyMethod());
         });

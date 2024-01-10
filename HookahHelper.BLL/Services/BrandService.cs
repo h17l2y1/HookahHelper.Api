@@ -3,6 +3,7 @@ using HookahHelper.BLL.Services.Interfaces;
 using HookahHelper.BLL.ViewModels.Brands;
 using HookahHelper.BLL.ViewModels.Default;
 using HookahHelper.DAL.Entities;
+using HookahHelper.DAL.Entities.Enums;
 using HookahHelper.DAL.Entities.Models;
 using HookahHelper.DAL.Repositories.Interfaces;
 
@@ -30,6 +31,8 @@ public class BrandService : IBrandService
         string link = _imgurService.UploadImage(request.Name, request.Image.Base64);
         var entity = _mapper.Map<Brand>(request);
         entity.Image.Link = link;
+        entity.Image.Name = request.Name;
+        entity.Image.Type = ImageType.Brand.ToString();
         await _brandRepository.Create(entity);
     }
 

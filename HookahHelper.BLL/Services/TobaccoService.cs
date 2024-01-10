@@ -3,6 +3,7 @@ using HookahHelper.BLL.Services.Interfaces;
 using HookahHelper.BLL.ViewModels.Default;
 using HookahHelper.BLL.ViewModels.Tobacco;
 using HookahHelper.DAL.Entities;
+using HookahHelper.DAL.Entities.Enums;
 using HookahHelper.DAL.Entities.Models;
 using HookahHelper.DAL.Repositories.Interfaces;
 
@@ -28,6 +29,7 @@ public class TobaccoService : ITobaccoService
         var entity = _mapper.Map<Tobacco>(request);
         string link = _imgurService.UploadImage(request.Name, request.Image.Base64);
         entity.Image.Link = link;
+        entity.Image.Type = ImageType.Tobacco.ToString();
         entity.TobaccoTags.ToList().ForEach(x => x.TobaccoId = entity.Id);
         await _repository.Create(entity);
     }
