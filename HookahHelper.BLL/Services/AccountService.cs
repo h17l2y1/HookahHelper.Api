@@ -31,7 +31,7 @@ public class AccountService : IAccountService
     public async Task SignUp(SignUp model)
     {
         var user = _mapper.Map<User>(model);
-        user.UserName = "TestUser";
+        user.UserName = model.FirstName+model.LastName;
         var result = await _userManager.CreateAsync(user, model.Password);
     }
 
