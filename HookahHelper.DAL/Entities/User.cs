@@ -15,5 +15,5 @@ public class User : IdentityUser
     public required string LastName { get; set; }
     public required string Password { get; set; }
     public required string Role { get; set; }
-    public required IEnumerable<Comment> Comments { get; set; }
+    public required IEnumerable<Review> Reviews { get; set; }
 }

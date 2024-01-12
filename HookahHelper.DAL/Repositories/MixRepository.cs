@@ -25,7 +25,7 @@ public class MixRepository : BaseRepository<Mix>, IMixRepository
         return await _dbSet
             .AsNoTracking()
             .Include(x => x.TobaccoMixes)
-            .Include(x => x.Rating)
+            .Include(x => x.Reviews)
             .WhereIf(filters.Name is not null, x => x.Name.Contains(filters.Name))
             .OrderBy(x => x.Name)
             .Skip(skip)

@@ -30,8 +30,8 @@ public class TobaccoRepository : BaseRepository<Tobacco>, ITobaccoRepository
         return await _dbSet
             .AsNoTracking()
             .Include(x => x.Image)
+            .Include(x => x.Reviews)
             .Include(x => x.Tags.OrderBy(c => c.Name))
-            .Include(x => x.Rating)
             .WhereIf(filters.Name is not null, x => x.Name.Contains(filters.Name) || x.Tags.Any(tag => tag.Name == filters.Name))
             .WhereIf(filters.TagId is not null, x => x.Tags.Any(tag => tag.Id == filters.TagId))
             .WhereIf(filters.BrandId is not null, x => x.BrandId == filters.BrandId)
@@ -53,6 +53,8 @@ public class TobaccoRepository : BaseRepository<Tobacco>, ITobaccoRepository
             .Include(x => x.Tags)
             .Include(x => x.TobaccoTags)
             .Include(x => x.Brand)
+            .Include(x => x.Reviews)
+                .ThenInclude( c => c.User)
             .SingleOrDefaultAsync(x => x.Id == id);
     }
 

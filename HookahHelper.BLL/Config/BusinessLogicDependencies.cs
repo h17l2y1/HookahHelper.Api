@@ -24,5 +24,6 @@ public static class BusinessLogicDependencies
         services.AddScoped<IMixService, MixService>();
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IJwtProvider, JwtProvider>();
+        services.AddScoped<IReviewService, ReviewService>();
     }
 }
