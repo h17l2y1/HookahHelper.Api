@@ -18,6 +18,8 @@ public class TobaccoProfile:Profile
             .ForMember(to => to.Tags, from => from.Ignore())
             .ForMember(to => to.Name, from => from.MapFrom(source => source.Name.Trim()));
         CreateMap<Tobacco, GetTobaccoResponse>()
-            .ForMember(to => to.Rating, from => from.MapFrom(source => source.Rating.Value));
+            .ForMember(to => to.Comments, from => from.MapFrom(source => source.Reviews.Count(x => x.Comment != null)))
+            .ForMember(to => to.Rating, from => from.MapFrom(source => Math.Round(source.Reviews.Average(x => x.Rating), 2)))
+            .ForMember(to => to.RatingCount, from => from.MapFrom(source => source.Reviews.Count()));
     }
 }

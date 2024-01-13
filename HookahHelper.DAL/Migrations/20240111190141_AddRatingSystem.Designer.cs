@@ -3,6 +3,7 @@ using System;
 using HookahHelper.DAL.Config;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HookahHelper.DAL.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20240111190141_AddRatingSystem")]
+    partial class AddRatingSystem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,6 +55,41 @@ namespace HookahHelper.DAL.Migrations
                     b.HasIndex("ImageId");
 
                     b.ToTable("Brands");
+                });
+
+            modelBuilder.Entity("HookahHelper.DAL.Entities.Comment", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("RatingId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TobaccoId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RatingId");
+
+                    b.HasIndex("TobaccoId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("HookahHelper.DAL.Entities.Country", b =>
@@ -154,50 +192,42 @@ namespace HookahHelper.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("RatingId")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("RatingId");
 
                     b.ToTable("Mixes");
                 });
 
-            modelBuilder.Entity("HookahHelper.DAL.Entities.Review", b =>
+            modelBuilder.Entity("HookahHelper.DAL.Entities.Rating", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("AnonymousName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Comment")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<bool>("IsAnonymous")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("MixId")
-                        .HasColumnType("text");
-
-                    b.Property<float>("Rating")
-                        .HasColumnType("real");
-
-                    b.Property<string>("TobaccoId")
+                    b.Property<string>("TobaccoRatingId")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<float>("Value")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MixId");
-
-                    b.HasIndex("TobaccoId");
+                    b.HasIndex("TobaccoRatingId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Ratings");
                 });
 
             modelBuilder.Entity("HookahHelper.DAL.Entities.Tag", b =>
@@ -251,6 +281,10 @@ namespace HookahHelper.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("TobaccoRatingId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
@@ -260,6 +294,8 @@ namespace HookahHelper.DAL.Migrations
                     b.HasIndex("ImageId");
 
                     b.HasIndex("LineId");
+
+                    b.HasIndex("TobaccoRatingId");
 
                     b.ToTable("Tobaccos");
                 });
@@ -287,6 +323,22 @@ namespace HookahHelper.DAL.Migrations
                     b.HasIndex("MixId");
 
                     b.ToTable("TobaccoMixes");
+                });
+
+            modelBuilder.Entity("HookahHelper.DAL.Entities.TobaccoRating", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<float>("Value")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TobaccoRatings");
                 });
 
             modelBuilder.Entity("HookahHelper.DAL.Entities.TobaccoTag", b =>
@@ -404,6 +456,33 @@ namespace HookahHelper.DAL.Migrations
                     b.Navigation("Image");
                 });
 
+            modelBuilder.Entity("HookahHelper.DAL.Entities.Comment", b =>
+                {
+                    b.HasOne("HookahHelper.DAL.Entities.Rating", "Rating")
+                        .WithMany()
+                        .HasForeignKey("RatingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HookahHelper.DAL.Entities.Tobacco", "Tobacco")
+                        .WithMany("Comments")
+                        .HasForeignKey("TobaccoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HookahHelper.DAL.Entities.User", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Rating");
+
+                    b.Navigation("Tobacco");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("HookahHelper.DAL.Entities.Line", b =>
                 {
                     b.HasOne("HookahHelper.DAL.Entities.Brand", "Brand")
@@ -415,27 +494,31 @@ namespace HookahHelper.DAL.Migrations
                     b.Navigation("Brand");
                 });
 
-            modelBuilder.Entity("HookahHelper.DAL.Entities.Review", b =>
+            modelBuilder.Entity("HookahHelper.DAL.Entities.Mix", b =>
                 {
-                    b.HasOne("HookahHelper.DAL.Entities.Mix", "Mix")
-                        .WithMany("Reviews")
-                        .HasForeignKey("MixId")
+                    b.HasOne("HookahHelper.DAL.Entities.Rating", "Rating")
+                        .WithMany()
+                        .HasForeignKey("RatingId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("HookahHelper.DAL.Entities.Tobacco", "Tobacco")
-                        .WithMany("Reviews")
-                        .HasForeignKey("TobaccoId")
+                    b.Navigation("Rating");
+                });
+
+            modelBuilder.Entity("HookahHelper.DAL.Entities.Rating", b =>
+                {
+                    b.HasOne("HookahHelper.DAL.Entities.TobaccoRating", "TobaccoRating")
+                        .WithMany("Ratings")
+                        .HasForeignKey("TobaccoRatingId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("HookahHelper.DAL.Entities.User", "User")
-                        .WithMany("Reviews")
+                        .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
-                    b.Navigation("Mix");
-
-                    b.Navigation("Tobacco");
+                    b.Navigation("TobaccoRating");
 
                     b.Navigation("User");
                 });
@@ -466,6 +549,12 @@ namespace HookahHelper.DAL.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("HookahHelper.DAL.Entities.TobaccoRating", "TobaccoRating")
+                        .WithMany()
+                        .HasForeignKey("TobaccoRatingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Brand");
 
                     b.Navigation("Heaviness");
@@ -473,6 +562,8 @@ namespace HookahHelper.DAL.Migrations
                     b.Navigation("Image");
 
                     b.Navigation("Line");
+
+                    b.Navigation("TobaccoRating");
                 });
 
             modelBuilder.Entity("HookahHelper.DAL.Entities.TobaccoMix", b =>
@@ -514,8 +605,6 @@ namespace HookahHelper.DAL.Migrations
 
             modelBuilder.Entity("HookahHelper.DAL.Entities.Mix", b =>
                 {
-                    b.Navigation("Reviews");
-
                     b.Navigation("TobaccoMixes");
                 });
 
@@ -526,14 +615,19 @@ namespace HookahHelper.DAL.Migrations
 
             modelBuilder.Entity("HookahHelper.DAL.Entities.Tobacco", b =>
                 {
-                    b.Navigation("Reviews");
+                    b.Navigation("Comments");
 
                     b.Navigation("TobaccoTags");
                 });
 
+            modelBuilder.Entity("HookahHelper.DAL.Entities.TobaccoRating", b =>
+                {
+                    b.Navigation("Ratings");
+                });
+
             modelBuilder.Entity("HookahHelper.DAL.Entities.User", b =>
                 {
-                    b.Navigation("Reviews");
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

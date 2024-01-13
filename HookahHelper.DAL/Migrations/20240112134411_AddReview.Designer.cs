@@ -3,6 +3,7 @@ using System;
 using HookahHelper.DAL.Config;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HookahHelper.DAL.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20240112134411_AddReview")]
+    partial class AddReview
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -417,7 +420,7 @@ namespace HookahHelper.DAL.Migrations
 
             modelBuilder.Entity("HookahHelper.DAL.Entities.Review", b =>
                 {
-                    b.HasOne("HookahHelper.DAL.Entities.Mix", "Mix")
+                    b.HasOne("HookahHelper.DAL.Entities.Mix", null)
                         .WithMany("Reviews")
                         .HasForeignKey("MixId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -432,8 +435,6 @@ namespace HookahHelper.DAL.Migrations
                         .WithMany("Reviews")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Mix");
 
                     b.Navigation("Tobacco");
 

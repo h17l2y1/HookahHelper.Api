@@ -21,6 +21,7 @@ public static class RepositoryDependencies
         services.AddTransient<ITobaccoTagRepository, TobaccoTagRepository>();
         services.AddTransient<IMixRepository, MixRepository>();
         services.AddTransient<ITobaccoMixRepository, TobaccoMixRepository>();
+        services.AddTransient<IReviewRepository, ReviewRepository>();
         
         services.AddIdentity<User, IdentityRole>(options =>
             {
