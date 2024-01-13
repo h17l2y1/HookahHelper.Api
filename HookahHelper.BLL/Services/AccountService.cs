@@ -38,12 +38,19 @@ public class AccountService : IAccountService
 
     public async Task<string> Authenticate(Login model)
     {
+        string step0 = string.Empty;
+        string step1 = string.Empty;
+        string step2 = string.Empty;
+        
         try
         {
+            step0 = JsonSerializer.Serialize(model);
             var user = await _userManager.FindByEmailAsync(model.Email);
-
+            step1 = JsonSerializer.Serialize(user);
+            
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
+                step2 = "in IF";
                 var token = _jwtProvider.GenerateJwtToken(user);
                 return token;
             }
@@ -52,8 +59,20 @@ public class AccountService : IAccountService
         {
             Console.WriteLine(ex);
             // throw;
-            string jsonString = JsonSerializer.Serialize(ex);
-            return jsonString;
+            string jsonString = JsonSerializer.Serialize(ex.Message);
+            string jsonString2 = JsonSerializer.Serialize(ex.StackTrace);
+
+            var xxx = new
+            {
+                step0 = step0,
+                step1 = step1,
+                step2 = step2,
+                Message = JsonSerializer.Serialize(ex.Message),
+                StackTrace = ex.StackTrace,
+                Inner = ex.InnerException?.Message,
+            };
+            
+            return JsonSerializer.Serialize(xxx);;
 
         }
 
