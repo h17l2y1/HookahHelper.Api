@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 using AutoMapper;
 using HookahHelper.BLL.Services.Interfaces;
 using HookahHelper.BLL.Providers.Interfaces;
@@ -37,13 +38,25 @@ public class AccountService : IAccountService
 
     public async Task<string> Authenticate(Login model)
     {
-        var user = await _userManager.FindByEmailAsync(model.Email);
-
-        if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+        try
         {
-            var token = _jwtProvider.GenerateJwtToken(user);
-            return token;
+            var user = await _userManager.FindByEmailAsync(model.Email);
+
+            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+            {
+                var token = _jwtProvider.GenerateJwtToken(user);
+                return token;
+            }
         }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            // throw;
+            string jsonString = JsonSerializer.Serialize(ex);
+            return jsonString;
+
+        }
+
         return null;
     }
     
