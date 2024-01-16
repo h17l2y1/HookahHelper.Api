@@ -10,7 +10,7 @@ public class Tobacco : BaseEntity
     public required string BrandId { get; set; }
     public IEnumerable<Tag> Tags { get; set; }
     public IEnumerable<TobaccoTag> TobaccoTags { get; set; }
-    public IEnumerable<Review> Reviews { get; set; }
+    public IEnumerable<Review>? Reviews { get; set; }
     
     public virtual Line Line { get; set; }
     public virtual Image Image { get; set; }
