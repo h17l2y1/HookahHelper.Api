@@ -15,7 +15,7 @@ public record GetTobaccoResponse
     public required string HeavinessId { get; set; }
     public required float Rating { get; set; }
     public required int RatingCount { get; set; }
-    public required int Comments { get; set; }
+    public required int CommentsCount { get; set; }
     public GetImageResponse Image { get; set; }
     public GetBrandInner Brand { get; set; }
     public IEnumerable<GetTagResponse>? Tags { get; set; }
