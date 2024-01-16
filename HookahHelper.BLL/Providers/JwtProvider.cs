@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using HookahHelper.BLL.Providers.Interfaces;
+using HookahHelper.BLL.ViewModels.Account;
 using HookahHelper.DAL.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -19,7 +20,7 @@ public class JwtProvider : IJwtProvider
         _configuration = configuration;
     }
     
-    public string GenerateJwtToken(User user)
+    public LoginResponse GenerateJwtToken(User user)
     {
         var accessToken = CreateAccessToken(user);
         var refreshToken = CreateRefreshToken(user);
@@ -27,7 +28,12 @@ public class JwtProvider : IJwtProvider
         var encodedAccess = new JwtSecurityTokenHandler().WriteToken(accessToken);
         var encodedRefresh = new JwtSecurityTokenHandler().WriteToken(refreshToken);
         
-        return encodedAccess;
+        var loginResponse = new LoginResponse()
+        {
+            AccessToken = encodedAccess,
+            RefreshToken = encodedRefresh
+        };
+        return loginResponse;
     }
     
     private JwtSecurityToken CreateAccessToken(User user)
@@ -40,7 +46,7 @@ public class JwtProvider : IJwtProvider
             
         };
         
-        return GetToken(claims);
+        return GetToken(claims, 8);
     }
     
     private JwtSecurityToken CreateRefreshToken(User user)
@@ -52,10 +58,10 @@ public class JwtProvider : IJwtProvider
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
     
-        return GetToken(claims);
+        return GetToken(claims, 24);
     }
     
-    private JwtSecurityToken GetToken(IEnumerable<Claim> claims)
+    private JwtSecurityToken GetToken(IEnumerable<Claim> claims, int hours)
     {
         var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
         var jwtIssuer = _configuration["JWT:ValidIssuer"];
@@ -64,7 +70,7 @@ public class JwtProvider : IJwtProvider
         var token = new JwtSecurityToken(
             issuer:  jwtIssuer,
             audience: jwtValidAudience,
-            expires: DateTime.Now.AddHours(3),
+            expires: DateTime.Now.AddHours(hours),
             claims: claims,
             signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256));
     

@@ -36,7 +36,7 @@ public class AccountService : IAccountService
         var result = await _userManager.CreateAsync(user, model.Password);
     }
 
-    public async Task<string> Authenticate(Login model)
+    public async Task<LoginResponse> Authenticate(Login model)
     {
         var user = await _userManager.FindByEmailAsync(model.Email);
 
@@ -45,7 +45,6 @@ public class AccountService : IAccountService
             var token = _jwtProvider.GenerateJwtToken(user);
             return token;
         }
-
         return null;
     }
     
