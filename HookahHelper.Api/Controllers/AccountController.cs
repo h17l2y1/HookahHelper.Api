@@ -30,7 +30,7 @@ public class AccountController : Controller
 
         if (token != null)
         {
-            return Ok(new { Token = token });
+            return Ok(token);
         }
         return Unauthorized();
     }
