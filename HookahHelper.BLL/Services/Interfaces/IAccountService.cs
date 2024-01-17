@@ -6,4 +6,5 @@ public interface IAccountService
 {
     Task SignUp(SignUp request);
     Task<LoginResponse> Authenticate(Login model);
+    Task<LoginResponse> RefreshAuthToken(string refreshToken);
 }

@@ -26,12 +26,19 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> Login([FromBody] Login model)
     {
-        var token = await _service.Authenticate(model);
+        LoginResponse token = await _service.Authenticate(model);
 
         if (token != null)
         {
             return Ok(token);
         }
         return Unauthorized();
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> RefreshAuthToken([FromBody] string refreshToken)
+    {
+        LoginResponse token = await _service.RefreshAuthToken(refreshToken);
+        return Ok(token);
     }
 }

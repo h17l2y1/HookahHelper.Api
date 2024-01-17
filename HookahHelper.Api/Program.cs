@@ -35,7 +35,7 @@ builder.Services.AddSwaggerGen(setup =>
 
 });
 CorsExtension.Add(builder.Services);
-JwtSetup.ConfigureServices(builder.Services, builder.Configuration);
+AuthenticationExtension.ConfigureJwt(builder.Services, builder.Configuration);
 
 builder.Services.InjectBusinessLogicDependency(builder.Configuration);
 

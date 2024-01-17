@@ -6,8 +6,6 @@ using HookahHelper.BLL.ViewModels.Account;
 using HookahHelper.DAL.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
-
 
 namespace HookahHelper.BLL.Providers;
 
@@ -22,8 +20,8 @@ public class JwtProvider : IJwtProvider
     
     public LoginResponse GenerateJwtToken(User user)
     {
-        var accessToken = CreateAccessToken(user);
-        var refreshToken = CreateRefreshToken(user);
+        var accessToken = CreateToken(user, 1);
+        var refreshToken = CreateToken(user, 24);
         
         var encodedAccess = new JwtSecurityTokenHandler().WriteToken(accessToken);
         var encodedRefresh = new JwtSecurityTokenHandler().WriteToken(refreshToken);
@@ -36,40 +34,25 @@ public class JwtProvider : IJwtProvider
         return loginResponse;
     }
     
-    private JwtSecurityToken CreateAccessToken(User user)
+    private JwtSecurityToken CreateToken(User user, int hours)
     {
         var claims = new List<Claim>
         {
-            new(JwtRegisteredClaimNames.Email, user.Email),
+            new("name", $"{user.FirstName} {user.LastName}"),
+            new("email", user.Email),
             new("role", user.Role),
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
         
-        return GetToken(claims, 8);
-    }
-    
-    private JwtSecurityToken CreateRefreshToken(User user)
-    {
-        var claims = new List<Claim>
-        {
-            new(JwtRegisteredClaimNames.Email, user.Email),
-            new("role", user.Role),
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        };
-    
-        return GetToken(claims, 24);
+        return GetToken(claims, hours);
     }
     
     private JwtSecurityToken GetToken(IEnumerable<Claim> claims, int hours)
     {
-        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
-        var jwtIssuer = _configuration["JWT:ValidIssuer"];
-        var jwtValidAudience = _configuration["JWT:ValidAudience"];
-        
+        var secretKey = _configuration.GetValue<string>("JWT:Secret");
+        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+
         var token = new JwtSecurityToken(
-            issuer:  jwtIssuer,
-            audience: jwtValidAudience,
             expires: DateTime.Now.AddHours(hours),
             claims: claims,
             signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256));
