@@ -16,4 +16,5 @@ public class User : IdentityUser
     public required string Password { get; set; }
     public required string Role { get; set; }
     public required IEnumerable<Review> Reviews { get; set; }
+    public required IEnumerable<RefreshToken> RefreshTokens { get; set; }
 }

@@ -24,7 +24,9 @@ public class ApplicationContext: DbContext
     public DbSet<Mix> Mixes { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Review> Reviews { get; set; }
-    
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public DbSet<BlackListRefreshToken> BlackListRefreshTokens { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         // remove cascade deleting
