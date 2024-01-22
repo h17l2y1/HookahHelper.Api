@@ -22,7 +22,9 @@ public static class RepositoryDependencies
         services.AddTransient<IMixRepository, MixRepository>();
         services.AddTransient<ITobaccoMixRepository, TobaccoMixRepository>();
         services.AddTransient<IReviewRepository, ReviewRepository>();
-        
+        services.AddTransient<IBlackListRefreshTokenRepository, BlackListRefreshTokenRepository>();
+        services.AddTransient<IRefreshTokenRepository, RefreshTokenRepository>();
+
         services.AddIdentity<User, IdentityRole>(options =>
             {
                 options.User.RequireUniqueEmail = false;

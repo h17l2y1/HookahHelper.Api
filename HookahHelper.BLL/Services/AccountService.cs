@@ -2,10 +2,12 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using AutoMapper;
+using HookahHelper.BLL.Models;
 using HookahHelper.BLL.Services.Interfaces;
 using HookahHelper.BLL.Providers.Interfaces;
 using HookahHelper.BLL.ViewModels.Account;
 using HookahHelper.DAL.Entities;
+using HookahHelper.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -18,13 +20,17 @@ public class AccountService : IAccountService
     private readonly IConfiguration _configuration;
     private readonly UserManager<User> _userManager;
     private readonly IJwtProvider _jwtProvider;
+    private readonly IBlackListRefreshTokenRepository _blackListRefreshTokenRepository;
+    private readonly IRefreshTokenRepository _refreshTokenRepository;
 
-    public AccountService(IMapper mapper, IConfiguration configuration, UserManager<User> userManager, IJwtProvider jwtProvider)
+    public AccountService(IMapper mapper, IConfiguration configuration, UserManager<User> userManager, IJwtProvider jwtProvider, IBlackListRefreshTokenRepository blackListRefreshTokenRepository, IRefreshTokenRepository refreshTokenRepository)
     {
         _mapper = mapper;
         _userManager = userManager;
         _jwtProvider = jwtProvider;
         _configuration = configuration;
+        _blackListRefreshTokenRepository = blackListRefreshTokenRepository;
+        _refreshTokenRepository = refreshTokenRepository;
     }
 
     public async Task SignUp(SignUp model)
@@ -49,8 +55,21 @@ public class AccountService : IAccountService
         
         if (await _userManager.CheckPasswordAsync(user, model.Password))
         {
-            LoginResponse token = _jwtProvider.GenerateJwtToken(user);
-            return token;
+            RefreshTokenData token = _jwtProvider.GenerateJwtToken(user);
+            var entity = new RefreshToken()
+            {
+                UserId = user.Id,
+                Token = token.RefreshToken,
+                ExpiredDate = token.ExpiredDate
+            };
+            await _refreshTokenRepository.Create(entity);
+
+            var loginResponse = new LoginResponse()
+            {
+                AccessToken = token.AccessToken,
+                RefreshToken = token.RefreshToken,
+            };
+            return loginResponse;
         }
 
         throw new Exception("Password error");
@@ -58,6 +77,16 @@ public class AccountService : IAccountService
 
     public async Task<LoginResponse> RefreshAuthToken(string refreshToken)
     {
+        var handler = new JwtSecurityTokenHandler();
+        var jwtSecurityToken = handler.ReadJwtToken(refreshToken);
+        var exDate = jwtSecurityToken.IssuedAt.AddSeconds(-10);
+        
+        bool isTokenValid = await _refreshTokenRepository.IsTokenValid(refreshToken, exDate);
+        if (isTokenValid)
+        {
+            throw new Exception("Invalid token");
+        }
+        
         var validationParameters = new TokenValidationParameters()
         {
             ValidateLifetime = true,
@@ -74,7 +103,13 @@ public class AccountService : IAccountService
         string userEmail = claimsPrincipal.Claims.First(x => x.Type == "email").Value;
         User user = await _userManager.FindByEmailAsync(userEmail);
         
-        LoginResponse token = _jwtProvider.GenerateJwtToken(user);
-        return token;
+        RefreshTokenData token = _jwtProvider.GenerateJwtToken(user);
+        
+        var loginResponse = new LoginResponse()
+        {
+            AccessToken = token.AccessToken,
+            RefreshToken = token.RefreshToken,
+        };
+        return loginResponse;
     }
 }

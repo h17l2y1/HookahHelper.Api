@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using HookahHelper.BLL.Models;
 using HookahHelper.BLL.Providers.Interfaces;
 using HookahHelper.BLL.ViewModels.Account;
 using HookahHelper.DAL.Entities;
@@ -12,16 +13,18 @@ namespace HookahHelper.BLL.Providers;
 public class JwtProvider : IJwtProvider
 {
     private readonly IConfiguration _configuration;
+    private readonly int accessTokenLifeTime = 1;
+    private readonly int refreshTokenLifeTime = 24;
 
     public JwtProvider(IConfiguration configuration)
     {
         _configuration = configuration;
     }
     
-    public LoginResponse GenerateJwtToken(User user)
+    public RefreshTokenData GenerateJwtToken(User user)
     {
-        var accessToken = CreateToken(user, 1);
-        var refreshToken = CreateToken(user, 24);
+        var accessToken = CreateToken(user, accessTokenLifeTime);
+        var refreshToken = CreateToken(user, refreshTokenLifeTime);
         
         var encodedAccess = new JwtSecurityTokenHandler().WriteToken(accessToken);
         var encodedRefresh = new JwtSecurityTokenHandler().WriteToken(refreshToken);
@@ -31,7 +34,14 @@ public class JwtProvider : IJwtProvider
             AccessToken = encodedAccess,
             RefreshToken = encodedRefresh
         };
-        return loginResponse;
+        var response = new RefreshTokenData()
+        {
+            AccessToken = loginResponse.AccessToken,
+            RefreshToken = loginResponse.RefreshToken,
+            ExpiredDate = DateTime.Now.AddHours(refreshTokenLifeTime),
+            UserId = user.Id
+        };
+        return response;
     }
     
     private JwtSecurityToken CreateToken(User user, int hours)
