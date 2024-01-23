@@ -1,6 +1,8 @@
 ﻿using HookahHelper.BLL.Services.Interfaces;
 using HookahHelper.BLL.ViewModels.Default;
 using HookahHelper.BLL.ViewModels.Mix;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HookahHelper.Api.Controllers;
@@ -24,6 +26,7 @@ public class MixController: ControllerBase
     }
     
     [HttpGet]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<IActionResult> GetAll([FromQuery] GetAllRequest request)
     {
         var response = await _service.GetAll(request);

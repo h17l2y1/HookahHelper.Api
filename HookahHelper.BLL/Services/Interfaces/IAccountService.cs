@@ -5,6 +5,6 @@ namespace HookahHelper.BLL.Services.Interfaces;
 public interface IAccountService
 {
     Task SignUp(SignUp request);
-    Task<LoginResponse> Authenticate(Login model);
-    Task<LoginResponse> RefreshAuthToken(string refreshToken);
+    Task<LoginResponse> Login(Login model);
+    Task<LoginResponse> RefreshAuthToken(RefreshTokenRequest request);
 }

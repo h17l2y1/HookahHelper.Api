@@ -17,4 +17,6 @@ public interface IBaseRepository<TEntity>
     Task Remove(string id);
 
     Task RemoveRange(IEnumerable<TEntity> entities);
+
+    Task SaveChangesAsync();
 }

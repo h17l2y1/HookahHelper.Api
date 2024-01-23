@@ -9,6 +9,8 @@ public class TobaccoTagProfile: Profile
     public TobaccoTagProfile()
     {
         CreateMap<TobaccoTag, TobaccoTagRequest>();
+        CreateMap<UpdateTobaccoTag, TobaccoTag>()
+            .ForMember(to => to.Id, from => from.MapFrom(source => source.Id ?? Guid.NewGuid().ToString()));
         CreateMap<TobaccoTagCreate, TobaccoTag>()
             .ForMember(to => to.Id, from => from.MapFrom(source => source.Id ?? Guid.NewGuid().ToString()));
         CreateMap<TobaccoTagRequest, TobaccoTag>()

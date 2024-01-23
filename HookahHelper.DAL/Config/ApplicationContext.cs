@@ -10,6 +10,7 @@ public class ApplicationContext: DbContext
     {
         // TODO: check all methods
         // Database.EnsureCreated();
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     }
 		
     public DbSet<Brand> Brands { get; set; }

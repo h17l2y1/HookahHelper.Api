@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace HookahHelper.Api.Controllers;
 [ApiController]
 [Route("api/[controller]/[action]")]
-[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "admin")]
 public class TagController : ControllerBase
 {
     private readonly ITagService _service;
@@ -33,6 +32,7 @@ public class TagController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "admin")]
     public async Task<IActionResult> Create(CreateTagRequest request)
     {
         await _service.Create(request);
@@ -40,6 +40,7 @@ public class TagController : ControllerBase
     }
 
     [HttpPut]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "admin")]
     public async Task<IActionResult> Update(UpdateTagRequest request)
     {
         await _service.Update(request);
@@ -47,6 +48,7 @@ public class TagController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "admin")]
     public async Task<IActionResult> Remove(string id)
     {
         await _service.Remove(id);

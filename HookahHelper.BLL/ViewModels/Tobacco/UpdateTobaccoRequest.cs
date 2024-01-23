@@ -22,6 +22,6 @@ public record UpdateTobaccoRequest
     public required string BrandId { get; set; }
     public required float? Rating { get; set; }
     public required UpdateImageRequest Image { get; set; }
-    public required IEnumerable<TobaccoTagRequest> TobaccoTags { get; set; }
+    public required IEnumerable<UpdateTobaccoTag> TobaccoTags { get; set; }
     public required IEnumerable<GetTagResponse> Tags { get; set; }
 }

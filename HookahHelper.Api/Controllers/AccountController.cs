@@ -26,7 +26,7 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> Login([FromBody] Login model)
     {
-        LoginResponse token = await _service.Authenticate(model);
+        LoginResponse token = await _service.Login(model);
 
         if (token != null)
         {
@@ -36,9 +36,9 @@ public class AccountController : Controller
     }
     
     [HttpPost]
-    public async Task<IActionResult> RefreshAuthToken([FromBody] string refreshToken)
+    public async Task<IActionResult> RefreshAuthToken([FromBody] RefreshTokenRequest request)
     {
-        LoginResponse token = await _service.RefreshAuthToken(refreshToken);
+        LoginResponse token = await _service.RefreshAuthToken(request);
         return Ok(token);
     }
 }

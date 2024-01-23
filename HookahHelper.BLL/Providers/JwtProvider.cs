@@ -13,8 +13,8 @@ namespace HookahHelper.BLL.Providers;
 public class JwtProvider : IJwtProvider
 {
     private readonly IConfiguration _configuration;
-    private readonly int accessTokenLifeTime = 1;
-    private readonly int refreshTokenLifeTime = 24;
+    private readonly int _accessTokenLifeTime = 5;
+    private readonly int _refreshTokenLifeTime = 3600;
 
     public JwtProvider(IConfiguration configuration)
     {
@@ -23,8 +23,8 @@ public class JwtProvider : IJwtProvider
     
     public RefreshTokenData GenerateJwtToken(User user)
     {
-        var accessToken = CreateToken(user, accessTokenLifeTime);
-        var refreshToken = CreateToken(user, refreshTokenLifeTime);
+        var accessToken = CreateToken(user, _accessTokenLifeTime);
+        var refreshToken = CreateToken(user, _refreshTokenLifeTime);
         
         var encodedAccess = new JwtSecurityTokenHandler().WriteToken(accessToken);
         var encodedRefresh = new JwtSecurityTokenHandler().WriteToken(refreshToken);
@@ -38,7 +38,7 @@ public class JwtProvider : IJwtProvider
         {
             AccessToken = loginResponse.AccessToken,
             RefreshToken = loginResponse.RefreshToken,
-            ExpiredDate = DateTime.Now.AddHours(refreshTokenLifeTime),
+            ExpiredDate = DateTime.Now.AddHours(_refreshTokenLifeTime),
             UserId = user.Id
         };
         return response;
@@ -63,7 +63,7 @@ public class JwtProvider : IJwtProvider
         var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
 
         var token = new JwtSecurityToken(
-            expires: DateTime.Now.AddHours(hours),
+            expires: DateTime.Now.AddSeconds(hours),
             claims: claims,
             signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256));
     

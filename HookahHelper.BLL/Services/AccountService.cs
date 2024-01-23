@@ -23,7 +23,10 @@ public class AccountService : IAccountService
     private readonly IBlackListRefreshTokenRepository _blackListRefreshTokenRepository;
     private readonly IRefreshTokenRepository _refreshTokenRepository;
 
-    public AccountService(IMapper mapper, IConfiguration configuration, UserManager<User> userManager, IJwtProvider jwtProvider, IBlackListRefreshTokenRepository blackListRefreshTokenRepository, IRefreshTokenRepository refreshTokenRepository)
+    public AccountService(IMapper mapper, IConfiguration configuration, 
+        UserManager<User> userManager, IJwtProvider jwtProvider, 
+        IBlackListRefreshTokenRepository blackListRefreshTokenRepository, 
+        IRefreshTokenRepository refreshTokenRepository)
     {
         _mapper = mapper;
         _userManager = userManager;
@@ -35,6 +38,13 @@ public class AccountService : IAccountService
 
     public async Task SignUp(SignUp model)
     {
+        var emailExist = await _userManager.FindByEmailAsync(model.Email);
+
+        if (emailExist != null)
+        {
+            throw new Exception("Email already exist");
+        }
+        
         var user = _mapper.Map<User>(model);
         user.UserName = model.FirstName+model.LastName;
         var result = await _userManager.CreateAsync(user, model.Password);
@@ -44,7 +54,7 @@ public class AccountService : IAccountService
         }
     }
 
-    public async Task<LoginResponse> Authenticate(Login model)
+    public async Task<LoginResponse> Login(Login model)
     {
         var user = await _userManager.FindByEmailAsync(model.Email);
 
@@ -75,32 +85,30 @@ public class AccountService : IAccountService
         throw new Exception("Password error");
     }
 
-    public async Task<LoginResponse> RefreshAuthToken(string refreshToken)
+    public async Task<LoginResponse> RefreshAuthToken(RefreshTokenRequest request)
     {
-        var handler = new JwtSecurityTokenHandler();
-        var jwtSecurityToken = handler.ReadJwtToken(refreshToken);
-        var exDate = jwtSecurityToken.IssuedAt.AddSeconds(-10);
-        
-        bool isTokenValid = await _refreshTokenRepository.IsTokenValid(refreshToken, exDate);
-        if (isTokenValid)
-        {
-            throw new Exception("Invalid token");
-        }
-        
         var validationParameters = new TokenValidationParameters()
         {
-            ValidateLifetime = true,
+            ValidateLifetime = false,
             ValidateAudience = false,
             ValidateIssuer = false,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"])),
         };
-
-        var tokenHandler = new JwtSecurityTokenHandler(); 
-        ClaimsPrincipal claimsPrincipal = tokenHandler.ValidateToken(refreshToken, validationParameters, out SecurityToken validatedToken);
-
-
-        string userEmail = claimsPrincipal.Claims.First(x => x.Type == "email").Value;
+        
+        var tokenHandler = new JwtSecurityTokenHandler();
+        ClaimsPrincipal claimsPrincipal = tokenHandler.ValidateToken(request.RefreshToken, validationParameters, out SecurityToken validatedToken1);
+        string expiredTimestampString = claimsPrincipal.Claims.First(x => x.Type == "exp").Value;
+        double expiredTimestamp = Double.Parse(expiredTimestampString);
+        DateTime expiredDateTime = UnixTimeStampToDateTime(expiredTimestamp);
+        bool isTokenValid = await _refreshTokenRepository.IsTokenValid(request.RefreshToken, expiredDateTime);
+        if (isTokenValid)
+        {
+            throw new Exception("Invalid token");
+        }
+        
+        
+        string userEmail = claimsPrincipal.Claims.First(x => x.Type == ClaimTypes.Email).Value;
         User user = await _userManager.FindByEmailAsync(userEmail);
         
         RefreshTokenData token = _jwtProvider.GenerateJwtToken(user);
@@ -111,5 +119,12 @@ public class AccountService : IAccountService
             RefreshToken = token.RefreshToken,
         };
         return loginResponse;
+    }
+    
+    private DateTime UnixTimeStampToDateTime(double unixTimeStamp)
+    {
+        DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        dateTime = dateTime.AddSeconds(unixTimeStamp).ToLocalTime();
+        return dateTime;
     }
 }

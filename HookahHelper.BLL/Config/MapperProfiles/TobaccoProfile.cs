@@ -14,7 +14,7 @@ public class TobaccoProfile:Profile
             .ForMember(to => to.Name, from => from.MapFrom(source => source.Name.Trim()));
         CreateMap<UpdateTobaccoRequest, Tobacco>()
             .ForMember(to => to.Description, from => from.MapFrom(source => string.Join(", ", source.Tags.Select(x => x.Name))))
-            .ForMember(to => to.TobaccoTags, from => from.Ignore())
+            // .ForMember(to => to.TobaccoTags, from => from.Ignore())
             .ForMember(to => to.Tags, from => from.Ignore())
             .ForMember(to => to.Name, from => from.MapFrom(source => source.Name.Trim()));
         CreateMap<Tobacco, GetTobaccoResponse>()

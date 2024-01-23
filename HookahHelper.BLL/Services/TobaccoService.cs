@@ -2,6 +2,7 @@ using AutoMapper;
 using HookahHelper.BLL.Services.Interfaces;
 using HookahHelper.BLL.ViewModels.Default;
 using HookahHelper.BLL.ViewModels.Tobacco;
+using HookahHelper.BLL.ViewModels.TobaccoTag;
 using HookahHelper.DAL.Entities;
 using HookahHelper.DAL.Entities.Enums;
 using HookahHelper.DAL.Entities.Models;
@@ -64,22 +65,35 @@ public class TobaccoService : ITobaccoService
             request.Image.Link = _imgurService.UploadImage(request.Name, request.Image.Base64);
         }
         
-        var entity = _mapper.Map<Tobacco>(request);
+        var entity = await _repository.GetById2(request.Id);
+        var updatedEntity = _mapper.Map<UpdateTobaccoRequest, Tobacco>(request, entity);
         
-        var removedTagsViews = request.TobaccoTags!.Where(x => x.IsRemoved == true);
-        var newTagsViews = request.TobaccoTags!.Where(x => x.IsNew == true);
-        if (removedTagsViews.Any())
+        
+        // var entity = _mapper.Map<Tobacco>(request);
+        
+        var removedTagsViews2 = request.TobaccoTags.Where(x => x.IsRemoved == true).Select(x => x.Id);
+        if (removedTagsViews2 != null)
         {
-            var removedTags = _mapper.Map<IEnumerable<TobaccoTag>>(removedTagsViews);
-            await _tobaccoTagRepository.RemoveRange(removedTags);
+            await _tobaccoTagRepository.RemoveRangeByIdsWithoutSave(removedTagsViews2!);
         }
-        if (newTagsViews.Any())
-        {
-            var newTags = _mapper.Map<IEnumerable<TobaccoTag>>(newTagsViews);
-            await _tobaccoTagRepository.Create(newTags);
-        }
-
-        await _repository.Update(entity);
+        
+        
+        // var removedTagsViews = request.TobaccoTags!.Where(x => x.IsRemoved == true);
+        // // var newTagsViews = request.TobaccoTags!.Where(x => x.IsNew == true);
+        // if (removedTagsViews.Any())
+        // {
+        //     var removedTags = _mapper.Map<IEnumerable<TobaccoTag>>(removedTagsViews);
+        //     await _tobaccoTagRepository.RemoveRange(removedTags);
+        // }
+        
+        await _repository.SaveChangesAsync();
+        // if (newTagsViews.Any())
+        // {
+        //     var newTags = _mapper.Map<IEnumerable<TobaccoTag>>(newTagsViews);
+        //     await _tobaccoTagRepository.Create(newTags);
+        // }
+        //
+        // await _repository.Update(entity);
     }
 
     public async Task Remove(string id)
