@@ -13,8 +13,8 @@ namespace HookahHelper.BLL.Providers;
 public class JwtProvider : IJwtProvider
 {
     private readonly IConfiguration _configuration;
-    private readonly int _accessTokenLifeTime = 5;
-    private readonly int _refreshTokenLifeTime = 3600;
+    private readonly int _accessTokenLifeTime = 1;
+    private readonly int _refreshTokenLifeTime = 48;
 
     public JwtProvider(IConfiguration configuration)
     {
@@ -63,7 +63,7 @@ public class JwtProvider : IJwtProvider
         var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
 
         var token = new JwtSecurityToken(
-            expires: DateTime.Now.AddSeconds(hours),
+            expires: DateTime.Now.AddHours(hours),
             claims: claims,
             signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256));
     
