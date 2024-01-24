@@ -10,4 +10,6 @@ public interface ITagRepository : IBaseRepository<Tag>
     Task<int> Count(Filter filters);
 
     Task<IEnumerable<Tag>> GetGlobals();
+
+    Task<bool> IsExist(string name, bool isGlobal);
 }

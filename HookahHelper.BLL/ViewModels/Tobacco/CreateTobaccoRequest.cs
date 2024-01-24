@@ -18,7 +18,8 @@ public record CreateTobaccoRequest
     public required string BrandId { get; set; }
     [Required]
     public required string HeavinessId { get; set; }
+    [Required]
     public required CreateImageRequest Image { get; set; }
-    public IEnumerable<GetTagResponse>? Tags { get; set; }
-    public required IEnumerable<TobaccoTagCreate> TobaccoTags { get; set; }
+    // public IEnumerable<GetTagResponse>? Tags { get; set; }
+    public required IEnumerable<TobaccoTagCreate>? TobaccoTags { get; set; }
 }

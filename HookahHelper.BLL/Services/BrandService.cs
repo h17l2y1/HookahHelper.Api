@@ -32,7 +32,6 @@ public class BrandService : IBrandService
         var entity = _mapper.Map<Brand>(request);
         entity.Image.Link = link;
         entity.Image.Name = request.Name;
-        entity.Image.Type = ImageType.Brand.ToString();
         await _brandRepository.Create(entity);
     }
 

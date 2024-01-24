@@ -38,4 +38,11 @@ public class TagRepository : BaseRepository<Tag>, ITagRepository
             .OrderBy(x => x.Name)
             .ToListAsync();
     }
+    
+    public async Task<bool> IsExist(string name, bool isGlobal)
+    {
+        return await _dbSet.AsNoTracking()
+            .Where(x => x.IsGlobal == isGlobal)
+            .AnyAsync(x => x.Name == name);
+    }
 }

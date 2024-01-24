@@ -21,6 +21,7 @@ public class TagService : ITagService
 
     public async Task Create(CreateTagRequest request)
     {
+        await CheckIsExist(request.Name, request.IsGlobal);
         var entity = _mapper.Map<Tag>(request);
         await _repository.Create(entity);
     }
@@ -66,6 +67,7 @@ public class TagService : ITagService
     
     public async Task Update(UpdateTagRequest request)
     {
+        await CheckIsExist(request.Name, request.IsGlobal);
         var entity = _mapper.Map<Tag>(request);
         await _repository.Update(entity);
     }
@@ -73,5 +75,14 @@ public class TagService : ITagService
     public async Task Remove(string id)
     {
         await _repository.Remove(id);
+    }
+
+    private async Task CheckIsExist(string name, bool isGlobal)
+    {
+        var isExist = await _repository.IsExist(name, isGlobal);
+        if (isExist)
+        {
+            throw new Exception($"Tag {name} already exist");
+        }
     }
 }

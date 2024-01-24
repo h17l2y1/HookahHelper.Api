@@ -7,7 +7,10 @@ public record UpdateTagRequest
 {
     [Required]
     public required string Id { get; set; }
-    public string? Name { get; set; }
+    
+    [Required]
+    public required string Name { get; set; }
+    
     [Required]
     [DefaultValue(false)]
     public required bool IsGlobal { get; set; }
