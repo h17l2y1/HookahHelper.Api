@@ -20,7 +20,7 @@ public record UpdateTobaccoRequest
     public required string HeavinessId { get; set; }
     [Required]
     public required string BrandId { get; set; }
-    public required float? Rating { get; set; }
+    public required double? Rating { get; set; }
     public required UpdateImageRequest Image { get; set; }
     public required IEnumerable<UpdateTobaccoTag> TobaccoTags { get; set; }
     public required IEnumerable<GetTagResponse> Tags { get; set; }

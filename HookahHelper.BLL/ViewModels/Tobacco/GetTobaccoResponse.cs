@@ -13,7 +13,7 @@ public record GetTobaccoResponse
     public required string LineId { get; set; }
     public required string BrandId { get; set; }
     public required string HeavinessId { get; set; }
-    public required float Rating { get; set; }
+    public required double Rating { get; set; }
     public required int RatingCount { get; set; }
     public required int CommentsCount { get; set; }
     public GetImageResponse Image { get; set; }

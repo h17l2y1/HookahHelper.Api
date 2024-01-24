@@ -14,7 +14,7 @@ public class CreateReviewRequest
     [DefaultValue(false)]
     public required bool IsAnonymous { get; set; }
     [Required]
-    public required float Rating { get; set; }
+    public required double Rating { get; set; }
     [DefaultValue(null)]
     public string? Comment { get; set; }
 }

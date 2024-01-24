@@ -3,6 +3,7 @@ using System;
 using HookahHelper.DAL.Config;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HookahHelper.DAL.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20240124220912_RemoveNullableRatingFromTobacco")]
+    partial class RemoveNullableRatingFromTobacco
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -222,8 +225,8 @@ namespace HookahHelper.DAL.Migrations
                     b.Property<string>("MixId")
                         .HasColumnType("text");
 
-                    b.Property<double>("Rating")
-                        .HasColumnType("double precision");
+                    b.Property<float>("Rating")
+                        .HasColumnType("real");
 
                     b.Property<string>("TobaccoId")
                         .IsRequired()
@@ -294,8 +297,8 @@ namespace HookahHelper.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<double>("Rating")
-                        .HasColumnType("double precision");
+                    b.Property<int>("Rating")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

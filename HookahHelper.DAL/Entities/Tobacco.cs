@@ -8,6 +8,7 @@ public class Tobacco : BaseEntity
     public required string ImageId { get; set; }
     public required string HeavinessId { get; set; }
     public required string BrandId { get; set; }
+    public required double Rating { get; set; } = 0;
     public IEnumerable<Tag> Tags { get; set; }
     public IEnumerable<TobaccoTag> TobaccoTags { get; set; }
     public IEnumerable<Review>? Reviews { get; set; }

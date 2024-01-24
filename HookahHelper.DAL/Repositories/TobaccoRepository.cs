@@ -57,18 +57,6 @@ public class TobaccoRepository : BaseRepository<Tobacco>, ITobaccoRepository
                 .ThenInclude( c => c.User)
             .SingleOrDefaultAsync(x => x.Id == id);
     }
-    
-    public async Task<Tobacco?> GetById2(string id)
-    {
-        return await _dbSet
-            .Include(x => x.Image)
-            .Include(x => x.Tags)
-            .Include(x => x.TobaccoTags)
-            .Include(x => x.Brand)
-            .Include(x => x.Reviews)
-            .ThenInclude( c => c.User)
-            .SingleOrDefaultAsync(x => x.Id == id);
-    }
 
     public async Task<IEnumerable<Tobacco>> GetByBrandId(string brandId)
     {

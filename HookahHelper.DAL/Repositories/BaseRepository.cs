@@ -1,4 +1,3 @@
-using System.Linq.Dynamic.Core;
 using HookahHelper.DAL.Config;
 using HookahHelper.DAL.Entities.Interfaces;
 using HookahHelper.DAL.Repositories.Interfaces;
@@ -33,6 +32,17 @@ public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where T
     }
 
     public virtual async Task<TEntity> GetById(string id)
+    {
+        var entity = await _dbSet.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
+        if (entity == null)
+        {
+            throw new Exception($"{id} doesn't exist");
+        }
+
+        return entity;
+    }
+    
+    public virtual async Task<TEntity> FindById(string id)
     {
         var entity = await _dbSet.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
         if (entity == null)

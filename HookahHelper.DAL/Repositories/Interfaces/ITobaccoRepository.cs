@@ -12,6 +12,4 @@ public interface ITobaccoRepository: IBaseRepository<Tobacco>
     new Task<Tobacco?> GetById(string id);
 
     Task<IEnumerable<Tobacco>> GetByBrandId(string brandId);
-
-    Task<Tobacco?> GetById2(string id);
 }

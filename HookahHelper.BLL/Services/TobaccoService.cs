@@ -2,9 +2,7 @@ using AutoMapper;
 using HookahHelper.BLL.Services.Interfaces;
 using HookahHelper.BLL.ViewModels.Default;
 using HookahHelper.BLL.ViewModels.Tobacco;
-using HookahHelper.BLL.ViewModels.TobaccoTag;
 using HookahHelper.DAL.Entities;
-using HookahHelper.DAL.Entities.Enums;
 using HookahHelper.DAL.Entities.Models;
 using HookahHelper.DAL.Repositories.Interfaces;
 

@@ -7,7 +7,7 @@ public class Review: BaseEntity
     public string? UserId { get; set; }
     public string? AnonymousName { get; set; }
     public required bool IsAnonymous { get; set; }
-    public required float Rating { get; set; }
+    public required double Rating { get; set; }
     public string? Comment { get; set; }
     
     public virtual User User { get; set; }

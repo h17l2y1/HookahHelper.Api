@@ -6,7 +6,7 @@ public class GetReviewResponse
     public string? UserId { get; set; }
     public string? AnonymousName { get; set; }
     public required bool IsAnonymous { get; set; }
-    public required float Rating { get; set; }
+    public required double Rating { get; set; }
     public string? Comment { get; set; }
     public GetReviewUser User { get; set; }
     public DateTime CreationDate { get; set; }

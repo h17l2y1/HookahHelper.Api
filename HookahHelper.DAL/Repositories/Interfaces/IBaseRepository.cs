@@ -8,6 +8,8 @@ public interface IBaseRepository<TEntity>
     
     Task<TEntity> GetById(string id);
 
+    Task<TEntity> FindById(string id);
+
     Task Create(TEntity entity);
 
     Task Create(IEnumerable<TEntity> collection);
