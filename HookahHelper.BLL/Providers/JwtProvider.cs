@@ -51,6 +51,7 @@ public class JwtProvider : IJwtProvider
             new("name", $"{user.FirstName} {user.LastName}"),
             new("email", user.Email),
             new("role", user.Role),
+            new("userId", user.Id),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
         
