@@ -9,7 +9,7 @@ public class CreateReviewRequest
     public required string TobaccoId { get; set; }
     public string? UserId { get; set; }
     [DefaultValue(null)]
-    public string? AnonymousName { get; set; }
+    public string? Name { get; set; }
     [Required]
     [DefaultValue(false)]
     public required bool IsAnonymous { get; set; }
