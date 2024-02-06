@@ -26,7 +26,7 @@ public class MixController: ControllerBase
     }
     
     [HttpGet]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<IActionResult> GetAll([FromQuery] GetAllRequest request)
     {
         var response = await _service.GetAll(request);
