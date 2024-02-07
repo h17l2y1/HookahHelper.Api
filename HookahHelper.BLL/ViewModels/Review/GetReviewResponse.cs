@@ -2,7 +2,9 @@
 
 public record GetReviewResponse
 {
-    public required string TobaccoId { get; set; }
+    public string? TobaccoId { get; set; }
+    public string? MixId { get; set; }
+    
     public string? UserId { get; set; }
     public required bool IsAnonymous { get; set; }
     public required double Rating { get; set; }

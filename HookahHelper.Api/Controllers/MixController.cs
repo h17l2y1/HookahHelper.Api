@@ -18,6 +18,13 @@ public class MixController: ControllerBase
         _service = service;
     }
     
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(string id)
+    {
+        var response = await _service.GetById(id);
+        return Ok(response);
+    }
+    
     [HttpPost]
     public async Task<IActionResult> Create(MixRequest request)
     {

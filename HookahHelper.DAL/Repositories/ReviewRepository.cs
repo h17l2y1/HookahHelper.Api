@@ -11,10 +11,17 @@ public class ReviewRepository: BaseRepository<Review>, IReviewRepository
     {
     }
 
-    public async Task<double> GetAvgRating(string tobaccoId)
+    public async Task<double> GetAvgTobaccoRating(string tobaccoId)
     {
         return await _dbSet.AsNoTracking()
             .Where(x => x.TobaccoId == tobaccoId)
+            .Select(x => x.Rating)
+            .AverageAsync();
+    }
+    public async Task<double> GetAvgMixRating(string mixId)
+    {
+        return await _dbSet.AsNoTracking()
+            .Where(x => x.MixId == mixId)
             .Select(x => x.Rating)
             .AverageAsync();
     }
