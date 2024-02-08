@@ -13,7 +13,7 @@ public class ImageProfile:Profile
             .ForMember(to => to.Name, from => from.MapFrom(source => source.Name.Trim()));
         CreateMap<UpdateImageRequest, Image>()
             .ForMember(to => to.Name, from => from.MapFrom(source => source.Name.Trim()));
-        CreateMap<ImageInner, Image>();
+        // CreateMap<ImageInner, Image>();
         CreateMap<Image, GetImageResponse>();
     }
 }
