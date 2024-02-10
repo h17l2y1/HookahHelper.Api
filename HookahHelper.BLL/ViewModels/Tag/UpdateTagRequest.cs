@@ -12,6 +12,9 @@ public record UpdateTagRequest
     public required string Name { get; set; }
     
     [Required]
+    public required string Color { get; set; }
+    
+    [Required]
     [DefaultValue(false)]
     public required bool IsGlobal { get; set; }
 }
