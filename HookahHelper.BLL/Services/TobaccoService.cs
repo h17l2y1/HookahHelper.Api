@@ -61,7 +61,7 @@ public class TobaccoService : ITobaccoService
         }
         
         var entity = _mapper.Map<Tobacco>(request);
-        
+            
         var removedTagsViews = request.TobaccoTags!.Where(x => x.IsRemoved == true);
         var newTagsViews = request.TobaccoTags!.Where(x => x.IsNew == true);
         if (removedTagsViews.Any())

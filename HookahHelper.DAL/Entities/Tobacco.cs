@@ -5,7 +5,7 @@ public class Tobacco : BaseEntity
     public required string Name { get; set; }
     public string? Description { get; set; }
     public required string LineId { get; set; }
-    public required string ImageId { get; set; }
+    public string? ImageId { get; set; }
     public required string HeavinessId { get; set; }
     public required string BrandId { get; set; }
     public required double Rating { get; set; } = 0;
