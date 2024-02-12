@@ -12,8 +12,8 @@ public class RefreshTokenRepository : BaseRepository<RefreshToken>, IRefreshToke
     {
     }
     
-    public async Task<bool> IsTokenValid(string refreshToken, DateTime expirationDateTime)
+    public async Task<bool> IsTokenInvalid(string refreshToken)
     {
-        return await _dbSet.AnyAsync(x => x.Token == refreshToken && x.ExpiredDate < expirationDateTime);
+        return await _dbSet.AnyAsync(x => x.Token == refreshToken && DateTime.Now > x.ExpiredDate);
     }
 }

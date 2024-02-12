@@ -1,5 +1,7 @@
 using HookahHelper.BLL.Services.Interfaces;
 using HookahHelper.BLL.ViewModels.Account;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HookahHelper.Api.Controllers;
@@ -40,5 +42,12 @@ public class AccountController : Controller
     {
         LoginResponse token = await _service.RefreshAuthToken(request);
         return Ok(token);
+    }
+    
+    [HttpGet]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "admin")]
+    public IActionResult IsAdmin()
+    {
+        return Ok();
     }
 }

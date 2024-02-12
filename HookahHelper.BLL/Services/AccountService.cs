@@ -87,26 +87,15 @@ public class AccountService : IAccountService
 
     public async Task<LoginResponse> RefreshAuthToken(RefreshTokenRequest request)
     {
-        var validationParameters = new TokenValidationParameters()
-        {
-            ValidateLifetime = false,
-            ValidateAudience = false,
-            ValidateIssuer = false,
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"])),
-        };
-        
-        var tokenHandler = new JwtSecurityTokenHandler();
-        ClaimsPrincipal claimsPrincipal = tokenHandler.ValidateToken(request.RefreshToken, validationParameters, out SecurityToken validatedToken1);
+        TokenValidationParameters validationParameters = GetTokenValidationParameters();
+        ClaimsPrincipal claimsPrincipal = new JwtSecurityTokenHandler().ValidateToken(request.RefreshToken, validationParameters, out SecurityToken validatedToken);
         string expiredTimestampString = claimsPrincipal.Claims.First(x => x.Type == "exp").Value;
-        double expiredTimestamp = Double.Parse(expiredTimestampString);
-        DateTime expiredDateTime = UnixTimeStampToDateTime(expiredTimestamp);
-        bool isTokenValid = await _refreshTokenRepository.IsTokenValid(request.RefreshToken, expiredDateTime);
-        if (isTokenValid)
+        DateTime expiredDateTime = UnixTimeStampToDateTime(Double.Parse(expiredTimestampString));
+        bool isTokenInvalid = await _refreshTokenRepository.IsTokenInvalid(request.RefreshToken);
+        if (isTokenInvalid)
         {
-            throw new Exception("Invalid token");
+            throw new Exception("Refresh Token Invalid");
         }
-        
         
         string userEmail = claimsPrincipal.Claims.First(x => x.Type == ClaimTypes.Email).Value;
         User user = await _userManager.FindByEmailAsync(userEmail);
@@ -119,6 +108,18 @@ public class AccountService : IAccountService
             RefreshToken = token.RefreshToken,
         };
         return loginResponse;
+    }
+
+    private TokenValidationParameters GetTokenValidationParameters()
+    {
+        return new TokenValidationParameters()
+        {
+            ValidateLifetime = false,
+            ValidateAudience = false,
+            ValidateIssuer = false,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"])),
+        };
     }
     
     private DateTime UnixTimeStampToDateTime(double unixTimeStamp)
