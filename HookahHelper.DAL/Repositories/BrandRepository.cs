@@ -31,7 +31,7 @@ public class BrandRepository: BaseRepository<Brand>, IBrandRepository
     public async Task<int> Count(Filter filters)
     {
         return await _dbSet
-            .WhereIf(filters.Name is not null, x => x.Name.Contains(filters.Name))
+            .WhereIf(filters.Name is not null, x => x.Name.ToLower().Contains(filters.Name.ToLower()))
             .WhereIf(filters.CountryId is not null,  x => x.CountryId == filters.CountryId)
             .CountAsync();
     }

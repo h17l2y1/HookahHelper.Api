@@ -18,7 +18,7 @@ public class TobaccoRepository : BaseRepository<Tobacco>, ITobaccoRepository
     {
         return await _dbSet
             .Include(x => x.Brand)
-            .WhereIf(filters.Name is not null, x => x.Name.Contains(filters.Name))
+            .WhereIf(filters.Name is not null, x => x.Name.ToLower().Contains(filters.Name.ToLower()))
             .WhereIf(filters.BrandId is not null, x => x.BrandId == filters.BrandId)
             .WhereIf(filters.CountryId is not null, x => x.Brand.CountryId == filters.CountryId)
             .WhereIf(filters.LineId is not null, x => x.LineId == filters.LineId)
@@ -32,7 +32,7 @@ public class TobaccoRepository : BaseRepository<Tobacco>, ITobaccoRepository
             .Include(x => x.Image)
             .Include(x => x.Reviews)
             .Include(x => x.Tags.OrderBy(c => c.Name))
-            .WhereIf(filters.Name is not null, x => x.Name.Contains(filters.Name) || x.Tags.Any(tag => tag.Name == filters.Name))
+            .WhereIf(filters.Name is not null, x => x.Name.ToLower().Contains(filters.Name.ToLower()) || x.Tags.Any(tag => tag.Name.ToLower() == filters.Name.ToLower()))
             .WhereIf(filters.TagId is not null, x => x.Tags.Any(tag => tag.Id == filters.TagId))
             .WhereIf(filters.BrandId is not null, x => x.BrandId == filters.BrandId)
             .WhereIf(filters.CountryId is not null, x => x.Brand.CountryId == filters.CountryId)

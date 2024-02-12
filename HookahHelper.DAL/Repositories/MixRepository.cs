@@ -16,7 +16,7 @@ public class MixRepository : BaseRepository<Mix>, IMixRepository
     public async Task<int> Count(Filter filters)
     {
         return await _dbSet
-            .WhereIf(filters.Name is not null, x => x.Name.Contains(filters.Name))
+            .WhereIf(filters.Name is not null, x => x.Name.ToLower().Contains(filters.Name.ToLower()))
             .CountAsync();
     }
 
@@ -26,7 +26,7 @@ public class MixRepository : BaseRepository<Mix>, IMixRepository
             .AsNoTracking()
             .Include(x => x.TobaccoMixes)
             .Include(x => x.Reviews)
-            .WhereIf(filters.Name is not null, x => x.Name.Contains(filters.Name))
+            .WhereIf(filters.Name is not null, x => x.Name.ToLower().Contains(filters.Name.ToLower()))
             .OrderBy(x => x.Name)
             .Skip(skip)
             .Take(take)

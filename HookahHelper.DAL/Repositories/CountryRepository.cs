@@ -16,7 +16,7 @@ public class CountryRepository: BaseRepository<Country>, ICountryRepository
     public async Task<int> Count(Filter filters)
     {
         return await _dbSet
-                .WhereIf(filters.Name is not null, x => x.Name.Contains(filters.Name))
+                .WhereIf(filters.Name is not null, x => x.Name.ToLower().Contains(filters.Name.ToLower()))
                 .CountAsync();
     }
     

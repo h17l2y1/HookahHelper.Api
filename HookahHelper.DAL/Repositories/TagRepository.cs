@@ -19,7 +19,7 @@ public class TagRepository : BaseRepository<Tag>, ITagRepository
         return await _dbSet
             .AsNoTracking()
             .OrderBy($"{column} {sortBy}")
-            .WhereIf(filters.Name is not null, x => x.Name.Contains(filters.Name))
+            .WhereIf(filters.Name is not null, x => x.Name.ToLower().Contains(filters.Name.ToLower()))
             .Skip(skip)
             .Take(take)
             .ToListAsync();
@@ -27,7 +27,7 @@ public class TagRepository : BaseRepository<Tag>, ITagRepository
     public async Task<int> Count(Filter filters)
     {
         return await _dbSet
-            .WhereIf(filters.Name is not null, x => x.Name.Contains(filters.Name))
+            .WhereIf(filters.Name is not null, x => x.Name.ToLower().Contains(filters.Name.ToLower()))
             .CountAsync();
     }
     
