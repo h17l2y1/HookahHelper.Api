@@ -5,8 +5,8 @@ namespace HookahHelper.BLL.ViewModels.Review;
 
 public class CreateReviewRequest
 {
-    [Required]
-    public required string TobaccoId { get; set; }
+    public string? TobaccoId { get; set; }
+    public string? MixId { get; set; }
     public string? UserId { get; set; }
     [DefaultValue(null)]
     public string? Name { get; set; }

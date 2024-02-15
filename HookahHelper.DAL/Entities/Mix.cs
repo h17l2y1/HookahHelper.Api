@@ -6,7 +6,7 @@ public class Mix : BaseEntity
     
     public required IEnumerable<TobaccoMix> TobaccoMixes { get; set; }
     
-    public required double Rating { get; set; } = 0;
+    public required double Rating { get; set; } 
     
     public IEnumerable<Review> Reviews { get; set; }
 }

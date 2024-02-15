@@ -32,4 +32,13 @@ public class MixRepository : BaseRepository<Mix>, IMixRepository
             .Take(take)
             .ToListAsync();
     }
+    
+    public override async Task<Mix?> GetById(string id)
+    {
+        return await _dbSet
+            .AsNoTracking()
+            .Include(x => x.Reviews)
+            .ThenInclude( c => c.User)
+            .SingleOrDefaultAsync(x => x.Id == id);
+    }
 }
