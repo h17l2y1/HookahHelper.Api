@@ -21,7 +21,7 @@ public class BrandRepository: BaseRepository<Brand>, IBrandRepository
             .Include(x => x.Country)
             .Include(x => x.Image)
             .OrderBy($"{column} {sortBy}")
-            .WhereIf(filters?.Name is not null, x => x.Name.Contains(filters.Name))
+            .WhereIf(filters?.Name is not null, x => x.Name.ToLower().Contains(filters.Name.ToLower()))
             .WhereIf(filters?.CountryId is not null,  x => x.CountryId == filters.CountryId)
             .Skip(skip)
             .Take(take)
