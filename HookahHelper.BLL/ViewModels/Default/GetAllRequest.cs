@@ -1,22 +1,11 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-
-namespace HookahHelper.BLL.ViewModels.Default;
+﻿namespace HookahHelper.BLL.ViewModels.Default;
 
 public record GetAllRequest
 {
-    [DefaultValue(0)]
-    [Required]
-    public int Page { get; set; }
-    [DefaultValue(100)]
-    [Required]
-    public int Take { get; set; }
-    [DefaultValue("asc")]
-    [Required]
-    public required string SortBy { get; set; }
-    [DefaultValue("name")]
-    [Required]
-    public required string Column { get; set; }
+    public int Page { get; set; } = 0;
+    public int Take { get; set; } = 100;
+    public string SortBy { get; set; } = "asc";
+    public string Column { get; set; } = "name";
     public string? Name { get; set; }
     public string? TagId { get; set; }
     public string? BrandId { get; set; }
