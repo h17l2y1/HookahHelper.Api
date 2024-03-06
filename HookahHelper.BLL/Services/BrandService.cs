@@ -3,7 +3,6 @@ using HookahHelper.BLL.Services.Interfaces;
 using HookahHelper.BLL.ViewModels.Brands;
 using HookahHelper.BLL.ViewModels.Default;
 using HookahHelper.DAL.Entities;
-using HookahHelper.DAL.Entities.Enums;
 using HookahHelper.DAL.Entities.Models;
 using HookahHelper.DAL.Repositories.Interfaces;
 
@@ -28,7 +27,7 @@ public class BrandService : IBrandService
 
     public async Task Create(CreateBrandRequest request)
     {
-        string link = _imgurService.UploadImage(request.Name, request.Image.Base64);
+        string link = await _imgurService.UploadImage(request.Name, request.Image.Base64);
         var entity = _mapper.Map<Brand>(request);
         entity.Image.Link = link;
         entity.Image.Name = request.Name;
@@ -70,7 +69,7 @@ public class BrandService : IBrandService
     {
         if (request.Image.Base64 != null)
         {
-            request.Image.Link = _imgurService.UploadImage(request.Name, request.Image.Base64);
+            request.Image.Link = await _imgurService.UploadImage(request.Name, request.Image.Base64);
         }
         
         IEnumerable<LinesUpdateInner>? newLines = request.Lines?.Where(x => x.IsNew);

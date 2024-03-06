@@ -1,46 +1,50 @@
-﻿using System.Net;
+﻿using System.Text;
 using HookahHelper.BLL.Models;
 using HookahHelper.BLL.Services.Interfaces;
-using System.Text.Json;
+using ImgurSharp;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 
 namespace HookahHelper.BLL.Services;
 
 public class ImgurService : IImgurService
 {
-    private IConfiguration _configuration;
     private readonly string _clientId;
-
+    private readonly HttpClient _client;
+    private readonly string _baseUrl = "https://api.imgur.com/3/";
+    
     public ImgurService(IConfiguration configuration)
     {
-        _configuration = configuration;
-        _clientId = _configuration.GetSection("Imgur:ClientId").Value;
+        _clientId = configuration.GetSection("Imgur:ClientId").Value!;
+        _client = new HttpClient();
+        _client.DefaultRequestHeaders.Add("Authorization", "Client-ID " + _clientId);
     }
-    
-    public string UploadImage(string name, string base64)
-    {
-        byte[] bytes = EncodeFile(base64);
-        
-        HttpWebRequest req = WebRequest.CreateHttp("https://api.imgur.com/3/image");
-        req.Method = "POST";
-        req.Accept = "application/json";
-        req.Headers.Add("Authorization", "Client-ID " + _clientId);
-        req.KeepAlive = true;
-        req.ContentType = "application/x-www-form-urlencoded";
-        req.ServicePoint.Expect100Continue = false;
-        req.GetRequestStream().Write(bytes, 0, bytes.Length);
-    
-        var response = new StreamReader(req.GetResponse().GetResponseStream()).ReadToEnd();
-        ImgurResponse imgurResponse = JsonSerializer.Deserialize<ImgurResponse>(response);
-        return imgurResponse.data.link;
-    }
-    
-    private byte[] EncodeFile(string base64)
+
+    public async Task<string> UploadImage(string name, string base64)
     {
         int index = base64.IndexOf(",", StringComparison.Ordinal);
         base64 = base64.Substring(++index);
-        byte[] bytes = Convert.FromBase64String(base64);
-        return bytes;
+        ImgurImage image = await UploadImageAnonymous(base64, name, "title", "description");
+        return image.Link;
     }
     
+    private async Task<ImgurImage> UploadImageAnonymous(string base64Image, string name, string title, string description)
+    {
+        var jsonData = JsonConvert.SerializeObject(new
+        {
+            image = base64Image,
+            name,
+            title,
+            description
+        });
+
+        var jsonContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
+        HttpResponseMessage response = await _client.PostAsync(_baseUrl + "upload", jsonContent);
+
+        string content = await response.Content.ReadAsStringAsync();
+
+        ResponseRootObject<ImgurImage> imgRoot = JsonConvert.DeserializeObject<ResponseRootObject<ImgurImage>>(content);
+
+        return imgRoot.Data;
+    }
 }

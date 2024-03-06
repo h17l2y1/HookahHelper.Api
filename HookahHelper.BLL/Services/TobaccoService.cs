@@ -26,7 +26,7 @@ public class TobaccoService : ITobaccoService
     public async Task Create(CreateTobaccoRequest request)
     {
         var entity = _mapper.Map<Tobacco>(request);
-        entity.Image.Link = _imgurService.UploadImage(request.Name, request.Image.Base64);
+        entity.Image.Link = await _imgurService.UploadImage(request.Name, request.Image.Base64);
         await _tobaccoRepository.Create(entity);
     }
 
@@ -57,7 +57,7 @@ public class TobaccoService : ITobaccoService
     {
         if (request.Image.Base64 != null)
         {
-            request.Image.Link = _imgurService.UploadImage(request.Name, request.Image.Base64);
+            request.Image.Link = await _imgurService.UploadImage(request.Name, request.Image.Base64);
         }
         
         var entity = _mapper.Map<Tobacco>(request);

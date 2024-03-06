@@ -2,5 +2,5 @@
 
 public interface IImgurService
 {
-    string UploadImage(string name, string base64);
+    Task<string> UploadImage(string name, string base64);
 }
