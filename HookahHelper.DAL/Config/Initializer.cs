@@ -8,8 +8,8 @@ public class Initializer
     public static void SeedData(IServiceCollection services)
     {
         IServiceProvider serviceProvider = services.BuildServiceProvider();
-        // SeedCountries(serviceProvider).Wait();
-        // SeedHeaviness(serviceProvider).Wait();
+        SeedCountries(serviceProvider).Wait();
+        SeedHeaviness(serviceProvider).Wait();
     }
     
     private static async Task SeedCountries(IServiceProvider serviceProvider)
