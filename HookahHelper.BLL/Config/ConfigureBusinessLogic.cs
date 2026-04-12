@@ -9,7 +9,7 @@ public static class ConfigureBusinessLogic
     public static void InjectBusinessLogicDependency(this IServiceCollection services, ConfigurationManager configuration)
     {
         AutoMapper.Add(services);
-        BusinessLogicDependencies.Add(services);
+        BusinessLogicDependencies.Add(services, configuration);
         services.InjectDataAccessDependency(configuration);
     }
 }

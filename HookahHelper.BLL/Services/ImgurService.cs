@@ -1,35 +1,42 @@
-﻿using System.Text;
+using System.Text;
+using HookahHelper.BLL.Config;
 using HookahHelper.BLL.Models;
 using HookahHelper.BLL.Services.Interfaces;
 using ImgurSharp;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace HookahHelper.BLL.Services;
 
 public class ImgurService : IImgurService
 {
-    private readonly string _clientId;
+    private readonly ImgurOptions _options;
     private readonly HttpClient _client;
-    private readonly string _baseUrl = "https://api.imgur.com/3/";
-    
-    public ImgurService(IConfiguration configuration)
+
+    public ImgurService(HttpClient client, IOptions<ImgurOptions> options)
     {
-        _clientId = configuration.GetSection("Imgur:ClientId").Value!;
-        _client = new HttpClient();
-        _client.DefaultRequestHeaders.Add("Authorization", "Client-ID " + _clientId);
+        _client = client;
+        _options = options.Value;
     }
 
     public async Task<string> UploadImage(string name, string base64)
     {
-        int index = base64.IndexOf(",", StringComparison.Ordinal);
-        base64 = base64.Substring(++index);
-        ImgurImage image = await UploadImageAnonymous(base64, name, "title", "description");
+        string payload = ExtractBase64Payload(base64);
+        ImgurImage image = await UploadImageAsync(payload, name, "title", "description");
+
+        if (string.IsNullOrWhiteSpace(image.Link))
+        {
+            throw new InvalidOperationException("Imgur returned an empty link.");
+        }
+
         return image.Link;
     }
-    
-    private async Task<ImgurImage> UploadImageAnonymous(string base64Image, string name, string title, string description)
+
+    private async Task<ImgurImage> UploadImageAsync(string base64Image, string name, string title, string description)
     {
+        using var request = new HttpRequestMessage(HttpMethod.Post, "upload");
+        request.Headers.Add("Authorization", BuildAuthorizationHeader());
+
         var jsonData = JsonConvert.SerializeObject(new
         {
             image = base64Image,
@@ -38,13 +45,50 @@ public class ImgurService : IImgurService
             description
         });
 
-        var jsonContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-        HttpResponseMessage response = await _client.PostAsync(_baseUrl + "upload", jsonContent);
+        request.Content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
+        HttpResponseMessage response = await _client.SendAsync(request);
         string content = await response.Content.ReadAsStringAsync();
 
-        ResponseRootObject<ImgurImage> imgRoot = JsonConvert.DeserializeObject<ResponseRootObject<ImgurImage>>(content);
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new InvalidOperationException($"Imgur upload failed with status {(int)response.StatusCode}: {content}");
+        }
+
+        ResponseRootObject<ImgurImage>? imgRoot = JsonConvert.DeserializeObject<ResponseRootObject<ImgurImage>>(content);
+
+        if (imgRoot is null || !imgRoot.Success || imgRoot.Data is null)
+        {
+            throw new InvalidOperationException($"Unexpected Imgur response: {content}");
+        }
 
         return imgRoot.Data;
+    }
+
+    private string BuildAuthorizationHeader()
+    {
+        if (!string.IsNullOrWhiteSpace(_options.AccessToken))
+        {
+            return "Bearer " + _options.AccessToken;
+        }
+
+        if (string.IsNullOrWhiteSpace(_options.ClientId))
+        {
+            throw new InvalidOperationException("Imgur ClientId is not configured.");
+        }
+
+        return "Client-ID " + _options.ClientId;
+    }
+
+    private static string ExtractBase64Payload(string base64)
+    {
+        if (string.IsNullOrWhiteSpace(base64))
+        {
+            throw new ArgumentException("Image payload is empty.", nameof(base64));
+        }
+
+        int commaIndex = base64.IndexOf(",", StringComparison.Ordinal);
+
+        return commaIndex >= 0 ? base64[(commaIndex + 1)..] : base64;
     }
 }
