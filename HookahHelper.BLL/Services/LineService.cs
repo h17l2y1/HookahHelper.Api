@@ -24,7 +24,7 @@ public class LineService : ILineService
         await _repository.Create(entity);
     }
 
-    public async Task<GetLineResponse> GetById(string id)
+    public async Task<GetLineResponse> GetById(int id)
     {
         var entity = await _repository.GetById(id);
         var response = _mapper.Map<GetLineResponse>(entity);
@@ -37,12 +37,12 @@ public class LineService : ILineService
         await _repository.Update(entity);
     }
 
-    public async Task Remove(string id)
+    public async Task Remove(int id)
     {
         await _repository.Remove(id);
     }
 
-    public async Task<IEnumerable<GetLineResponse>> GetLinesByBrandId(string brandId)
+    public async Task<IEnumerable<GetLineResponse>> GetLinesByBrandId(int brandId)
     {
         var entity = await _repository.GetLinesByBrandId(brandId);
         var response = _mapper.Map<IEnumerable<GetLineResponse>>(entity);

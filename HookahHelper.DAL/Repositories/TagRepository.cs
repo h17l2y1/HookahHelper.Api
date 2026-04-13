@@ -18,8 +18,7 @@ public class TagRepository : BaseRepository<Tag>, ITagRepository
     {
         return await _dbSet
             .AsNoTracking()
-            .OrderBy($"{column} {sortBy}")
-            .WhereIf(filters.Name is not null, x => x.Name.ToLower().Contains(filters.Name.ToLower()))
+            .WhereIf(filters.Name is not null, x => EF.Functions.Like(x.Name, $"%{filters.Name}%"))
             .Skip(skip)
             .Take(take)
             .ToListAsync();

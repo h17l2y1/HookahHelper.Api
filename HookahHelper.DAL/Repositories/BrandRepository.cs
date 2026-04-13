@@ -36,7 +36,7 @@ public class BrandRepository: BaseRepository<Brand>, IBrandRepository
             .CountAsync();
     }
 
-    public override async Task<Brand?> GetById(string id)
+    public override async Task<Brand?> GetById(int id)
     {
         return await _dbSet
             .AsNoTracking()

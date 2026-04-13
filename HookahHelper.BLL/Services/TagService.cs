@@ -26,7 +26,7 @@ public class TagService : ITagService
         await _repository.Create(entity);
     }
 
-    public async Task<GetTagResponse> GetById(string id)
+    public async Task<GetTagResponse> GetById(int id)
     {
         Tag? entity = await _repository.GetById(id);
         var response = _mapper.Map<GetTagResponse>(entity);
@@ -72,7 +72,7 @@ public class TagService : ITagService
         await _repository.Update(entity);
     }
 
-    public async Task Remove(string id)
+    public async Task Remove(int id)
     {
         await _repository.Remove(id);
     }

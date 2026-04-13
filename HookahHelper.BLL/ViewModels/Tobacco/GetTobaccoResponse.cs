@@ -7,7 +7,7 @@ namespace HookahHelper.BLL.ViewModels.Tobacco;
 
 public record GetTobaccoResponse
 {
-    public required string Id { get; set; }
+    public required int id { get; set; }
     public required string Name { get; set; }
     public string? Description { get; set; }
     public required string LineId { get; set; }
@@ -25,6 +25,6 @@ public record GetTobaccoResponse
 
 public record GetBrandInner
 {
-    public required string Id { get; set; }
+    public required int id { get; set; }
     public required string Name { get; set; }
 }

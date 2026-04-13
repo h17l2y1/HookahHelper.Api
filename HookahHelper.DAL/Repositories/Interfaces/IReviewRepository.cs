@@ -4,6 +4,6 @@ namespace HookahHelper.DAL.Repositories.Interfaces;
 
 public interface IReviewRepository: IBaseRepository<Review>
 {
-    Task<double> GetAvgTobaccoRating(string tobaccoId);
-    Task<double> GetAvgMixRating(string mixId);
+    Task<double> GetAvgTobaccoRating(int tobaccoId);
+    Task<double> GetAvgMixRating(int mixId);
 }

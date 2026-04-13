@@ -19,7 +19,7 @@ public class MixService : IMixService
         _mapper = mapper;
     }
     
-    public async Task<MixResponse> GetById(string id)
+    public async Task<MixResponse> GetById(int id)
     {
         Mix? entity = await _repository.GetById(id);
         var response = _mapper.Map<MixResponse>(entity);

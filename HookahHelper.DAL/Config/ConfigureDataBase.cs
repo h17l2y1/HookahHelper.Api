@@ -9,6 +9,5 @@ public static class ConfigureDataBase
     {
         RepositoryDependencies.Add(services);
         DbConnection.Add(services, configuration);
-        Initializer.SeedData(services);
     }
 }

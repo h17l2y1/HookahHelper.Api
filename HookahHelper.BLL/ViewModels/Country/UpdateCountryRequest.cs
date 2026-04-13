@@ -5,7 +5,7 @@ namespace HookahHelper.BLL.ViewModels.Country;
 public record UpdateCountryRequest
 {
     [Required]
-    public required string Id { get; set; }
+    public required int id { get; set; }
     [Required]
     public required string Name { get; set; }
 }

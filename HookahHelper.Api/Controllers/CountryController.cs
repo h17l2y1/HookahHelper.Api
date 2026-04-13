@@ -17,7 +17,7 @@ public class CountryController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(string id)
+    public async Task<IActionResult> GetById(int id)
     {
         var response = await _service.GetById(id);
         return Ok(response);
@@ -45,7 +45,7 @@ public class CountryController : ControllerBase
     }
     
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Remove(string id)
+    public async Task<IActionResult> Remove(int id)
     {
         await _service.Remove(id);
         return Ok();

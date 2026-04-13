@@ -5,7 +5,7 @@ namespace HookahHelper.BLL.Services.Interfaces;
 
 public interface ITagService
 {
-    Task<GetTagResponse> GetById(string id);
+    Task<GetTagResponse> GetById(int id);
     
     Task<GetAllResponse<GetTagResponse>>GetAll(GetAllRequest request);
     
@@ -13,7 +13,7 @@ public interface ITagService
     
     Task Update(UpdateTagRequest request);
     
-    Task Remove(string id);
+    Task Remove(int id);
 
     Task <IEnumerable<GetTagResponse>>GetOptions();
 

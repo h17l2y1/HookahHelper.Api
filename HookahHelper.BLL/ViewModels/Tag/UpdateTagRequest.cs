@@ -6,7 +6,7 @@ namespace HookahHelper.BLL.ViewModels.Tag;
 public record UpdateTagRequest
 {
     [Required]
-    public required string Id { get; set; }
+    public required int id { get; set; }
     
     [Required]
     public required string Name { get; set; }

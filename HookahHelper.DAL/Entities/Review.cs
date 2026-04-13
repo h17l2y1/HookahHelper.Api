@@ -2,9 +2,9 @@
 
 public class Review: BaseEntity
 {
-    public string? TobaccoId { get; set; }
-    public string? MixId { get; set; }
-    public string? UserId { get; set; }
+    public int? TobaccoId { get; set; }
+    public int? MixId { get; set; }
+    public int? UserId { get; set; }
     public string? AnonymousName { get; set; }
     public required bool IsAnonymous { get; set; }
     public required double Rating { get; set; }

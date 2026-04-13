@@ -19,7 +19,7 @@ public class TobaccoController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(string id)
+    public async Task<IActionResult> GetById(int id)
     {
         var response = await _service.GetById(id);
         return Ok(response);
@@ -47,14 +47,14 @@ public class TobaccoController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Remove(string id)
+    public async Task<IActionResult> Remove(int id)
     {
         await _service.Remove(id);
         return Ok();
     }
     
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetByBrandId(string id)
+    public async Task<IActionResult> GetByBrandId(int id)
     {
         var response = await _service.GetByBrandId(id);
         return Ok(response);

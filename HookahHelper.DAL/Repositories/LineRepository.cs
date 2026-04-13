@@ -13,7 +13,7 @@ public class LineRepository: BaseRepository<Line>, ILineRepository
     {
     }
     
-    public override async Task<Line?> GetById(string id)
+    public override async Task<Line?> GetById(int id)
     {
         return await _dbSet
             .AsNoTracking()
@@ -21,7 +21,7 @@ public class LineRepository: BaseRepository<Line>, ILineRepository
             .SingleOrDefaultAsync(x => x.Id == id);
     }
     
-    public async Task<IEnumerable<Line>>GetLinesByBrandId(string brandId)
+    public async Task<IEnumerable<Line>>GetLinesByBrandId(int brandId)
     {
         return await _dbSet
             .AsNoTracking()

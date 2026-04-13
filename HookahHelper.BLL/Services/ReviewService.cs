@@ -28,15 +28,15 @@ public class ReviewService : IReviewService
         await _reviewRepository.Create(entity);
         if (request.TobaccoId != null)
         {
-            await UpdateTobacco(request.TobaccoId);
+            await UpdateTobacco((int)request.TobaccoId);
         }
         if (request.MixId != null)
         {
-            await UpdateMix(request.MixId);
+            await UpdateMix((int)request.MixId);
         }
     }
 
-    private async Task UpdateTobacco(string tobaccoId)
+    private async Task UpdateTobacco(int tobaccoId)
     {
         double avg = await _reviewRepository.GetAvgTobaccoRating(tobaccoId);
         Tobacco entity = await _tobaccoRepository.FindById(tobaccoId);
@@ -44,7 +44,7 @@ public class ReviewService : IReviewService
         await _tobaccoRepository.Update(entity);
     }
 
-    private async Task UpdateMix(string mixId)
+    private async Task UpdateMix(int mixId)
     {
         double avg = await _reviewRepository.GetAvgMixRating(mixId);
         Mix entity = await _mixRepository.FindById(mixId);

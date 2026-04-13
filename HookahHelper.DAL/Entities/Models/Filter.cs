@@ -3,9 +3,9 @@
 public record Filter
 {
     public string? Name { get; set; }
-    public string? TagId { get; set; }
-    public string? BrandId { get; set; }
-    public string? CountryId { get; set; }
-    public string? LineId { get; set; }
-    public string? HeavinessId { get; set; }
+    public int? TagId { get; set; }
+    public int? BrandId { get; set; }
+    public int? CountryId { get; set; }
+    public int? LineId { get; set; }
+    public int? HeavinessId { get; set; }
 }

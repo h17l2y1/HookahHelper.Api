@@ -5,13 +5,13 @@ namespace HookahHelper.BLL.Services.Interfaces;
 
 public interface ILineService
 {
-    Task<GetLineResponse> GetById(string id);
+    Task<GetLineResponse> GetById(int id);
     
     Task Create(CreateLineRequest request);
     
     Task Update(UpdateLineRequest request);
     
-    Task Remove(string id);
+    Task Remove(int id);
 
-    Task<IEnumerable<GetLineResponse>>GetLinesByBrandId(string brandId);
+    Task<IEnumerable<GetLineResponse>>GetLinesByBrandId(int brandId);
 }

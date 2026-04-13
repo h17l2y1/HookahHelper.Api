@@ -25,7 +25,7 @@ public class CountryService : ICountryService
         await _repository.Create(entity);
     }
 
-    public async Task<GetCountryResponse> GetById(string id)
+    public async Task<GetCountryResponse> GetById(int id)
     {
         Country? entity = await _repository.GetById(id);
         var response = _mapper.Map<GetCountryResponse>(entity);
@@ -46,7 +46,7 @@ public class CountryService : ICountryService
         await _repository.Update(entity);
     }
 
-    public async Task Remove(string id)
+    public async Task Remove(int id)
     {
         await _repository.Remove(id);
     }

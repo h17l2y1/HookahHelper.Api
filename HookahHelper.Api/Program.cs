@@ -1,6 +1,7 @@
 using HookahHelper.Api.Extensions;
 using HookahHelper.Api.Middleware;
 using HookahHelper.BLL.Config;
+using HookahHelper.DAL.Config;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi;
 
@@ -34,6 +35,7 @@ builder.Services.InjectBusinessLogicDependency(builder.Configuration);
 
 var app = builder.Build();
 
+await Initializer.SeedDataAsync(app.Services);
 
 if (app.Environment.IsDevelopment())
 {

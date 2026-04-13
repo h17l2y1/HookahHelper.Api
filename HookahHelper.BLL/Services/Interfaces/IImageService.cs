@@ -4,11 +4,11 @@ namespace HookahHelper.BLL.Services.Interfaces;
 
 public interface IImageService
 {
-    Task<GetImageResponse> GetById(string id);
+    Task<GetImageResponse> GetById(int id);
     
     Task Create(CreateImageRequest request);
     
     Task Update(UpdateImageRequest request);
     
-    Task Remove(string id);
+    Task Remove(int id);
 }

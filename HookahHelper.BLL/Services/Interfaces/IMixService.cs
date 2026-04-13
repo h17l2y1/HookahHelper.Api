@@ -5,7 +5,7 @@ namespace HookahHelper.BLL.Services.Interfaces;
 
 public interface IMixService
 {
-    Task<MixResponse> GetById(string id);
+    Task<MixResponse> GetById(int id);
 
     Task Create(MixRequest request);
     

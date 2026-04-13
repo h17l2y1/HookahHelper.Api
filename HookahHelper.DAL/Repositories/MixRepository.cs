@@ -33,7 +33,7 @@ public class MixRepository : BaseRepository<Mix>, IMixRepository
             .ToListAsync();
     }
     
-    public override async Task<Mix?> GetById(string id)
+    public override async Task<Mix?> GetById(int id)
     {
         return await _dbSet
             .AsNoTracking()

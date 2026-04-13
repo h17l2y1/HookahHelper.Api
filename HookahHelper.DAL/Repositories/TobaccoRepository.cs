@@ -47,7 +47,7 @@ public class TobaccoRepository : BaseRepository<Tobacco>, ITobaccoRepository
             .ToListAsync();
     }
     
-    public override async Task<Tobacco?> GetById(string id)
+    public override async Task<Tobacco?> GetById(int id)
     {
         return await _dbSet
             .AsNoTracking()
@@ -60,7 +60,7 @@ public class TobaccoRepository : BaseRepository<Tobacco>, ITobaccoRepository
             .SingleOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<IEnumerable<Tobacco>> GetByBrandId(string brandId)
+    public async Task<IEnumerable<Tobacco>> GetByBrandId(int brandId)
     {
         return await _dbSet
             .AsNoTracking()

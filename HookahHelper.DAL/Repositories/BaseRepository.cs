@@ -31,7 +31,7 @@ public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where T
         return await _dbSet.AsNoTracking().ToListAsync();
     }
 
-    public virtual async Task<TEntity> GetById(string id)
+    public virtual async Task<TEntity> GetById(int id)
     {
         var entity = await _dbSet.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
         if (entity == null)
@@ -42,7 +42,7 @@ public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where T
         return entity;
     }
     
-    public virtual async Task<TEntity> FindById(string id)
+    public virtual async Task<TEntity> FindById(int id)
     {
         var entity = await _dbSet.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
         if (entity == null)
@@ -53,7 +53,7 @@ public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where T
         return entity;
     }
     
-    // public virtual async Task<IEnumerable<TEntity>> GetByIdMany(string id)
+    // public virtual async Task<IEnumerable<TEntity>> GetByIdMany(int id)
     // {
     //     var entity = await _dbSet.Where(x => x.Id == id).ToListAsync();
     //     if (entity == null)
@@ -88,7 +88,7 @@ public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where T
         await _context.SaveChangesAsync();
     }
 
-    public virtual async Task Remove(string id)
+    public virtual async Task Remove(int id)
     {
         var entity = await GetById(id);
         _dbSet.Remove(entity);

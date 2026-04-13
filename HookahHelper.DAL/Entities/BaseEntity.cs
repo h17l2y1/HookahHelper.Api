@@ -1,20 +1,13 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using HookahHelper.DAL.Entities.Interfaces;
 
 namespace HookahHelper.DAL.Entities;
 
 public class BaseEntity : IBaseEntity
 {
-    public BaseEntity()
-    {
-        Id = Guid.NewGuid().ToString();
-        DateTime dateTime = DateTime.UtcNow;
-        CreationDate = new DateTime(dateTime.Ticks - (dateTime.Ticks % TimeSpan.TicksPerSecond), dateTime.Kind);
-    }
 
     [Key]
-    public string Id { get; set; }
-
-    public DateTime CreationDate { get; set; }
-    
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
 }

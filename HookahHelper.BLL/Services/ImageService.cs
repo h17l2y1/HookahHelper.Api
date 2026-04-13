@@ -23,7 +23,7 @@ public class ImageService : IImageService
         await _repository.Create(entity);
     }
 
-    public async Task<GetImageResponse> GetById(string id)
+    public async Task<GetImageResponse> GetById(int id)
     {
         var entity = await _repository.GetById(id);
         var response = _mapper.Map<GetImageResponse>(entity);
@@ -36,7 +36,7 @@ public class ImageService : IImageService
         await _repository.Update(entity);
     }
 
-    public async Task Remove(string id)
+    public async Task Remove(int id)
     {
         await _repository.Remove(id);
     }

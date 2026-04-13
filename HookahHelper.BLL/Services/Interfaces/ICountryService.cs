@@ -6,7 +6,7 @@ namespace HookahHelper.BLL.Services.Interfaces;
 
 public interface ICountryService
 {
-    Task<GetCountryResponse> GetById(string id);
+    Task<GetCountryResponse> GetById(int id);
     
     Task<IEnumerable<GetCountryResponse>>GetOptions();
     
@@ -14,5 +14,5 @@ public interface ICountryService
     
     Task Update(UpdateCountryRequest request);
     
-    Task Remove(string id);
+    Task Remove(int id);
 }

@@ -30,7 +30,7 @@ public class TobaccoService : ITobaccoService
         await _tobaccoRepository.Create(entity);
     }
 
-    public async Task<GetTobaccoResponse> GetById(string id)
+    public async Task<GetTobaccoResponse> GetById(int id)
     {
         Tobacco? entity = await _tobaccoRepository.GetById(id);
         var response = _mapper.Map<GetTobaccoResponse>(entity);
@@ -78,12 +78,12 @@ public class TobaccoService : ITobaccoService
         await _tobaccoRepository.Update(entity);
     }
 
-    public async Task Remove(string id)
+    public async Task Remove(int id)
     {
         await _tobaccoRepository.Remove(id);
     }
 
-    public async Task<IEnumerable<GetTobaccoResponse>> GetByBrandId(string brandId)
+    public async Task<IEnumerable<GetTobaccoResponse>> GetByBrandId(int brandId)
     {
         IEnumerable<Tobacco> entities = await _tobaccoRepository.GetByBrandId(brandId);
         var response = _mapper.Map<IEnumerable<GetTobaccoResponse>>(entities);

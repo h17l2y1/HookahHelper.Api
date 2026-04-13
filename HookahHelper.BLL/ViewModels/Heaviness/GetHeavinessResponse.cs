@@ -2,6 +2,6 @@
 
 public record GetHeavinessResponse
 {
-    public required string Id { get; set; }
+    public required int id { get; set; }
     public required string Name { get; set; }
 }

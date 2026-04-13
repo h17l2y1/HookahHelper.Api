@@ -34,7 +34,7 @@ public class BrandService : IBrandService
         await _brandRepository.Create(entity);
     }
 
-    public async Task<GetBrandResponse> GetById(string id)
+    public async Task<GetBrandResponse> GetById(int id)
     {
         Brand? entity = await _brandRepository.GetById(id);
         var response = _mapper.Map<GetBrandResponse>(entity);
@@ -84,7 +84,7 @@ public class BrandService : IBrandService
         await _brandRepository.Update(entity);
     }
 
-    public async Task Remove(string id)
+    public async Task Remove(int id)
     {
         await _brandRepository.Remove(id);
     }

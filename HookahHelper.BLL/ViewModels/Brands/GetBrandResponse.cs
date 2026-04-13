@@ -6,7 +6,7 @@ namespace HookahHelper.BLL.ViewModels.Brands;
 
 public record GetBrandResponse
 {
-    public required string Id { get; set; }
+    public required int id { get; set; }
     public required string Name { get; set; }
     public string? Description { get; set; }
     public required GetCountryResponse Country { get; set; }
